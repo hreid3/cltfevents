@@ -47,6 +47,7 @@ export class IndexRoute extends BaseRoute {
     public index(req: Request, res: Response, next: NextFunction) {
         //set custom title
         this.title = "Home | Tour of Heros";
+        this.addScript('/client/app.js');
 
         //set options
         let options: Object = {

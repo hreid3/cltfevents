@@ -27,9 +27,10 @@ const webpackConfig = {
 const APP_ENTRY = project.paths.client('main.js')
 
 webpackConfig.entry = {
-  app : __DEV__
-    ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${project.compiler_public_path}__webpack_hmr`)
-    : [APP_ENTRY],
+  // app : __DEV__
+  //   ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${project.compiler_public_path}__webpack_hmr`)
+  //   : [APP_ENTRY],
+  app : [APP_ENTRY],
   vendor : project.compiler_vendors
 }
 
@@ -37,7 +38,7 @@ webpackConfig.entry = {
 // Bundle Output
 // ------------------------------------
 webpackConfig.output = {
-  filename   : `[name].[${project.compiler_hash_type}].js`,
+  filename   : `[name].js`,
   path       : project.paths.dist(),
   publicPath : project.compiler_public_path
 }
@@ -55,16 +56,16 @@ webpackConfig.externals['react/addons'] = true
 // ------------------------------------
 webpackConfig.plugins = [
   new webpack.DefinePlugin(project.globals),
-  new HtmlWebpackPlugin({
-    template : project.paths.client('index.html'),
-    hash     : false,
-    favicon  : project.paths.public('favicon.ico'),
-    filename : 'index.html',
-    inject   : 'body',
-    minify   : {
-      collapseWhitespace : true
-    }
-  })
+  // new HtmlWebpackPlugin({
+  //   template : project.paths.client('index.html'),
+  //   hash     : false,
+  //   favicon  : project.paths.public('favicon.ico'),
+  //   filename : 'index.html',
+  //   inject   : 'body',
+  //   minify   : {
+  //     collapseWhitespace : true
+  //   }
+  // })
 ]
 
 // Ensure that the compiler exits on errors during testing so that
@@ -86,7 +87,7 @@ if (__TEST__ && !argv.watch) {
 if (__DEV__) {
   debug('Enabling plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
-    new webpack.HotModuleReplacementPlugin(),
+//    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
@@ -208,7 +209,7 @@ if (!__DEV__) {
   })
 
   webpackConfig.plugins.push(
-    new ExtractTextPlugin('[name].[contenthash].css', {
+    new ExtractTextPlugin('[name].css', {
       allChunks : true
     })
   )
