@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "source .env && NODE_ENV=development nodemon ./bin/www",
     "grunt": "grunt",
-    "start": "node ./bin/www",
+    "start": "source .env && node ./bin/www",
     "test": "mocha dist/test"
   },
   "author": "",
@@ -27,7 +27,9 @@
     "grunt-tslint": "^5.0.0",
     "helmet": "^3.5.0",
     "https": "^1.0.0",
+    "hydrate-mongodb": "^1.5.0",
     "method-override": "^2.3.8",
+    "mongodb": "^2.2.25",
     "morgan": "^1.8.1",
     "pug": "^2.0.0-beta11",
     "serve-favicon": "^2.4.2",
