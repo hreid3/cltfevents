@@ -15,25 +15,33 @@ export const LoginComponent = (props) => (
     {({submitForm}) => {
       return (
         <form onSubmit={submitForm}>
-          <Text
-            field='username'
-            label="Username"
-            placeholder="Please enter your username."
+          <div>
+            <label htmlFor="username" className="formLabel">Username</label>
+            <Text
+              field='username'
+              label="Username"
+              placeholder="Please enter your username."
+              id="username"
+              />
+          </div>
+          <div>
+            <label htmlFor="password" className="formLabel">Password</label>
+            <Text
+              field='password'
+              label="Password"
+              type="password"
+              placeholder="Please enter your password."
+              id="password"
             />
-          <Text
-            field='password'
-            label="Password"
-            type="password"
-            placeholder="Please enter your password."
-          />
-          <button type="submit">Submit</button>
+          </div>
+          <button type="submit" className="btn btn-default">Submit</button>
         </form>
       )
     }}
   </Form>
 )
 
-const validateLogin = (values) => {
+export const validateLogin = (values) => {
   const {username, password} = values
   return {
     username: !username ? 'A username is required' : undefined,

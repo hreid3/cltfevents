@@ -27,8 +27,16 @@ export function doLogin (username, password) {
 // ------------------------------------
 // Reducer
 // ------------------------------------yes
-const initialState = {username: 'jay', email: "bell", loggedIn: false}
-export default function userReducer (state = initialState, action) {
+export const initialUserState =
+  {
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    loggedIn: false
+
+  }
+export default function userReducer (state = initialUserState, action) {
   switch(action.type) {
     case USER_LOGGED_IN:
       return Object.assign({}, state, action.payload);
