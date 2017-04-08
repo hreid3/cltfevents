@@ -5,26 +5,24 @@
 import React, { Component, PropTypes } from 'react'
 import { IndexLink, Link } from 'react-router'
 
-class Navbar extends Component {
-  render() {
-    return (
-      <nav className="text-right">
-        <Link to='/events' activeClassName='route--active'>
-          Events
-        </Link>
-        {(!this.props.user.loggedIn) ? (
-          <Link to='/counter' activeClassName='route--active'>
+const Navbar = (props) => {
+  return (
+    <nav className="text-right">
+      <Link to='/events' activeClassName='route--active'>
+        Events
+      </Link>
+      {(!props.user.loggedIn) ? (
+          <Link to='/login' activeClassName='route--active'>
             sign-in
           </Link>
-          ) : (
-          <Link to='/counter' activeClassName='route--active'>
+        ) : (
+          <Link to='/logout' activeClassName='route--active'>
             sign-out
           </Link>
-          )
-        }
-      </nav>
-    )
-  }
+        )
+      }
+    </nav>
+  )
 }
 
 export default Navbar
