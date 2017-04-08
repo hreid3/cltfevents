@@ -5,12 +5,12 @@
 // ------------------------------------
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = "USER_LOGGED_OUT"
+export const USER_INVALID_PARAMETERS = 'USER_INVALID_PARAMETERS'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export function doLogin (username, password) {
-  console.log('doLogin called', username, password)
   return {
     type    : USER_LOGGED_IN,
     payload : {username: username, email: "hreid@wgu.edu", loggedIn: true}
@@ -27,15 +27,14 @@ export function doLogin (username, password) {
 // ------------------------------------
 // Reducer
 // ------------------------------------yes
-export const initialUserState =
-  {
-    username: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    loggedIn: false
+export const initialUserState = {
+  username: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  loggedIn: false
+}
 
-  }
 export default function userReducer (state = initialUserState, action) {
   switch(action.type) {
     case USER_LOGGED_IN:
