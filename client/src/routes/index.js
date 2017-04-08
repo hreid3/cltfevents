@@ -31,13 +31,14 @@ export default (store) => {
         onEnter: requireLogin,
         childRoutes: [
           CounterRoute(store),
-          EventRoute(store),
+          // EventRoute(store),
         ]
       },
       {
         onEnter: requirePublic,
         childRoutes: [
           LoginRoute(store),
+          EventRoute(store),
         ]
       }
     ]

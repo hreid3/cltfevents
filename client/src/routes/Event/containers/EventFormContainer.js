@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { increment, doubleAsync } from '../modules/event'
+import {  } from '../modules/event'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -12,13 +12,14 @@ import EventForm from '../components/EventForm'
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
 
-const mapDispatchToProps = {
-  increment : () => increment(1),
-  doubleAsync
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // updatePageTitle: (title) => dispatch(updatePageTitle(title))
+  }
 }
 
 const mapStateToProps = (state) => ({
-  counter : state.event
+  // counter : state.event
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
