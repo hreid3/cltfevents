@@ -10,9 +10,10 @@ export const USER_LOGGED_OUT = "USER_LOGGED_OUT"
 // Actions
 // ------------------------------------
 export function doLogin (username, password) {
+  console.log('doLogin called', username, password)
   return {
     type    : USER_LOGGED_IN,
-    payload : {username: "john", email: "hreid@wgu.edu", loggedIn: false}
+    payload : {username: username, email: "hreid@wgu.edu", loggedIn: true}
   }
 }
 
@@ -30,10 +31,7 @@ const initialState = {username: 'jay', email: "bell", loggedIn: false}
 export default function userReducer (state = initialState, action) {
   switch(action.type) {
     case USER_LOGGED_IN:
-      return Object.assign({}, state, {
-        loggedIn: true
-      });
-
+      return Object.assign({}, state, action.payload);
     default:
       return state
   }
