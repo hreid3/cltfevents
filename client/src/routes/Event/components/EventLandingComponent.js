@@ -1,7 +1,7 @@
 import React from 'react'
 import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
 import DocumentTitle from 'react-document-title'
-import EventForm from './EventForm'
+import EventForm from './EventFormComponent'
 
 const EventLanding = (props) => {
   console.log(props)
