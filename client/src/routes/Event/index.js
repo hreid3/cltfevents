@@ -9,11 +9,11 @@ export default (store) => ({
     require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
-      const Event = require('./containers/EventFormContainer').default
+      const Event = require('./containers/EventLandingContainer').default
       const reducer = require('./modules/event').default
 
       /*  Add the reducer to the store on key 'counter'  */
-      injectReducer(store, { key: 'event', reducer })
+      injectReducer(store, { key: 'eventData', reducer })
 
       /*  Return getComponent   */
       cb(null, Event)

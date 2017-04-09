@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { reduxForm} from 'redux-form'
+import { reduxForm } from 'redux-form'
 import {doLogin} from '../../../store/user'
 import LoginForm from '../components/LoginForm'
 
