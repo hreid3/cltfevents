@@ -5,7 +5,9 @@ import * as logger from "morgan";
 import * as path from "path";
 import errorHandler = require("errorhandler");
 import methodOverride = require("method-override");
-import { IndexRoute } from "./routes/index";
+import { IndexRoute } from "./routes/client-rendering";
+import {EventsApiResource} from './routes/events-api'
+import {IResource} from './routes/IResource'
 
 /**
  * The server.
@@ -105,13 +107,12 @@ export class Server {
      * @method api
      */
     public routes() {
-        let router: express.Router;
-        router = express.Router();
+// Add resources where
+        const resources: Array<IResource> = [
+            new EventsApiResource(this.app),
+            new IndexRoute(this.app)
+        ]
 
-        //IndexRoute
-        IndexRoute.create(router);
-
-        //use router middleware
-        this.app.use(router);
+        resources.map((val) => this.app.use(val.getResourceBase(), val.getRoutes()))
     }
 }

@@ -48,5 +48,8 @@ export const initialEventState = {
     level: EVENT_LEVEL_CHURCH,
     images: [],
     notes: ''
+  },
+  lookupData: {
+    hostingChurches: []
   }
 }

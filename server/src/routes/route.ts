@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, Application } from "express";
 
 /**
  * Constructor
@@ -7,9 +7,10 @@ import { NextFunction, Request, Response } from "express";
  */
 export class BaseRoute {
 
-    protected title: string;
+    protected title: string
+    private scripts: string[]
 
-    private scripts: string[];
+    private _app: Application;
 
     /**
      * Constructor
@@ -17,10 +18,15 @@ export class BaseRoute {
      * @class BaseRoute
      * @constructor
      */
-    constructor() {
+    constructor(app: Application) {
         //initialize variables
         this.title = "Tour of Heros";
-        this.scripts = [];
+        this.scripts = []
+        this._app = app
+    }
+
+    get app(): Application {
+        return this._app;
     }
 
     /**
@@ -32,7 +38,7 @@ export class BaseRoute {
      * @return {BaseRoute} Self for chaining
      */
     public addScript(src: string): BaseRoute {
-        this.scripts.push(src);
+        this.scripts.push(src)
         return this;
     }
 
@@ -58,6 +64,28 @@ export class BaseRoute {
         res.locals.title = this.title;
 
         //render view
-        res.render(view, options);
+        res.render(view, options)
+    }
+
+    protected json(req: Request, res: Response, payload: Object, metadata?: Object) {
+        if (!metadata) {
+            metadata = {};
+        }
+        const header = {
+            timestamp: new Date().toISOString(),
+            cached: false,
+        }
+        const response = {
+            header: header,
+            payload: payload,
+            metadata: metadata
+        }
+        res.json(response)
+    }
+
+    protected jsonError(req: Request, res: Response, statusCode: number) {
+        if (statusCode < 100) {
+            statusCode = 500
+        }
     }
 }

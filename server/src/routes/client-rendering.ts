@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
+import {IResource} from './IResource'
 import { BaseRoute } from "./route";
 
 /**
@@ -6,7 +7,7 @@ import { BaseRoute } from "./route";
  *
  * @class User
  */
-export class IndexRoute extends BaseRoute {
+export class IndexRoute extends BaseRoute implements IResource {
 
     /**
      * Create the routes.
@@ -15,24 +16,17 @@ export class IndexRoute extends BaseRoute {
      * @method create
      * @static
      */
-    public static create(router: Router) {
-        //log
-        console.log("[IndexRoute::create] Creating index route.");
-
-        //add home page route
+    public getRoutes(): Router {
+        const router = Router()
         router.get("*", (req: Request, res: Response, next: NextFunction) => {
-            new IndexRoute().index(req, res, next);
+            this.index(req, res, next);
         });
+        return router
     }
 
-    /**
-     * Constructor
-     *
-     * @class IndexRoute
-     * @constructor
-     */
-    constructor() {
-        super();
+
+    getResourceBase(): string {
+        return '/';
     }
 
     /**
@@ -45,16 +39,6 @@ export class IndexRoute extends BaseRoute {
      * @next {NextFunction} Execute the next method.
      */
     public index(req: Request, res: Response, next: NextFunction) {
-        //set custom title
-        this.title = "Home | Tour of Heros";
-        this.addScript('/client/app.js');
-
-        //set options
-        let options: Object = {
-            "message": "Welcome to the Tour of Heros"
-        };
-
-        //render template
-        this.render(req, res, "index", options);
+        this.render(req, res, "index", {});
     }
 }
