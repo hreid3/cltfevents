@@ -28,8 +28,7 @@ export class ChurchResource extends BaseRoute implements IResource {
         return '/church';
     }
 
-
-        /**
+    /**
      * The root page route.
      *
      * @class IndexRoute
@@ -39,13 +38,13 @@ export class ChurchResource extends BaseRoute implements IResource {
      * @next {NextFunction} Execute the next method.
      */
     public index(req: Request, res: Response, next: NextFunction) {
-        const churches = {
-                churches: [
-                    { id: 1, title: "Winners' Chapel"},
-                    { id: 2, title: "CLT Yonkers"},
-                    { id: 3, title: "Rose of Sharon"}
-                ]
-            }
+        const churches =
+         [
+            { id: 1, title: "Winners' Chapel"},
+            { id: 2, title: "CLT Yonkers"},
+            { id: 3, title: "Rose of Sharon"}
+        ]
+
         this.json(req, res, churches)
     }
 }

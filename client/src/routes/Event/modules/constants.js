@@ -13,6 +13,7 @@ export const EVENT_LEVEL_CHURCH = 'Church'
 export const EVENT_LEVEL_EXTERNAL = 'External'
 
 export const EVENT_ACTION_ADD = "EVENT_ADD"
+export const EVENT_SET_LOOKUP_DATA = "EVENT_SET_LOOKUP_DATA"
 
 export const initialEventState = {
   selectedTabId: 'eventsGrid',

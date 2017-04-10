@@ -5,42 +5,70 @@
 import {
   initialEventState as initialState,
   EVENT_ACTION_ADD,
-
+  EVENT_SET_LOOKUP_DATA
 } from './constants'
+
+import {doGet} from '../../../utils/rest-client'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
 export const addEvent = () => {
+  return (dispatch, getState) => {
+    fetchEventLookupData(dispatch).then(
+      dispatch(eventFormReady(initialState.details))
+    )
+  }
+}
+
+export const fetchEventLookupData = (dispatch) => {
+  return Promise.all([doGet('/church')])
+    .then((fullData) => {
+      const [churches] = fullData
+      console.log('churches',churches)
+      dispatch(setLookupData('hostingChurches', churches.payload))
+    })
+}
+
+export const eventFormReady = (details) => {
   return {
     type: EVENT_ACTION_ADD,
     payload: {
       selectedTabId: 'eventsDetails',
-      details: initialState.details
+      details: details
     }
   }
 }
 
-export const fetchEventLookupData = () => {
-
-}
-
-// ------------------------------------
-// Action Handlers
-// ------------------------------------
-const ACTION_HANDLERS = {
-  [EVENT_ACTION_ADD] : (state, action) => Object.assign({}, state, action.payload),
+export const setLookupData = (key, values) =>{
+  console.log('churches',values)
+  return {
+    type: EVENT_SET_LOOKUP_DATA,
+    payload: {
+      key: key,
+      values: values
+    }
+  }
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-
-export default function eventReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-
-  return handler ? handler(state, action) : state
+export const eventReducer  = (state = initialState, action) => {
+  const payload = action.payload
+  switch(action.type) {
+    case EVENT_SET_LOOKUP_DATA:
+      const lookupDataVal = state.lookupData
+      lookupDataVal[payload.key] = payload.values
+      return {
+        ...state,  lookupData: lookupDataVal
+      }
+    case EVENT_ACTION_ADD:
+      return Object.assign({}, state, payload);
+    default:
+      return state
+  }
 }
 
 // export function increment (value = 1) {
@@ -72,4 +100,6 @@ export default function eventReducer (state = initialState, action) {
 //   increment,
 //   doubleAsync
 // }
+
+export default eventReducer
 

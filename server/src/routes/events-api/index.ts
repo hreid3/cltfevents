@@ -3,8 +3,6 @@ import { BaseRoute } from "../route";
 import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
 
-import * as express from "express";
-
 /**
  * / route
  *
