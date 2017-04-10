@@ -7,6 +7,12 @@ const mapDispatchToProps = {
   addEvent: () => addEvent(),
 }
 
-const mapStateToProps = (state) => state.eventData
+const mapStateToProps = (state) => {
+  const ret = Object.assign({},
+    state.eventData,
+    {initialValues: state.eventData})
+  console.log(ret)
+  return ret
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'eventForm'})(EventLanding))

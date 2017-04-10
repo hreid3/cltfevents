@@ -16,6 +16,7 @@ const EventLanding = (props) => {
         id="eventsTabbedPane"
         onChange={handleEventsTabbedPaneChange} // TODO: Replace with store
         selectedTabId={props.selectedTabId} // TODO: Replace with store
+        renderActiveTabPanelOnly={true}
         >
         <Tab id="eventsGrid" title="Events" panel={<EventsGrid {...props} />} />
         <Tab id="eventsDetails" title="Event Details" panel={<EventForm {...props} />} />

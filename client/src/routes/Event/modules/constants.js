@@ -21,8 +21,8 @@ export const initialEventState = {
     filter: [],
   },
   details: {
-    title: '',
-    description: '',
+    title: 'My Event',
+    description: 'Hello World',
     hostingChurch: {
       id: -1,
       title: ''
