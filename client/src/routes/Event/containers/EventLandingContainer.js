@@ -11,7 +11,6 @@ const mapStateToProps = (state) => {
   const ret = Object.assign({},
     state.eventData,
     {initialValues: state.eventData})
-  console.log(ret)
   return ret
 }
 

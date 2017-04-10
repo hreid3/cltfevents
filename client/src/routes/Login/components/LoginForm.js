@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field} from 'redux-form'
-import {textField} from '../../../components/ReduxFormRenderFields'
+import {textField} from '../../../components/ReduxFormRenderedFields'
 import DocumentTitle from 'react-document-title'
 
 const LoginForm = (props) => {

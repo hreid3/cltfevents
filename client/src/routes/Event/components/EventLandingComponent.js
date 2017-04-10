@@ -4,7 +4,6 @@ import DocumentTitle from 'react-document-title'
 import EventForm from './EventFormComponent'
 
 const EventLanding = (props) => {
-  console.log(props)
   return (
     <div>
       <DocumentTitle title="Login">
