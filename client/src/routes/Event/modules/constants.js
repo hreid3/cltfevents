@@ -24,12 +24,10 @@ export const initialEventState = {
   details: {
     title: 'My Event',
     description: 'Hello World',
-    hostingChurch: {
-      id: -1,
-      title: ''
-    },
+    hostingChurch: {},
     location: {
       id: -1,
+      label: '',
       street: '',
       city: '',
       state: '',
@@ -51,6 +49,7 @@ export const initialEventState = {
     notes: ''
   },
   lookupData: {
-    hostingChurches: []
+    hostingChurches: [],
+    guestSpeakers: []
   }
 }
