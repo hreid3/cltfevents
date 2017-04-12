@@ -22,11 +22,15 @@ export const addEvent = () => {
   }
 }
 
+
 export const fetchEventLookupData = (dispatch) => {
-  return Promise.all([doGet('/church')])
+  return Promise.all([doGet('/church'), doGet('/status'), doGet('/type'), doGet('/level')])
     .then((fullData) => {
-      const [churches] = fullData
+      const [churches, statuses, types, levels] = fullData
       dispatch(setLookupData('hostingChurches', churches.payload))
+      dispatch(setLookupData('statuses', statuses.payload))
+      dispatch(setLookupData('types', types.payload))
+      dispatch(setLookupData('levels', levels.payload))
     })
 }
 
@@ -49,6 +53,16 @@ export const setLookupData = (key, values) =>{
     }
   }
 }
+
+export const doSubmitEventForm = (values) => {
+  // First convert values into eventData store before sending to server
+    console.log('submit', values)
+    return {
+      type: '@cltfevent/TEMP',
+      payload: {}
+    }
+}
+
 
 // ------------------------------------
 // Reducer

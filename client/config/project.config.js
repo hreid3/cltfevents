@@ -35,21 +35,29 @@ const config = {
     plugins        : ['transform-runtime'],
     presets        : ['es2015', 'react', 'stage-0']
   },
-  compiler_devtool         : 'source-map',
+  // compiler_devtool         : 'source-map',
   compiler_hash_type       : 'hash',
   compiler_fail_on_warning : false,
-  compiler_quiet           : false,
+  compiler_quiet           : true,
   compiler_public_path     : '/client/',
   compiler_stats           : {
     chunks : false,
     chunkModules : false,
-    colors : true
+    colors : false
   },
   compiler_vendors : [
     'react',
     'react-redux',
     'react-router',
+    'react-dom',
     'redux',
+    'redux-form',
+    'redux-thunk',
+    'react-select',
+    '@blueprintjs/core',
+    '@blueprintjs/datetime',
+    'react-quill',
+    'react-document-title'
   ],
 
   // ----------------------------------

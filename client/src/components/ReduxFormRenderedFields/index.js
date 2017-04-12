@@ -5,6 +5,7 @@ import React from 'react'
 import ReactQuill from 'react-quill'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { DateTimePicker } from "@blueprintjs/datetime";
 
 export const textField = ({ input, label, type, placeholder, id, meta: { touched, error, warning } }) => (
   <div className="pt-form-group">
@@ -22,7 +23,7 @@ export const textField = ({ input, label, type, placeholder, id, meta: { touched
 export const wysiwygEditorField = ({ input, label, value, meta: { touched, error, warning }}) => {
   return (
     <div className="pt-form-group">
-      <label className="pt-form-group">
+      <label className="pt-label">
         {label}&nbsp;
         <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
       </label>
@@ -35,18 +36,11 @@ export const wysiwygEditorField = ({ input, label, value, meta: { touched, error
     </div>
   )
 }
-
-export const selectField = ({input, label, options, meta: { touched, error, warning }, placeholder}) => {
-  let selectableOptions = [{value: 'missing', label: "Missing option data"}]
-  if (options) {
-    selectableOptions = options.map((obj) => {
-      return {value: obj.id, label: obj.title}
-    })
-  }
-  input.onBlur = null
+export const selectField = ({input, label, options, placeholder, meta: { touched, error, warning }}) => {
+  input.onBlur = null // IF thi is removed, then field just clears out
   return (
     <div className="pt-form-group">
-      <label className="pt-form-group">
+      <label className="pt-label">
         {label}&nbsp;
         <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
       </label>
@@ -54,9 +48,11 @@ export const selectField = ({input, label, options, meta: { touched, error, warn
         <Select
           {...input}
           multi={false}
-          options={selectableOptions}
+          options={options}
           placeholder={placeholder}
           onBlurResetsInput={false}
+          labelKey="title"
+          valueKey="id"
         />
       </div>
     </div>
@@ -67,7 +63,7 @@ export const selectTagField = ({input, label, options, meta: { touched, error, w
   input.onBlur = null
   return (
     <div className="pt-form-group">
-      <label className="pt-form-group">
+      <label className="pt-label">
         {label}&nbsp;
         <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
       </label>
@@ -84,4 +80,22 @@ export const selectTagField = ({input, label, options, meta: { touched, error, w
   )
 }
 
+export const datetimePickerField = ({input, label, defaultValue, meta: { touched, error, warning }, placeholder}) => {
+  // input.onBlur = null
+  return (
+    <div className="pt-form-group">
+      <label className="pt-label">
+        {label}&nbsp;
+        <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
+      </label>
+      <div className="pt-form-content">
+        <DateTimePicker
+          {...input}
+          timePickerProps={{showArrowButtons: true}}
+          dataPickerProps={{showActionsBar: true}}
+        />
+      </div>
+    </div>
+  )
+}
 

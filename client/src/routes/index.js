@@ -1,7 +1,6 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
-import CounterRoute from './Counter'
 import EventRoute from './Event'
 import LoginRoute from './Login'
 
@@ -30,7 +29,6 @@ export default (store) => {
       {
         onEnter: requireLogin,
         childRoutes: [
-          CounterRoute(store),
           // EventRoute(store),
         ]
       },

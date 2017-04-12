@@ -1,10 +1,23 @@
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent } from '../modules/event'
+import { addEvent, doSubmitEventForm } from '../modules/event'
 
 import EventLanding from '../components/EventLandingComponent'
-const mapDispatchToProps = {
-  addEvent: () => addEvent(),
+
+export const validate = values => {
+  const { details } = values
+  console.log("validate", details);
+  const errors = {}
+
+  return errors
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addEvent: () => dispatch(addEvent()),
+    onSubmit: (values) => dispatch(doSubmitEventForm(values)),
+    validate: validate
+  }
 }
 
 const mapStateToProps = (state) => {

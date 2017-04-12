@@ -22,6 +22,16 @@ export class EventsApiResource extends BaseRoute implements IResource {
         });
         const churchResource = new ChurchResource(this.app);
         this.app.use(this.getResourceBase() + churchResource.getResourceBase(), churchResource.getRoutes())
+
+        router.get("/status", (req: Request, res: Response, next: NextFunction) => {
+            this.statusLookup(req, res, next)
+        });
+        router.get("/type", (req: Request, res: Response, next: NextFunction) => {
+            this.typeLookup(req, res, next)
+        });
+        router.get("/level", (req: Request, res: Response, next: NextFunction) => {
+            this.levelLookup(req, res, next)
+        });
         return router
     }
 
@@ -41,15 +51,35 @@ export class EventsApiResource extends BaseRoute implements IResource {
      * @param req {Request} The express Request object.
      * @param res {Response} The express Response object.
      * @next {NextFunction} Execute the next method.
-     */
-    public church(req: Request, res: Response, next: NextFunction) {
-        const churches = {
-                churches: [
-                    { id: 1, title: "Winners' Chapel"},
-                    { id: 2, title: "CLT Yonkers"},
-                    { id: 3, title: "Rose of Sharon"}
-                ]
-            }
-        this.json(req, res, churches)
+         */
+    public statusLookup(req: Request, res: Response, next: NextFunction) {
+        const status = [
+            {id: 'published', title: "Published"},
+            {id: 'closed', title: "Closed"},
+            {id: 'draft', title: "Draft"},
+            {id: 'cancelled', title: "Cancelled"},
+            {id: 'under-review', title: "Under Review"},
+        ]
+        this.json(req, res, status)
     }
+
+    public typeLookup(req: Request, res: Response, next: NextFunction) {
+        const status = [
+            {id: 'public', title: "Public"},
+            {id: 'private', title: "Private"},
+            {id: 'special', title: "Special"},
+        ]
+        this.json(req, res, status)
+    }
+
+    public levelLookup(req: Request, res: Response, next: NextFunction) {
+        const status = [
+            {id: 'Fellowship', title: "Fellowship"},
+            {id: 'Church', title: "Church"},
+            {id: 'External', title: "External"},
+        ]
+        this.json(req, res, status)
+    }
+
+
 }

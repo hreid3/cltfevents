@@ -1,15 +1,22 @@
 import React, {Component} from 'react'
 import { Field } from 'redux-form'
-import {textField, wysiwygEditorField, selectField, selectTagField} from '../../../components/ReduxFormRenderedFields'
+import {
+  textField,
+  wysiwygEditorField,
+  selectField,
+  selectTagField,
+  datetimePickerField
+} from '../../../components/ReduxFormRenderedFields'
+import './event-form.scss'
 
 export const EventForm = (props) => {
   const { handleSubmit, pristine, reset, submitting, lookupData } = props
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="event-form">
       <div className="row">
         <div className="col-md-8 ">
           <Field name="details.title" type="text" component={textField} label="Event Title" placeholder="Fellowship of Praise" id="title" />
-          <Field name="details.hostingChurch.id" type="text" component={selectField}  placeholder="Please select the hosting church" label="Hosting Church" options={lookupData.hostingChurches}/>
+          <Field name="details.hostingChurch" type="text" component={selectField}  placeholder="Please select the hosting church" label="Hosting Church" options={lookupData.hostingChurches}/>
           <Field name="details.description" type="text" component={wysiwygEditorField} label="Event Description" value={props.details.description} />
           <hr/>
           <div className="row">
@@ -25,6 +32,11 @@ export const EventForm = (props) => {
           <div className="row">
             <div className="col">
               <Field name="details.location.city" type="text" component={textField}  placeholder="E.g. Middletown" label="City" id="location.city" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <Field name="details.location.state" type="text" component={selectField}  placeholder="Select a state" label="State" options={lookupData.states}/>
             </div>
             <div className="col">
               <Field name="details.location.postal" type="text" component={textField}  placeholder="12345" label="Zipcode" id="location.postal" />
@@ -48,6 +60,22 @@ export const EventForm = (props) => {
               <Field name="details.guestSpeakers" type="text" component={selectTagField} label="Guest Speakers" placeholder="Please enter a guest speaker name" options={lookupData.guestSpeakers} />
             </div>
           </div>
+          <div className="row">
+            <div className="col">
+              <Field name="details.startDateTime" type="text" component={datetimePickerField} label="Event Start Date" placeholder="" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <Field name="details.status" type="text" component={selectField}  placeholder="Status" label="Status" options={lookupData.statuses}/>
+            </div>
+            <div className="col-lg-6 col-md-12">
+              <Field name="details.type" type="text" component={selectField}  placeholder="Type" label="Type" options={lookupData.types}/>
+            </div>
+            <div className="col-lg-6 col-md-12">
+              <Field name="details.level" type="text" component={selectField}  placeholder="Level" label="Level" options={lookupData.levels}/>
+            </div>
+          </div>
         </div>
       </div>
       <div className="row">
@@ -61,12 +89,5 @@ export const EventForm = (props) => {
     </form>
   )
 }
-
-// export const EventForm = (props) => {
-//   const { handleSubmit, pristine, reset, submitting } = props
-// }
-//
-// EventForm.propTypes = {
-// }
 
 export default EventForm
