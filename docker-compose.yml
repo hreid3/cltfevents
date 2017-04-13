@@ -1,0 +1,31 @@
+version: '2'
+services:
+  mongod:
+    container_name: cltfevents_mongodb
+    image: cltfevents_mongodb
+    build: mongodb
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - "27017:27017"
+    restart: always
+
+#  backup:
+#    container_name: vcpuicms_backup
+#    image: vcpuicms_backup
+#    volumes:
+#      - backup:/backup
+#    volumes_from:
+#      - mariadbdata
+#      - wwwdata
+#    environment:
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_PASS=${MYSQL_PASS}
+#      - MYSQL_DB_NAME=${MYSQL_DB_NAME}
+#      - MYSQL_HOST=${MYSQL_HOST}
+
+volumes:
+  mongodb:
+#  backup:
+
+networks: {}
