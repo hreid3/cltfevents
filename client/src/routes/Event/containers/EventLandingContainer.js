@@ -1,15 +1,59 @@
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { addEvent, doSubmitEventForm } from '../modules/event'
-
+import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
+import DataObjectParser from 'dataobject-parser'
+import _ from 'lodash'
+
+const validator = require('validate.js')
+
+validator.extend(validator.validators.datetime, {
+  parse: (value, options) => utc(value),
+  format: (value, options) => utc(value).format('YYYY-MM-DD hh:mm:ss')
+})
+
+const constraints = {
+  title: {
+    presence: true,
+    length: {
+      minimum: 6,
+      message: 'must be at least 6 characters'
+    }
+  },
+  description: {
+    presence: true,
+    length: {
+      minimum: 5,
+      tooShort: "needs to have %{count} words or more",
+      tokenizer: (value) => value.split(/\s+/g)
+    }
+  },
+  "hostingChurch": {presence: {message: "was not selected"}},
+  "location.label": {presence: true},
+  "location.street": {presence: true},
+  "location.city": {presence: true},
+  "location.state": {presence: true},
+  "location.postal": {presence: true},
+  startDateTime: {
+    datetime: {earliest: utc().subtract(1, 'day'), message: "must occur in the future."},
+  },
+  "status": {presence: {message: "was not selected"}},
+  "type":   {presence: {message: "was not selected"}},
+  "level":  {presence: {message: "was not selected"}},
+  "totalPrice": {numericality: {greaterThanOrEqualTo: true}},
+  "numberOfSeats": {numericality: {onlyInteger: true, greaterThanOrEqualTo: true}},
+  "guestSpeakers": {presence: true},
+}
 
 export const validate = values => {
   const { details } = values
-  console.log("validate", details);
-  const errors = {}
-
-  return errors
+  const errors = validator(details, constraints)
+  const d = new DataObjectParser();
+  if (errors) {
+    _.forIn(errors, (val, key) => d.set(key, val))
+  }
+  return {details: d.data()}
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -21,10 +65,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
-  const ret = Object.assign({},
-    state.eventData,
-    {initialValues: state.eventData})
-  return ret
+  return {...state.eventData, initialValues: state.eventData}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'eventForm'})(EventLanding))

@@ -23,6 +23,7 @@ export const initialEventState = {
     filter: [],
   },
   details: {
+    _id: -1,
     title: '',
     description: '',
     hostingChurch: null,

@@ -7,7 +7,8 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { DateTimePicker } from "@blueprintjs/datetime";
 
-export const textField = ({ input, label, type, placeholder, id, meta: { touched, error, warning } }) => (
+export const textField = ({ input, label, type, placeholder, id, meta: { touched, error, warning } }) => {
+  return (
   <div className="pt-form-group">
     <label className="pt-label" htmlFor={id}>
       {label}&nbsp;
@@ -18,9 +19,11 @@ export const textField = ({ input, label, type, placeholder, id, meta: { touched
       {/*<div className="pt-form-helper-text">Helper text with details / user feedback</div>*/}
     </div>
   </div>
-)
+  )
+}
 
 export const wysiwygEditorField = ({ input, label, value, meta: { touched, error, warning }}) => {
+  console.log('error', error, touched)
   return (
     <div className="pt-form-group">
       <label className="pt-label">
@@ -36,6 +39,7 @@ export const wysiwygEditorField = ({ input, label, value, meta: { touched, error
     </div>
   )
 }
+
 export const selectField = ({input, label, options, placeholder, meta: { touched, error, warning }}) => {
   input.onBlur = null // IF thi is removed, then field just clears out
   return (

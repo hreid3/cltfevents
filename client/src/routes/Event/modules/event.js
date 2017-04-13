@@ -8,7 +8,7 @@ import {
   EVENT_SET_LOOKUP_DATA
 } from './constants'
 
-import {doGet} from '../../../utils/rest-client'
+import {doGet, doPost} from '../../../utils/rest-client'
 
 // ------------------------------------
 // Actions
@@ -21,7 +21,6 @@ export const addEvent = () => {
     )
   }
 }
-
 
 export const fetchEventLookupData = (dispatch) => {
   return Promise.all([doGet('/church'), doGet('/status'), doGet('/type'), doGet('/level')])
@@ -44,6 +43,15 @@ export const eventFormReady = (details) => {
   }
 }
 
+export const showEventsGrid = () => {
+    return {
+      type: 'LANDING_PAGE',
+      payload: {
+        selectedTabId: 'eventsGrid'
+      }
+    }
+}
+
 export const setLookupData = (key, values) =>{
   return {
     type: EVENT_SET_LOOKUP_DATA,
@@ -56,11 +64,13 @@ export const setLookupData = (key, values) =>{
 
 export const doSubmitEventForm = (values) => {
   // First convert values into eventData store before sending to server
-    console.log('submit', values)
-    return {
-      type: '@cltfevent/TEMP',
-      payload: {}
-    }
+  return (dispatch, getState) => {
+    doPost('/event', values.details)
+      .then((data) => {
+      console.log('retured from server', data)
+      dispatch(showEventsGrid())
+    })
+  }
 }
 
 

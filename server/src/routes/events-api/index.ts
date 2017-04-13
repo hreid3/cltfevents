@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router, Application } from "express";
 import { BaseRoute } from "../route";
 import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
+import {EventResource} from './resource-event'
 
 /**
  * / route
@@ -20,8 +21,11 @@ export class EventsApiResource extends BaseRoute implements IResource {
         router.get("/", (req: Request, res: Response, next: NextFunction) => {
             this.root(req, res, next)
         });
-        const churchResource = new ChurchResource(this.app);
+        const churchResource = new ChurchResource(this.app)
         this.app.use(this.getResourceBase() + churchResource.getResourceBase(), churchResource.getRoutes())
+
+        const eventResource = new EventResource(this.app)
+        this.app.use(this.getResourceBase() + eventResource.getResourceBase(), eventResource.getRoutes())
 
         router.get("/status", (req: Request, res: Response, next: NextFunction) => {
             this.statusLookup(req, res, next)
