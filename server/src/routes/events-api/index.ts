@@ -3,6 +3,7 @@ import { BaseRoute } from "../route";
 import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
 import {EventResource} from './resource-event'
+// import {Event, Address} from "../../entities/index";
 
 /**
  * / route
@@ -36,6 +37,9 @@ export class EventsApiResource extends BaseRoute implements IResource {
         router.get("/level", (req: Request, res: Response, next: NextFunction) => {
             this.levelLookup(req, res, next)
         });
+        router.get("/address/states", (req: Request, res: Response, next: NextFunction) => {
+            this.addressStatesLookup(req, res, next)
+        });
         return router
     }
 
@@ -57,33 +61,19 @@ export class EventsApiResource extends BaseRoute implements IResource {
      * @next {NextFunction} Execute the next method.
          */
     public statusLookup(req: Request, res: Response, next: NextFunction) {
-        const status = [
-            {id: 'published', title: "Published"},
-            {id: 'closed', title: "Closed"},
-            {id: 'draft', title: "Draft"},
-            {id: 'cancelled', title: "Cancelled"},
-            {id: 'under-review', title: "Under Review"},
-        ]
-        this.json(req, res, status)
+        // this.json(req, res, Event.getEventStatuses())
     }
 
     public typeLookup(req: Request, res: Response, next: NextFunction) {
-        const status = [
-            {id: 'public', title: "Public"},
-            {id: 'private', title: "Private"},
-            {id: 'special', title: "Special"},
-        ]
-        this.json(req, res, status)
+        // this.json(req, res, Event.getEventTypes())
     }
 
     public levelLookup(req: Request, res: Response, next: NextFunction) {
-        const status = [
-            {id: 'Fellowship', title: "Fellowship"},
-            {id: 'Church', title: "Church"},
-            {id: 'External', title: "External"},
-        ]
-        this.json(req, res, status)
+        // this.json(req, res, Event.getEventLevels())
     }
 
+    public addressStatesLookup(req: Request, res: Response, next: NextFunction) {
+        // this.json(req, res, Address.getStates())
+    }
 
 }

@@ -3,18 +3,17 @@ IMAGE = hreid3000/alpine-mongo:$(VERSION)
 
 build:
 	docker-compose up --build -d
-	@make start
 
-stop:
+mongo_stop:
 	docker stop cltfevents_mongodb
 
-start:
+mongo_start:
 	docker start cltfevents_mongodb
 
-cmd:
+mongo_cmd:
 	docker exec -it cltfevents_mongodb sh
 
-mongo:
+mongo_shell:
 	docker exec -it cltfevents_mongodb mongo
 
 #image:
