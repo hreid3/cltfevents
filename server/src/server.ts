@@ -8,8 +8,9 @@ import methodOverride = require("method-override");
 import { IndexRoute } from "./routes/client-rendering";
 import {EventsApiResource} from './routes/events-api'
 import {IResource} from './routes/IResource'
-import {Configuration, AnnotationMappingProvider} from "hydrate-mongodb";
+// import {Configuration, AnnotationMappingProvider} from "hydrate-mongodb";
 import {MongoClient} from "mongodb";
+// import {SessionFactoryRegistry} from "./daos/index";
 
 /**
  * The server.
@@ -102,7 +103,8 @@ export class Server {
         //error handling
         this.app.use(errorHandler());
 
-        this.setupSessionFactory();
+        // this.setupSessionFactory();
+        this.setupMongooseConnection();
     }
     /**
      * Create router
@@ -120,19 +122,37 @@ export class Server {
         resources.map((val) => this.app.use(val.getResourceBase(), val.getRoutes()))
     }
 
-    public setupSessionFactory(): void {
-        const config = new Configuration()
-        const entityModules = [];
-        const path = require('path')
-        // require('fs').readdirSync(__dirname + '/entities').forEach((file) => entityModules.push(require(path.join(__dirname) + '/entities/' + path.basename(file, '.js'))))
-        config.addMapping(new AnnotationMappingProvider(require('./entities')));
-        MongoClient.connect('mongodb://localhost/clfeventdb', (err, db) => {
-            if (err) {
-                throw err
-            }
-            config.createSessionFactory(db, (err, sessionFactory) => {
-                console.log( err)
-            })
-        })
+    setupMongooseConnection(): void {
+        const mongoose = require('mongoose')
+        const mongoDB = 'mongodb://localhost/cltfevents';
+        mongoose.connect(mongoDB);
+
+//Get the default connection
+        const db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+        db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+        this.app.locals.db = db
     }
+
+    // public setupSessionFactory(): void {
+    //     const config = new Configuration()
+    //     const entityModules = [];
+    //     const path = require('path')
+    //     // require('fs').readdirSync(__dirname + '/entities').forEach((file) => entityModules.push(require(path.join(__dirname) + '/entities/' + path.basename(file, '.js'))))
+    //     config.addMapping(new AnnotationMappingProvider(require('./entities')));
+    //     MongoClient.connect('mongodb://localhost/clfeventdb', (err, db) => {
+    //         if (err) {
+    //             throw err
+    //         }
+    //         config.createSessionFactory(db, (err, sessionFactory) => {
+    //             if (err) {
+    //                 console.error( err)
+    //                 throw err
+    //             } else {
+    //                 SessionFactoryRegistry.setSessionFactory(sessionFactory)
+    //             }
+    //         })
+    //     })
+    // }
 }

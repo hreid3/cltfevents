@@ -3,6 +3,7 @@ import { BaseRoute } from "../route";
 import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
 import {EventResource} from './resource-event'
+import Address  from "../../models/Address";
 // import {Event, Address} from "../../entities/index";
 
 /**
@@ -73,7 +74,7 @@ export class EventsApiResource extends BaseRoute implements IResource {
     }
 
     public addressStatesLookup(req: Request, res: Response, next: NextFunction) {
-        // this.json(req, res, Address.getStates())
+         this.json(req, res, Address.getStates())
     }
 
 }

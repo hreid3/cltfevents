@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/mongoose": "^4.7.10",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
@@ -27,9 +28,9 @@
     "grunt-tslint": "^5.0.0",
     "helmet": "^3.5.0",
     "https": "^1.0.0",
-    "hydrate-mongodb": "^1.5.0",
     "method-override": "^2.3.8",
     "mongodb": "^2.2.25",
+    "mongoose": "^4.9.4",
     "morgan": "^1.8.1",
     "pug": "^2.0.0-beta11",
     "serve-favicon": "^2.4.2",
