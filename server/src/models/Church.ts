@@ -16,14 +16,12 @@ export const ChurchSchema = new Schema({
     phoneNumber: {type: String}
 })
 
-// ChurchSchema.set('toObject', { virtuals: true })
-// ChurchSchema.set('toJSON', { virtuals: true })
 
 export type Church = Model<IChurch> & IChurch
 export const Church: Church = <Church>model<IChurch>('Church', ChurchSchema)
 
-ChurchSchema.set('toJSON', { getters: true, virtuals: true });
-ChurchSchema.set('toObject', { getters: true, virtuals: true });
-ChurchSchema.virtual('id').get(() => this._id);
+// ChurchSchema.set('toJSON', { getters: true, virtuals: true });
+// ChurchSchema.set('toObject', { getters: true, virtuals: true });
+// ChurchSchema.virtual('id').get(() => this._id);
 
 export default Church

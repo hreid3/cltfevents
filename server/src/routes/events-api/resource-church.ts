@@ -33,6 +33,20 @@ export class ChurchResource extends BaseRoute implements IResource {
         return '/church';
     }
 
+    async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = req.body
+            const church = await Church.update(data)
+            this.json(req, res, church)
+        } catch (err) {
+            let status = 500
+            if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
+                status = 400
+            }
+            this.jsonError(req, res, status, err)
+        }
+    }
+
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const data = req.body
