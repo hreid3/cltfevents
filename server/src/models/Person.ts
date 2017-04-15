@@ -34,7 +34,7 @@ export const PersonSchema = new Schema({
     datOfBirth: {type: Date},
     homeChurch: {type: Schema.Types.ObjectId, ref: 'Church', required: true},
     companyName: {type: String, required: true},
-    homeAddess: {[AddressSchema], required: true},
+    homeAddess: {type: [AddressSchema], required: true},
     contactMobile: {type: String, required: true},
     contactHomePhone: {type: String, required: true},
     disabilities: {type: Boolean, default: false},

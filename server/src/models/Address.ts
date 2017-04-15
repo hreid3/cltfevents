@@ -8,7 +8,7 @@ export interface IAddress extends  Document {
     label: string
     street: string
     city: string
-    state: Dimension
+    state: string
     postal: string
     country: string
     getStates: () => Array<Object>
@@ -20,7 +20,7 @@ export const AddressSchema = new Schema({
     city: {type: String, required: true},
     postal: {type: String, required: true},
     country: {type: String},
-    state: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
+    state: {type: Object, required: true},
 })
 AddressSchema.static('getStates', () => addressStates)
 

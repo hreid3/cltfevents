@@ -58,7 +58,7 @@ export class ChurchResource extends BaseRoute implements IResource {
      */
     async index(req: Request, res: Response, next: NextFunction) {
         try {
-            const churches = await Church.find().lean().exec()
+            const churches = await Church.find().exec()
             this.json(req, res, churches)
         } catch (err) {
             this.jsonError(req, res, 500, err)
