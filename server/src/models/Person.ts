@@ -2,7 +2,7 @@
  * Created by hreid on 4/14/17.
  */
 import {Document, model, Model, Schema} from "mongoose";
-import Address from "./Address";
+import Address, {AddressSchema, IAddress} from "./Address";
 import Church from "./Church";
 import Dimension from "./Dimension";
 
@@ -16,7 +16,7 @@ export interface IPerson extends Document {
     datOfBirth: Date
     homeChurch: Church
     companyName: string
-    homeAddess: Address
+    homeAddess: IAddress
     contactMobile: string
     contactHomePhone: string
     disabilities: boolean
@@ -34,7 +34,7 @@ export const PersonSchema = new Schema({
     datOfBirth: {type: Date},
     homeChurch: {type: Schema.Types.ObjectId, ref: 'Church', required: true},
     companyName: {type: String, required: true},
-    homeAddess: {type: Schema.Types.ObjectId, ref: 'Address', required: true},
+    homeAddess: {[AddressSchema], required: true},
     contactMobile: {type: String, required: true},
     contactHomePhone: {type: String, required: true},
     disabilities: {type: Boolean, default: false},

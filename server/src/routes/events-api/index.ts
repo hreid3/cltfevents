@@ -4,6 +4,8 @@ import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
 import {EventResource} from './resource-event'
 import Address  from "../../models/Address";
+import Event from "../../models/Event";
+import Dimension from "../../models/Dimension";
 // import {Event, Address} from "../../entities/index";
 
 /**
@@ -61,19 +63,22 @@ export class EventsApiResource extends BaseRoute implements IResource {
      * @param res {Response} The express Response object.
      * @next {NextFunction} Execute the next method.
          */
-    public statusLookup(req: Request, res: Response, next: NextFunction) {
-        // this.json(req, res, Event.getEventStatuses())
+    async statusLookup(req: Request, res: Response, next: NextFunction) {
+        const statuses = await Dimension.getByType('EventStatus')
+        this.json(req, res, statuses)
     }
 
-    public typeLookup(req: Request, res: Response, next: NextFunction) {
-        // this.json(req, res, Event.getEventTypes())
+    async typeLookup(req: Request, res: Response, next: NextFunction) {
+        const eventTypes = await Dimension.getByType('EventType')
+        this.json(req, res, eventTypes)
     }
 
-    public levelLookup(req: Request, res: Response, next: NextFunction) {
-        // this.json(req, res, Event.getEventLevels())
+    async levelLookup(req: Request, res: Response, next: NextFunction) {
+        const eventLevels = await Dimension.getByType('EventLevel')
+        this.json(req, res, eventLevels)
     }
 
-    public addressStatesLookup(req: Request, res: Response, next: NextFunction) {
+    async addressStatesLookup(req: Request, res: Response, next: NextFunction) {
          this.json(req, res, Address.getStates())
     }
 

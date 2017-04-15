@@ -83,9 +83,10 @@ export class BaseRoute {
         res.json(response)
     }
 
-    protected jsonError(req: Request, res: Response, statusCode: number) {
+    protected jsonError(req: Request, res: Response, statusCode: number, reason?: any) {
         if (statusCode < 100) {
             statusCode = 500
         }
+        res.json(statusCode, {reason: reason}) // Goes into log file
     }
 }

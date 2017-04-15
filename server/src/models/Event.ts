@@ -2,7 +2,7 @@
  * Created by hreid on 4/14/17.
  */
 import {Document, model, Model, Schema} from "mongoose";
-import Address from "./Address";
+import Address, {AddressSchema, IAddress} from "./Address";
 import Church from "./Church";
 import Person from "./Person";
 import Dimension from "./Dimension";
@@ -10,7 +10,7 @@ import Dimension from "./Dimension";
 export interface IEvent extends Document {
     title: string
     hostingChurch: Church
-    location: Address
+    location: IAddress
     startDateTime: Date
     endDateTime: Date
     numberOfSeats: number
@@ -27,7 +27,7 @@ export interface IEvent extends Document {
 export const EventSchema = new Schema({
     title: {type: String, required: true},
     hostingChurch: {type: Schema.Types.ObjectId, ref: 'Church', required: true},
-    location: {type: Schema.Types.ObjectId, ref: 'Address', required: true},
+    location: {type: [AddressSchema], required: true},
     startDateTime: {type: Date, required: true, default: Date.now()},
     endDateTime: {type: Date,  default: Date.now()},
     numberOfSeats: {type: Number, default: 0},

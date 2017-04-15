@@ -124,6 +124,7 @@ export class Server {
 
     setupMongooseConnection(): void {
         const mongoose = require('mongoose')
+        mongoose.Promise = global.Promise;
         const mongoDB = 'mongodb://localhost/cltfevents';
         mongoose.connect(mongoDB);
 
