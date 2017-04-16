@@ -39,10 +39,15 @@ export const doPost = (uri, body) => {
   const request = new Request(`${EVENT_API_ENDPOINT_BASE}${uri}`, options)
   return fetch(request)
     .then(response =>  {
+      if (!response.ok) {
+        console.log('notOk', response)
+        throw Error(response.statusText)
+      }
       // In case we want to do something with the response.
       return response.json()
     })
     .catch((error) => {
       console.log('error', uri, error)
+      return new Promise(error)
     })
 }

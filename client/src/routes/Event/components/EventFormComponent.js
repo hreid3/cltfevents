@@ -52,7 +52,7 @@ export const EventForm = (props) => {
           </div>
           <div className="row">
             <div className="col">
-              <Field name="details.titlePrice" type="text" component={textField} label="Ticket Price" placeholder="0.00" id="titlePrice" />
+              <Field name="details.ticketPrice" type="text" component={textField} label="Ticket Price" placeholder="0.00" id="ticketPrice" />
             </div>
           </div>
           <div className="row">
@@ -67,13 +67,13 @@ export const EventForm = (props) => {
           </div>
           <div className="row">
             <div className="col-12">
-              <Field name="details.status" type="text" component={selectField}  placeholder="Status" label="Status" options={lookupData.statuses}/>
+              <Field name="details.eventStatus" type="text" component={selectField}  placeholder="Status" label="Status" options={lookupData.statuses}/>
             </div>
             <div className="col-lg-6 col-md-12">
-              <Field name="details.type" type="text" component={selectField}  placeholder="Type" label="Type" options={lookupData.types}/>
+              <Field name="details.eventType" type="text" component={selectField}  placeholder="Type" label="Type" options={lookupData.types}/>
             </div>
             <div className="col-lg-6 col-md-12">
-              <Field name="details.level" type="text" component={selectField}  placeholder="Level" label="Level" options={lookupData.levels}/>
+              <Field name="details.eventLevel" type="text" component={selectField}  placeholder="Level" label="Level" options={lookupData.levels}/>
             </div>
           </div>
         </div>

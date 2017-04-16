@@ -15,6 +15,7 @@ export const EVENT_LEVEL_EXTERNAL = 'External'
 export const EVENT_ACTION_ADD = "EVENT_ADD"
 export const EVENT_SET_LOOKUP_DATA = "EVENT_SET_LOOKUP_DATA"
 export const EVENT_VALIDATE_AND_SAVE = "@cltf/event_validate_and_save"
+export const EVENT_SHOW_LANDING_PAGE = '@cltf/LANDING_PAGE';
 
 export const initialEventState = {
   selectedTabId: 'eventsGrid',
@@ -34,29 +35,29 @@ export const initialEventState = {
       city: '',
       state: null,
       postal: '',
-      country: {
-        code: -1,
-        title: ''
-      }
+      country: "US"
     },
     startDateTime: new Date(),
     endDateTime: new Date(),
     numberOfSeats: 0,
-    titlePrice: 0.00,
+    ticketPrice: 0.00,
     guestSpeakers: [],
     suppliers: [],
     contacts: [],
-    status: {
-      id: 'draft',
-      title: 'Draft'
+    eventStatus: {
+      "_id": "58f3ca21eec769c87745d162",
+      "id": "draft",
+      "title": "Draft"
     },
-    type: {
-      id: "public",
-      title: "Public"
+    eventType: {
+      "_id": "58f264fdcda9e68fc6e82fd4",
+      "id": "public",
+      "title": "Public"
     },
-    level: {
-      id: "Church",
-      title: "Church"
+    eventLevel: {
+      "_id": "58f264fdcda9e68fc6e82fd2",
+      "id": "Church",
+      "title": "Church"
     },
     images: [],
     notes: ''

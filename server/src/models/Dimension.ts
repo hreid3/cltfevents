@@ -20,11 +20,11 @@ export const DimensionSchema = new Schema({
 })
 
 DimensionSchema.static('getBy', (id: string, type: string) => {
-    return Dimension.find({id: id, type: type}, '-_id').select('id title').lean().exec()
+    return Dimension.find({id: id, type: type}).select('id title').lean().exec()
 })
 
 DimensionSchema.static('getByType', (type: string) => {
-    return Dimension.find({type: type}, '-_id').select('id title').lean().exec()
+    return Dimension.find({type: type}).select('id title').lean().exec()
 })
 
 

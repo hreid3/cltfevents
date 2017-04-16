@@ -73,7 +73,7 @@ async function createEventStatuses(cb) {
         function(callback) {
             createDimension('published', 'Published', 'EventStatus')
             createDimension('closed', 'Closed', 'EventStatus')
-            createDimension('draft', 'Draft', 'EventType')
+            createDimension('draft', 'Draft', 'EventStatus')
             createDimension('cancelled', 'Cancelled', 'EventStatus')
             createDimension('under-review', 'Under Review', 'EventStatus')
         }

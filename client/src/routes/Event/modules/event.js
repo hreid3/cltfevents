@@ -2,13 +2,16 @@
 // Constants
 // ------------------------------------
 
+import {SubmissionError} from 'redux-form'
+
 import {
   initialEventState as initialState,
   EVENT_ACTION_ADD,
-  EVENT_SET_LOOKUP_DATA
+  EVENT_SET_LOOKUP_DATA,
+  EVENT_SHOW_LANDING_PAGE
 } from './constants'
 
-import {doGet, doPost} from '../../../utils/rest-client'
+import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders} from '../../../utils/rest-client'
 
 // ------------------------------------
 // Actions
@@ -44,8 +47,9 @@ export const eventFormReady = (details) => {
 }
 
 export const showEventsGrid = () => {
-    return {
-      type: 'LANDING_PAGE',
+
+  return {
+      type: EVENT_SHOW_LANDING_PAGE,
       payload: {
         selectedTabId: 'eventsGrid'
       }
@@ -63,15 +67,52 @@ export const setLookupData = (key, values) =>{
 }
 
 export const doSubmitEventForm = (values) => {
-  // First convert values into eventData store before sending to server
   return (dispatch, getState) => {
-    doPost('/event', values.details)
-      .then((data) => {
-      console.log('retured from server', data)
-      dispatch(showEventsGrid())
-    })
+    const options = {
+      method: 'POST',
+      headers: defaultHeaders,
+      mode: 'cors',
+      cache: 'default',
+      body: JSON.stringify(values.details)
+    }
+    return request('/event', options)
+      .then(data => {
+        console.log('then', data)
+      })
+      .catch(errors => {
+        throw new SubmissionError(errors)
+      })
   }
 }
+// export const doSubmitEventForm = (values) => {
+//   // First convert values into eventData store before sending to server
+//   return (dispatch, getState) => {
+//     const options = {
+//       method: 'POST',
+//       headers: defaultHeaders,
+//       mode: 'cors',
+//       cache: 'default',
+//       body: JSON.stringify(values.details)
+//     }
+//     const request = new Request(`${EVENT_API_ENDPOINT_BASE}/event`, options)
+//     return fetch(request)
+//       .then(response =>  {
+//         if (response.status === 400) {
+//           console.log('notOk', response)
+//           response.json().then(data => {
+//             console.log('errors', data)
+//             throw new SubmissionError(data.reason.errors)
+//           })
+//         } else {
+//           dispatch(showEventsGrid())
+//         }
+//       })
+//       .catch((error) => {
+//         // console.log('error', uri, error)
+//         return new Promise(error)
+//       })
+//   }
+// }
 
 
 // ------------------------------------
@@ -87,11 +128,53 @@ export const eventReducer  = (state = initialState, action) => {
         ...state,  lookupData: lookupDataVal // property copy
       }
     case EVENT_ACTION_ADD:
+    case EVENT_SHOW_LANDING_PAGE:
       return Object.assign({}, state, payload); // Object copy
     default:
       return state
   }
 }
 
+
+/**
+ * Parses the JSON returned by a network request
+ *
+ * @param  {object} response A response from a network request
+ *
+ * @return {object}          The parsed JSON, status from the response
+ */
+function parseJSON(response) {
+  return new Promise((resolve) => response.json()
+    .then((json) => resolve({
+      status: response.status,
+      ok: response.ok,
+      json,
+    })));
+}
+
+/**
+ * Requests a URL, returning a promise
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ *
+ * @return {Promise}           The request promise
+ */
+export function request(url, options) {
+  return new Promise((resolve, reject) => {
+    fetch(EVENT_API_ENDPOINT_BASE  + url, options)
+      .then(parseJSON)
+      .then((response) => {
+        if (response.ok) {
+          return resolve(response.json);
+        }
+        // extract the error from the server's json
+        return reject(response.json.reason.errors);
+      })
+      .catch((error) => reject({
+        networkError: error.message,
+      }));
+  });
+}
 export default eventReducer
 
