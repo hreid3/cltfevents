@@ -2,7 +2,7 @@
 // Constants
 // ------------------------------------
 
-import {SubmissionError} from 'redux-form'
+import {SubmissionError, reset} from 'redux-form'
 
 import {
   initialEventState as initialState,
@@ -19,9 +19,11 @@ import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders} from '../../../utils/res
 
 export const addEvent = () => {
   return (dispatch, getState) => {
-    fetchEventLookupData(dispatch).then(
+    fetchEventLookupData(dispatch).then(() =>{
       dispatch(eventFormReady(initialState.details))
-    )
+      dispatch(reset('eventForm'))
+
+    })
   }
 }
 
@@ -78,42 +80,13 @@ export const doSubmitEventForm = (values) => {
     return request('/event', options)
       .then(data => {
         console.log('then', data)
+        dispatch(showEventsGrid())
       })
       .catch(errors => {
         throw new SubmissionError(errors)
       })
   }
 }
-// export const doSubmitEventForm = (values) => {
-//   // First convert values into eventData store before sending to server
-//   return (dispatch, getState) => {
-//     const options = {
-//       method: 'POST',
-//       headers: defaultHeaders,
-//       mode: 'cors',
-//       cache: 'default',
-//       body: JSON.stringify(values.details)
-//     }
-//     const request = new Request(`${EVENT_API_ENDPOINT_BASE}/event`, options)
-//     return fetch(request)
-//       .then(response =>  {
-//         if (response.status === 400) {
-//           console.log('notOk', response)
-//           response.json().then(data => {
-//             console.log('errors', data)
-//             throw new SubmissionError(data.reason.errors)
-//           })
-//         } else {
-//           dispatch(showEventsGrid())
-//         }
-//       })
-//       .catch((error) => {
-//         // console.log('error', uri, error)
-//         return new Promise(error)
-//       })
-//   }
-// }
-
 
 // ------------------------------------
 // Reducer
@@ -134,7 +107,6 @@ export const eventReducer  = (state = initialState, action) => {
       return state
   }
 }
-
 
 /**
  * Parses the JSON returned by a network request

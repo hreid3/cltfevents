@@ -38,9 +38,9 @@ const constraints = {
   startDateTime: {
     datetime: {earliest: utc().subtract(1, 'day'), message: "must occur in the future."},
   },
-  "status": {presence: {message: "was not selected"}},
-  "type":   {presence: {message: "was not selected"}},
-  "level":  {presence: {message: "was not selected"}},
+  "eventStatus": {presence: {message: "was not selected"}},
+  "eventType":   {presence: {message: "was not selected"}},
+  "eventLevel":  {presence: {message: "was not selected"}},
   "totalPrice": {numericality: {greaterThanOrEqualTo: true}},
   "numberOfSeats": {numericality: {onlyInteger: true, greaterThanOrEqualTo: true}},
   "guestSpeakers": {presence: true},

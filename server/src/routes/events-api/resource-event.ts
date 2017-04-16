@@ -60,7 +60,6 @@ export class EventResource extends BaseRoute implements IResource {
         try {
             const data = req.body
 
-            // this.transformField(data, 'hostingChurch', 'hostingChurch')
             if (data && data._id && (data._id === -1 || data._id === '-1')) {
                 delete data._id
             }
