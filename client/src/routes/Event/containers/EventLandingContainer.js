@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent, doSubmitEventForm, loadEventData } from '../modules/event'
+import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData } from '../modules/event'
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
@@ -61,6 +61,7 @@ const mapDispatchToProps = (dispatch) => {
     addEvent: () => dispatch(addEvent()),
     onSubmit: (values) => dispatch(doSubmitEventForm(values)),
     loadEventData: () => dispatch(loadEventData()),
+    loadEventDetailsData: (slug) => dispatch(loadEventDetailData(slug)),//console.log("loadEventDetailData", slug),
     validate: validate
   }
 }

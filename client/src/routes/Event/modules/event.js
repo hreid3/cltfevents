@@ -8,7 +8,8 @@ import {
   initialEventState as initialState,
   EVENT_ACTION_ADD,
   EVENT_SET_LOOKUP_DATA,
-  EVENT_SHOW_LANDING_PAGE
+  EVENT_SHOW_LANDING_PAGE,
+  EVENT_DETAIL_SHOW
 } from './constants'
 
 import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders} from '../../../utils/rest-client'
@@ -45,6 +46,27 @@ export const loadEventData = (filter = []) => { // TODO: Need Filter
   }
 }
 
+export const loadEventDetailData = (slug) => { // TODO: Need Filter
+  return (dispatch, getState) => {
+    doGet('/event/' + slug)
+      .then((fullData) => {
+        dispatch(showEventDetails(fullData.payload))
+      })
+      .catch((e) => {
+        console.log('show 404', e)
+      })
+  }
+}
+
+const showEventDetails = (details) => {
+  return {
+    type: EVENT_DETAIL_SHOW,
+    payload: {
+      details: details
+    }
+  }
+}
+
 const fetchEvents = (dispatch, filter = []) => {
   return Promise.all([doGet('/event')])
     .then((fullData) => {
@@ -64,7 +86,6 @@ export const eventFormReady = (details) => {
 }
 
 export const showEventsGrid = (results = [], filter = [] ) => {
-
   return {
       type: EVENT_SHOW_LANDING_PAGE,
       payload: {
@@ -121,6 +142,8 @@ export const eventReducer  = (state = initialState, action) => {
       }
     case EVENT_ACTION_ADD:
     case EVENT_SHOW_LANDING_PAGE:
+    case EVENT_DETAIL_SHOW:
+      console.log('payload', payload)
       return Object.assign({}, state, payload); // Object copy
     default:
       return state

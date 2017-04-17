@@ -9,6 +9,8 @@ import Dimension from "./Dimension";
 
 export interface IEvent extends Document {
     title: string
+    slug: string
+    description: string
     hostingChurch: Church
     location: IAddress
     startDateTime: Date
@@ -26,6 +28,8 @@ export interface IEvent extends Document {
 
 export const EventSchema = new Schema({
     title: {type: String, required: true},
+    slug: {type: String, required: true, index: { unique: true }},
+    description: {type: String, required: true},
     hostingChurch: {type: Schema.Types.ObjectId, ref: 'Church', required: true},
     location: {type: [AddressSchema], required: true},
     startDateTime: {type: Date, required: true, default: Date.now()},

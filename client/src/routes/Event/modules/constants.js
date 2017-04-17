@@ -16,6 +16,7 @@ export const EVENT_ACTION_ADD = "EVENT_ADD"
 export const EVENT_SET_LOOKUP_DATA = "EVENT_SET_LOOKUP_DATA"
 export const EVENT_VALIDATE_AND_SAVE = "@cltf/event_validate_and_save"
 export const EVENT_SHOW_LANDING_PAGE = '@cltf/LANDING_PAGE';
+export const EVENT_DETAIL_SHOW = '@cltf/EVENT_DETAIL_SHOW'
 
 export const initialEventState = {
   selectedTabId: 'eventsGrid',
@@ -26,8 +27,9 @@ export const initialEventState = {
   details: {
     _id: -1,
     title: '',
+    slug: '',
     description: '',
-    hostingChurch: null,
+    hostingChurch: {},
     location: {
       id: -1,
       label: '',

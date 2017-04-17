@@ -3,9 +3,10 @@ import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
 import DocumentTitle from 'react-document-title'
 import EventForm from './EventFormComponent'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
+import {EventDetailsComponent} from './EventDetailsComponent'
 
 const EventLanding = (props) => {
-  return (
+  let defaultComponent = (
     <div>
       <DocumentTitle title="Login">
         <h1>Events</h1>
@@ -23,6 +24,11 @@ const EventLanding = (props) => {
       </Tabs>
     </div>
   )
+
+  if (props.params.slug) {
+    defaultComponent = <EventDetailsComponent {...props} />
+  }
+  return defaultComponent
 }
 
 // TODO: Replace dispatchFunctions

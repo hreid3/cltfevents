@@ -6,6 +6,7 @@ import * as express from "express";
 import Event from "../../models/Event";
 import {ObjectID} from "mongodb";
 
+const slug = require('slug')
 /**
  * / route
  *
@@ -22,18 +23,30 @@ export class EventResource extends BaseRoute implements IResource {
         const router = Router()
         router.get("/", (req: Request, res: Response, next: NextFunction) => {
             this.index(req, res, next)
-        });
+        })
+
+        router.get("/:slug([a-z-0-9_-]+)", (req: Request, res: Response, next: NextFunction) => {
+            this.showEvent(req, res, next)
+        })
 
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
             this.create(req, res, next)
-        });
+        })
         return router
     }
 
     getResourceBase(): string {
-        return '/event';
+        return '/event'
     }
 
+    protected async showEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            const anEvent = await Event.findOne({slug: req.params.slug}).populate(this.populateFields)
+            this.json(req, res, anEvent)
+        } catch (e) {
+          this.jsonError(req, res, 500, e)
+        }
+    }
     /**
      * The root page route.
      *
@@ -46,12 +59,7 @@ export class EventResource extends BaseRoute implements IResource {
     public async index(req: Request, res: Response, next: NextFunction) {
         const events = await Event.find()
             .populate(
-                [
-                    {path: 'eventStatus'},
-                    {path: 'eventType'},
-                    {path: 'eventLevel'},
-                    {path: 'hostingChurch'},
-                ]
+                this.populateFields
             )
         this.json(req, res, events)
     }
@@ -62,6 +70,9 @@ export class EventResource extends BaseRoute implements IResource {
 
             if (data && data._id && (data._id === -1 || data._id === '-1')) {
                 delete data._id
+            }
+            if (data && !data.slug && data.title) {
+                data.slug = slug(data.title, {lower: true}) + '-' + Math.floor(Math.random() * 6) + 1
             }
             console.log('Got', data)
             const newEvent = await Event.create(data)
@@ -82,4 +93,11 @@ export class EventResource extends BaseRoute implements IResource {
             data[newDataField] = { _id: new ObjectID(temp) }
         }
     }
+
+    private populateFields = [
+        {path: 'eventStatus'},
+        {path: 'eventType'},
+        {path: 'eventLevel'},
+        {path: 'hostingChurch'},
+    ]
 }
