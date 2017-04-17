@@ -107,6 +107,7 @@
     "react": "^15.5.3",
     "react-addons-css-transition-group": "^15.5.1",
     "react-addons-transition-group": "^15.5.1",
+    "react-bootstrap-table": "^3.2.0",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.5.3",
     "react-quill": "^1.0.0-beta-4",

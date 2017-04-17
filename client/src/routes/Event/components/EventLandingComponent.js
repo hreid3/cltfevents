@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
 import DocumentTitle from 'react-document-title'
 import EventForm from './EventFormComponent'
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 
 const EventLanding = (props) => {
   return (
@@ -27,14 +28,46 @@ const EventLanding = (props) => {
 // TODO: Replace dispatchFunctions
 const handleEventsTabbedPaneChange = (navbarTabId) => {}
 
-const EventsGrid = (props) => {
-  return (
-    <div><h2>Events Grid</h2>
-      <div className="pt-button-group pt-large">
-        <a className="pt-button pt-icon-th" tabIndex="0" role="button" onClick={props.addEvent}>Add Event</a> //TODO: Need connection from store
+class EventsGrid extends Component { // Need lifecycle method
+
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    this.props.loadEventData()
+  }
+
+  render() {
+    const props = this.props
+    return (
+      <div className="eventGridSection">
+        <h2>Events Grid</h2>
+        <div className="row">
+          <div className="col-12">
+            <div className="pt-button-group pt-large float-right">
+              <a className="pt-button pt-icon-th" tabIndex="0" role="button" onClick={props.addEvent}>Add Event</a>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <BootstrapTable
+              data={props.grid.results}
+              remote={true}
+            >
+              <TableHeaderColumn dataField='_id' isKey={true}>Event ID</TableHeaderColumn>
+              <TableHeaderColumn dataField="title">Event Title</TableHeaderColumn>
+              <TableHeaderColumn dataField="hostingChurch" dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
+              <TableHeaderColumn dataField="startDateTime">Start Time</TableHeaderColumn>
+            </BootstrapTable>
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default EventLanding
+
+// options={ { onSortChange: props.onSortChange} }

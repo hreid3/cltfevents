@@ -38,6 +38,21 @@ export const fetchEventLookupData = (dispatch) => {
     })
 }
 
+export const loadEventData = (filter = []) => { // TODO: Need Filter
+  return (dispatch, getState) => {
+    fetchEvents(dispatch, filter).then(() => {
+    })
+  }
+}
+
+const fetchEvents = (dispatch, filter = []) => {
+  return Promise.all([doGet('/event')])
+    .then((fullData) => {
+    const [results] = fullData
+    dispatch(showEventsGrid(results.payload, filter))
+  })
+}
+
 export const eventFormReady = (details) => {
   return {
     type: EVENT_ACTION_ADD,
@@ -48,12 +63,16 @@ export const eventFormReady = (details) => {
   }
 }
 
-export const showEventsGrid = () => {
+export const showEventsGrid = (results = [], filter = [] ) => {
 
   return {
       type: EVENT_SHOW_LANDING_PAGE,
       payload: {
-        selectedTabId: 'eventsGrid'
+        selectedTabId: 'eventsGrid',
+        grid: {
+          results: results,
+          filter: filter
+        }
       }
     }
 }
