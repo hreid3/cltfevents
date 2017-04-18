@@ -10,7 +10,7 @@ const validator = require('validate.js')
 
 validator.extend(validator.validators.datetime, {
   parse: (value, options) => utc(value),
-  format: (value, options) => utc(value).format('YYYY-MM-DD hh:mm:ss')
+  format: (value, options) => utc(value).format('DD/MM/YYYY hh:mm as')
 })
 
 const constraints = {

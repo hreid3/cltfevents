@@ -3,6 +3,7 @@
 // ------------------------------------
 
 import {SubmissionError, reset} from 'redux-form'
+import {browserHistory} from 'react-router'
 
 import {
   initialEventState as initialState,
@@ -22,8 +23,6 @@ export const addEvent = () => {
   return (dispatch, getState) => {
     fetchEventLookupData(dispatch).then(() =>{
       dispatch(eventFormReady(initialState.details))
-      dispatch(reset('eventForm'))
-
     })
   }
 }
@@ -121,6 +120,8 @@ export const doSubmitEventForm = (values) => {
       .then(data => {
         console.log('then', data)
         dispatch(showEventsGrid())
+        dispatch(reset('eventForm'))
+        browserHistory.push('/events')
       })
       .catch(errors => {
         throw new SubmissionError(errors)

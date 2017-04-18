@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router'
 import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
 import DocumentTitle from 'react-document-title'
 import EventForm from './EventFormComponent'
@@ -6,27 +7,22 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import {EventDetailsComponent} from './EventDetailsComponent'
 
 const EventLanding = (props) => {
-  let defaultComponent = (
-    <div>
-      <DocumentTitle title="Login">
-        <h1>Events</h1>
-      </DocumentTitle>
-      <Tabs
-        animate={true}
-        className={Classes.LARGE}
-        id="eventsTabbedPane"
-        onChange={handleEventsTabbedPaneChange} // TODO: Replace with store
-        selectedTabId={props.selectedTabId} // TODO: Replace with store
-        renderActiveTabPanelOnly={true}
-        >
-        <Tab id="eventsGrid" title="Events" panel={<EventsGrid {...props} />} />
-        <Tab id="eventsDetails" title="Event Details" panel={<EventForm {...props} />} />
-      </Tabs>
-    </div>
-  )
+  let defaultComponent = (<div></div>)
 
-  if (props.params.slug) {
-    defaultComponent = <EventDetailsComponent {...props} />
+  const {slug, action} = props.params
+  if (!action) {
+    if (props.params.slug) {
+      defaultComponent = <EventDetailsComponent {...props} />
+    } else {
+      defaultComponent = <EventsGrid {...props} />
+    }
+  } else {
+    switch(action) {
+      case 'create-new':
+        if (slug === 'tool') {
+          defaultComponent = <EventForm  {...props} />
+        }
+    }
   }
   return defaultComponent
 }
@@ -48,11 +44,13 @@ class EventsGrid extends Component { // Need lifecycle method
     const props = this.props
     return (
       <div className="eventGridSection">
-        <h2>Events Grid</h2>
+        <DocumentTitle title="Login">
+          <h1>Events</h1>
+        </DocumentTitle>
         <div className="row">
           <div className="col-12">
             <div className="pt-button-group pt-large float-right">
-              <a className="pt-button pt-icon-th" tabIndex="0" role="button" onClick={props.addEvent}>Add Event</a>
+              <Link className="pt-button pt-icon-th" tabIndex="0" to="/events/tool/create-new" role="button">Add Event</Link>
             </div>
           </div>
         </div>

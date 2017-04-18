@@ -42,7 +42,9 @@ export class EventDetailsComponent extends Component {
       <div>
         <div className="row">
           <DocumentTitle title="Event Details">
-            <h1>Event Details</h1>
+            <div className="col-12">
+              <h1>Event Details</h1>
+            </div>
           </DocumentTitle>
         </div>
         <div className="row">

@@ -5,9 +5,10 @@ import React from 'react'
 import ReactQuill from 'react-quill'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { DateTimePicker } from "@blueprintjs/datetime";
+import 'react-date-picker/index.css'
+import { Calendar } from 'react-date-picker'
 
-export const textField = ({ input, label, type, placeholder, id, meta: { touched, error, warning } }) => {
+export const textField = ({ input, label, type, placeholder, id, autoFocus = false, meta: { touched, error, warning } }) => {
   return (
   <div className="pt-form-group">
     <label className="pt-label" htmlFor={id}>
@@ -15,7 +16,7 @@ export const textField = ({ input, label, type, placeholder, id, meta: { touched
       <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
     </label>
     <div className="pt-form-content">
-      <input {...input} placeholder={placeholder} type={type} id={id} className="pt-fill pt-input"/>
+      <input {...input} placeholder={placeholder} type={type} id={id} className="pt-fill pt-input" autoFocus={autoFocus} />
       {/*<div className="pt-form-helper-text">Helper text with details / user feedback</div>*/}
     </div>
   </div>
@@ -93,11 +94,7 @@ export const datetimePickerField = ({input, label, defaultValue, meta: { touched
         <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
       </label>
       <div className="pt-form-content">
-        <DateTimePicker
-          {...input}
-          timePickerProps={{showArrowButtons: true}}
-          dataPickerProps={{showActionsBar: true}}
-        />
+        <Calendar dateFormat="DD/MM/YYYY hh:mm a" {...input} />
       </div>
     </div>
   )

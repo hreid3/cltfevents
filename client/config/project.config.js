@@ -55,9 +55,10 @@ const config = {
     'redux-thunk',
     'react-select',
     '@blueprintjs/core',
-    '@blueprintjs/datetime',
     'react-quill',
-    'react-document-title'
+    'react-document-title',
+    'react-date-picker',
+    'react-bootstrap-table'
   ],
 
   // ----------------------------------
