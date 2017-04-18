@@ -5,12 +5,20 @@ import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
 import _ from 'lodash'
+import moment from 'moment'
 
 const validator = require('validate.js')
 
 validator.extend(validator.validators.datetime, {
-  parse: (value, options) => utc(value),
-  format: (value, options) => utc(value).format('DD/MM/YYYY hh:mm as')
+  parse: (value, options) => {
+    const val = moment(value, "DD/MM/YYYY hh:mm a")//;Date.parse(value)
+    console.log("valueOut", val)
+    return val
+  },
+  format: (value, options) => {
+    console.log('valueIn', value)
+    return utc(value).format('DD/MM/YYYY hh:mm a')
+  }
 })
 
 const constraints = {
