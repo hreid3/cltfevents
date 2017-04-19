@@ -64,6 +64,13 @@ export class EventDetailsComponent extends Component {
           </DocumentTitle>
         </div>
         <div className="row">
+          <div className="col-12">
+            <div className="pt-button-group pt-large float-right">
+              <Link className="pt-button pt-icon-th" tabIndex="0" to={`/events/${this.props.params.slug}/edit`} role="button">Edit Event</Link>
+            </div>
+          </div>
+        </div>
+        <div className="row">
           <div className="col-md-8">
             <div className="row">
               <div className="col-12">

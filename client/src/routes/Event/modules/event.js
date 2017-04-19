@@ -4,6 +4,8 @@
 
 import {SubmissionError, reset} from 'redux-form'
 import {browserHistory} from 'react-router'
+import moment from 'moment'
+
 
 import {
   initialEventState as initialState,
@@ -14,7 +16,7 @@ import {
 } from './constants'
 
 import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders} from '../../../utils/rest-client'
-
+import { initialize as reduxFormInitialize } from 'redux-form'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -23,7 +25,19 @@ export const addEvent = () => {
   return (dispatch, getState) => {
     fetchEventLookupData(dispatch).then(() =>{
       dispatch(eventFormReady(Object.assign({}, initialState.details)))
+      dispatch(reduxFormInitialize('eventForm', getState().eventData))
     })
+  }
+}
+
+export const editEvent = (slug) => {
+  return (dispatch, getState) => {
+    return Promise.all([doGet('/event/' + slug), fetchEventLookupData(dispatch)])
+      .then((fullData) => {
+        const [details] = fullData
+        dispatch(eventFormReady(details.payload))
+        dispatch(reduxFormInitialize('eventForm', getState().eventData))
+      })
   }
 }
 
@@ -109,6 +123,7 @@ export const setLookupData = (key, values) =>{
 
 export const doSubmitEventForm = (values) => {
   return (dispatch, getState) => {
+    values.details.startDateTime = moment(values.details.startDateTime , "DD/MM/YYYY hh:mm a")//;Date.parse(value)
     const options = {
       method: 'POST',
       headers: defaultHeaders,
@@ -116,6 +131,7 @@ export const doSubmitEventForm = (values) => {
       cache: 'default',
       body: JSON.stringify(values.details)
     }
+
     return request('/event', options)
       .then(data => {
         dispatch(showEventsGrid())

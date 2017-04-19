@@ -18,14 +18,40 @@ export default class EventForm extends Component  {
   }
 
   componentDidMount() {
-    this.props.addEvent()
+    if (this.props.params.action === 'create-new') {
+      this.props.addEvent()
+    } else if (this.props.params.action === 'edit') {
+      this.props.editEvent(this.props.params.slug)
+    }
   }
 
   render() {
     const {selectedTabId, handleSubmit, pristine, reset, submitting, lookupData, details} = this.props
-    console.log(this.props)
     if (selectedTabId != 'eventsDetails') {
       return (<div></div>)
+    }
+    let breadcrumb = (
+      <ol className="breadcrumb">
+        <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+        <li className="breadcrumb-item"><Link to="/events">Events</Link></li>
+        <li className="breadcrumb-item active">New Event</li>
+      </ol>
+    )
+    if (this.props.params.action === 'edit') {
+      breadcrumb = (
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+          <li className="breadcrumb-item"><Link to="/events">Events</Link></li>
+          <li className="breadcrumb-item"><Link to={"/events/" + this.props.params.slug}>{details.title}</Link></li>
+          <li className="breadcrumb-item active">Edit</li>
+        </ol>
+      )
+    }
+
+    // console.log('eventForm',this.props)
+
+    if (details.location && Array.isArray(details.location)) {
+      details.location = details.location[0]
     }
     return (
       <div>
@@ -33,11 +59,7 @@ export default class EventForm extends Component  {
           <div className="row">
             <div className="col-12">
               <h1>Events Form</h1>
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                <li className="breadcrumb-item"><Link to="/events">Events</Link></li>
-                <li className="breadcrumb-item active">New Event</li>
-              </ol>
+              {breadcrumb}
             </div>
           </div>
         </DocumentTitle>

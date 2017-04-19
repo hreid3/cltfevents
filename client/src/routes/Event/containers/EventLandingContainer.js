@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData } from '../modules/event'
+import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData, editEvent } from '../modules/event'
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
@@ -65,6 +65,7 @@ export const validate = values => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addEvent: () => dispatch(addEvent()),
+    editEvent: (slug) => dispatch(editEvent(slug)),
     onSubmit: (values) => dispatch(doSubmitEventForm(values)),
     loadEventData: () => dispatch(loadEventData()),
     loadEventDetailsData: (slug) => dispatch(loadEventDetailData(slug)),//console.log("loadEventDetailData", slug),
@@ -73,7 +74,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
-  return {...state.eventData, initialValues: state.eventData}
+  // console.log('mappingStateToProps', state)
+  return {...state.eventData}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'eventForm'})(EventLanding))

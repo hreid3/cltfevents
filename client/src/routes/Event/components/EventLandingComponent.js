@@ -22,6 +22,9 @@ const EventLanding = (props) => {
         if (slug === 'tool') {
           defaultComponent = <EventForm  {...props} />
         }
+        break
+      case 'edit':
+        defaultComponent = <EventForm {...props} />
     }
   }
   return defaultComponent

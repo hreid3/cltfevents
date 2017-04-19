@@ -30,7 +30,7 @@ export const initialEventState = {
     slug: '',
     description: '',
     hostingChurch: {},
-    location: {
+    location: [{
       id: -1,
       label: '',
       street: '',
@@ -38,7 +38,7 @@ export const initialEventState = {
       state: null,
       postal: '',
       country: "US"
-    },
+    }],
     startDateTime: new Date(),
     endDateTime: new Date(),
     numberOfSeats: 0,

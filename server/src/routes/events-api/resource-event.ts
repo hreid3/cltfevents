@@ -30,13 +30,30 @@ export class EventResource extends BaseRoute implements IResource {
         })
 
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
-            this.create(req, res, next)
+            this.createOrUpdate(req, res, next)
         })
+
+        router.delete('/:slug([a-z-0-9_-]+)', (req: Request, res: Response, next: NextFunction) => {
+            this.delete(req, res, next)
+        } )
+
+        router.put('/:slug([a-z-0-9_-]+)', (req: Request, res: Response, next: NextFunction) => {
+            this.createOrUpdate(req, res, next)
+        } )
         return router
     }
 
     getResourceBase(): string {
         return '/event'
+    }
+
+    protected async delete(req: Request, res: Response, next: NextFunction){
+        try {
+            const result = await Event.findOneAndRemove({slug: req.params.slug})
+            this.json(req, res, result)
+        } catch(e) {
+            this.jsonError(req, res, 500, e)
+        }
     }
 
     protected async showEvent(req: Request, res: Response, next: NextFunction) {
@@ -56,7 +73,7 @@ export class EventResource extends BaseRoute implements IResource {
      * @param res {Response} The express Response object.
      * @next {NextFunction} Execute the next method.
      */
-    public async index(req: Request, res: Response, next: NextFunction) {
+    protected async index(req: Request, res: Response, next: NextFunction) {
         const events = await Event.find()
             .populate(
                 this.populateFields
@@ -64,19 +81,26 @@ export class EventResource extends BaseRoute implements IResource {
         this.json(req, res, events)
     }
 
-    protected async create(req: Request, res: Response, next: NextFunction) {
+    protected async createOrUpdate(req: Request, res: Response, next: NextFunction) {
         try {
             const data = req.body
-
+            let anEvent = null;
             if (data && data._id && (data._id === -1 || data._id === '-1')) {
                 delete data._id
+            } else if (data && data._id) {
+                anEvent = await Event.findOne({_id: data._id})
             }
-            if (data && !data.slug && data.title) {
-                data.slug = slug(data.title, {lower: true}) + '-' + Math.floor(Math.random() * 6) + 1
+            if (!anEvent) {
+                if (data && !data.slug && data.title) {
+                    data.slug = slug(data.title, {lower: true}) + '-' + Math.floor(Math.random() * 6) + 1
+                }
+                anEvent = await Event.create(data)
+            } else {
+                const result = await anEvent.update(data)
+                console.log(result)
             }
-            console.log('Got', data)
-            const newEvent = await Event.create(data)
-            this.json(req, res, newEvent)
+            // console.log('Got', data)
+            this.json(req, res, anEvent)
         } catch (err) {
             let status = 500
             if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
