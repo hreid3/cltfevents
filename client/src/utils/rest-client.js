@@ -24,7 +24,7 @@ export const doGet = (uri) => {
       return response.json()
     })
     .catch((error) => {
-      console.log('error', uri, error)
+      console.error('error', uri, error)
     })
 }
 
@@ -40,14 +40,14 @@ export const doPost = (uri, body) => {
   return fetch(request)
     .then(response =>  {
       if (!response.ok) {
-        console.log('notOk', response)
+        console.error('notOk', response)
         throw Error(response.statusText)
       }
       // In case we want to do something with the response.
       return response.json()
     })
     .catch((error) => {
-      console.log('error', uri, error)
+      console.error('error', uri, error)
       return new Promise(error)
     })
 }

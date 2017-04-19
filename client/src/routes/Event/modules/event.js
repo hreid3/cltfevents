@@ -22,7 +22,7 @@ import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders} from '../../../utils/res
 export const addEvent = () => {
   return (dispatch, getState) => {
     fetchEventLookupData(dispatch).then(() =>{
-      dispatch(eventFormReady(initialState.details))
+      dispatch(eventFormReady(Object.assign({}, initialState.details)))
     })
   }
 }
@@ -118,7 +118,6 @@ export const doSubmitEventForm = (values) => {
     }
     return request('/event', options)
       .then(data => {
-        console.log('then', data)
         dispatch(showEventsGrid())
         dispatch(reset('eventForm'))
         browserHistory.push('/events')

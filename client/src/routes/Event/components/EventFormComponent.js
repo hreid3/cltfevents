@@ -9,6 +9,7 @@ import {
 } from '../../../components/ReduxFormRenderedFields'
 import DocumentTitle from 'react-document-title'
 import './event-form.scss'
+import {Link} from 'react-router'
 
 export default class EventForm extends Component  {
 
@@ -28,8 +29,17 @@ export default class EventForm extends Component  {
     }
     return (
       <div>
-        <DocumentTitle title="Login">
-          <h1>Events Form</h1>
+        <DocumentTitle title="New Event">
+          <div className="row">
+            <div className="col-12">
+              <h1>Events Form</h1>
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                <li className="breadcrumb-item"><Link to="/events">Events</Link></li>
+                <li className="breadcrumb-item active">New Event</li>
+              </ol>
+            </div>
+          </div>
         </DocumentTitle>
         <form onSubmit={handleSubmit} className="event-form">
           <div className="row">

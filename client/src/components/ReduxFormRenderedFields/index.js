@@ -24,7 +24,6 @@ export const textField = ({ input, label, type, placeholder, id, autoFocus = fal
 }
 
 export const wysiwygEditorField = ({ input, label, value, meta: { touched, error, warning }}) => {
-  console.log('error', error, touched)
   return (
     <div className="pt-form-group">
       <label className="pt-label">

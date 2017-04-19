@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 // import { Classes} from "@blueprintjs/core";
 import DocumentTitle from 'react-document-title'
 import ReactHtmlParser from 'react-html-parser'
+import {Link} from 'react-router'
 
 export class EventDetailsComponent extends Component {
 
@@ -31,19 +32,34 @@ export class EventDetailsComponent extends Component {
       notes
     } = this.props.details
 
-    console.log(title, '')
     if (title == '') {
       return (
         <div></div>
       )
     }
-    hostingChurch.location = hostingChurch.location[0]
+
+    if (Array.isArray(hostingChurch.location)) {
+      hostingChurch.location = hostingChurch.location[0]
+    } else {
+      hostingChurch.location = {state: {}}
+    }
+
+    const hostingChurchLabel = hostingChurch.title ? hostingChurch.title : ''
+    const hostingChurchStreet = hostingChurch.location.street ? hostingChurch.location.street : ''
+    const hostingChurchState = hostingChurch.location.state.title ? hostingChurch.location.state.title : ''
+    const hostingChurchCity = hostingChurch.location.city ? hostingChurch.location.city : ''
+    const hostingChurchPostal = hostingChurch.location.postal ? hostingChurch.location.postal : ''
     return (
       <div>
         <div className="row">
           <DocumentTitle title="Event Details">
             <div className="col-12">
               <h1>Event Details</h1>
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                <li className="breadcrumb-item"><Link to="/events">Events</Link></li>
+                <li className="breadcrumb-item active">{title}</li>
+              </ol>
             </div>
           </DocumentTitle>
         </div>
@@ -65,12 +81,12 @@ export class EventDetailsComponent extends Component {
             <div className="row">
               <div className="col-12">
                 <h4>Hosting Church</h4>
-                <div>{hostingChurch.location.label}</div>
+                <div>{hostingChurchLabel}</div>
                 <div>
-                  {hostingChurch.location.street}
+                  {hostingChurchStreet}
                 </div>
                 <div>
-                  {hostingChurch.location.city}, {hostingChurch.location.state.title} &nbsp; {hostingChurch.location.postal}
+                  {hostingChurchCity}, {hostingChurchState} &nbsp; {hostingChurchPostal}
                 </div>
               </div>
             </div>

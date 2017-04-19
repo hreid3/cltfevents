@@ -45,7 +45,13 @@ class EventsGrid extends Component { // Need lifecycle method
     return (
       <div className="eventGridSection">
         <DocumentTitle title="Login">
+          <div className="col-12">
           <h1>Events</h1>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+              <li className="breadcrumb-item active">Events Summary</li>
+            </ol>
+          </div>
         </DocumentTitle>
         <div className="row">
           <div className="col-12">
@@ -61,7 +67,7 @@ class EventsGrid extends Component { // Need lifecycle method
               remote={true}
             >
               <TableHeaderColumn dataField='_id' isKey={true}>Event ID</TableHeaderColumn>
-              <TableHeaderColumn dataField="title">Event Title</TableHeaderColumn>
+              <TableHeaderColumn dataField="title" dataFormat={(cell, row) => <Link to={"/events/" + row.slug}>{cell}</Link>}>Event Title</TableHeaderColumn>
               <TableHeaderColumn dataField="hostingChurch" dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
               <TableHeaderColumn dataField="startDateTime">Start Time</TableHeaderColumn>
             </BootstrapTable>
