@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData, editEvent } from '../modules/event'
+import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData, editEvent, deleteEvent as actionDeleteEvent} from '../modules/event'
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
 import _ from 'lodash'
 import moment from 'moment'
-
+import { showModal, MODAL_TYPE_CONFIRMATION } from '../../../store/modal'
 const validator = require('validate.js')
 
 validator.extend(validator.validators.datetime, {
@@ -69,8 +69,20 @@ const mapDispatchToProps = (dispatch) => {
     onSubmit: (values) => dispatch(doSubmitEventForm(values)),
     loadEventData: () => dispatch(loadEventData()),
     loadEventDetailsData: (slug) => dispatch(loadEventDetailData(slug)),//console.log("loadEventDetailData", slug),
+    deleteEvent: (slug, title) => dispatch(showModal(MODAL_TYPE_CONFIRMATION, {
+      title: `Are you sure you want to delete Event "${title}"?`,
+      onConfirm: (isConfirmed) => {
+        if (isConfirmed) {
+          dispatch(actionDeleteEvent(slug))
+        }
+      }
+    })),
     validate: validate
   }
+}
+
+const confirmDelete = (slug) => {
+
 }
 
 const mapStateToProps = (state) => {

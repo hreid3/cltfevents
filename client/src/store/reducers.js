@@ -2,12 +2,14 @@ import { combineReducers } from 'redux'
 import locationReducer from './location'
 import userReducer from './user'
 import { reducer as formReducer } from 'redux-form'
+import { modalReducer} from './modal'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     location: locationReducer,
     user: userReducer,
     form: formReducer,
+    modal: modalReducer,
     ...asyncReducers
   })
 }

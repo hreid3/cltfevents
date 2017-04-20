@@ -41,6 +41,27 @@ export const editEvent = (slug) => {
   }
 }
 
+export const deleteEvent = (slug) => {
+  return (dispatch, getState) => {
+    const options = {
+      method: 'DELETE',
+      headers: defaultHeaders,
+      mode: 'cors',
+      cache: 'default',
+    }
+
+    return request('/event/' + slug, options)
+      .then(data => {
+        fetchEvents(dispatch)
+        // dispatch(showEventsGrid())
+        // browserHistory.push('/events')
+      })
+      .catch(errors => {
+        throw new SubmissionError(errors)
+      })
+  }
+}
+
 export const fetchEventLookupData = (dispatch) => {
   return Promise.all([doGet('/church'), doGet('/status'), doGet('/type'), doGet('/level')])
     .then((fullData) => {

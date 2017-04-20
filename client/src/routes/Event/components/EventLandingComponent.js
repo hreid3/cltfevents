@@ -30,9 +30,6 @@ const EventLanding = (props) => {
   return defaultComponent
 }
 
-// TODO: Replace dispatchFunctions
-const handleEventsTabbedPaneChange = (navbarTabId) => {}
-
 class EventsGrid extends Component { // Need lifecycle method
 
   constructor(props) {
@@ -41,6 +38,10 @@ class EventsGrid extends Component { // Need lifecycle method
 
   componentDidMount() {
     this.props.loadEventData()
+  }
+
+  actionCell = (cell, row) => {
+    return (<button onClick={() => this.props.deleteEvent(row.slug, row.title)}>Delete</button>)
   }
 
   render() {
@@ -59,6 +60,7 @@ class EventsGrid extends Component { // Need lifecycle method
         <div className="row">
           <div className="col-12">
             <div className="pt-button-group pt-large float-right">
+              {/*<button onClick={props.showModal}>Popup</button>*/}
               <Link className="pt-button pt-icon-th" tabIndex="0" to="/events/tool/create-new" role="button">Add Event</Link>
             </div>
           </div>
@@ -73,6 +75,8 @@ class EventsGrid extends Component { // Need lifecycle method
               <TableHeaderColumn dataField="title" dataFormat={(cell, row) => <Link to={"/events/" + row.slug}>{cell}</Link>}>Event Title</TableHeaderColumn>
               <TableHeaderColumn dataField="hostingChurch" dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
               <TableHeaderColumn dataField="startDateTime">Start Time</TableHeaderColumn>
+              <TableHeaderColumn dataFormat={this.actionCell}></TableHeaderColumn>
+
             </BootstrapTable>
           </div>
         </div>
