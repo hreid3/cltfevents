@@ -53,8 +53,6 @@ export const deleteEvent = (slug) => {
     return request('/event/' + slug, options)
       .then(data => {
         fetchEvents(dispatch)
-        // dispatch(showEventsGrid())
-        // browserHistory.push('/events')
       })
       .catch(errors => {
         throw new SubmissionError(errors)

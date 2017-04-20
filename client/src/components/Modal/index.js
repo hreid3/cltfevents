@@ -88,7 +88,7 @@ export default class Modal extends Component {
 
     return title ? (
       <div className='modal2__title'>
-        <h1>{title}</h1>
+        <h5>{title}</h5>
       </div>
     ) : null;
   }

@@ -18,8 +18,10 @@ export class EventDetailsComponent extends Component {
   }
 
   render() {
+    const {deleteEvent} = this.props
     const {
       title,
+      slug,
       description,
       hostingChurch,
       startDateTime,
@@ -29,7 +31,7 @@ export class EventDetailsComponent extends Component {
       eventStatus,
       eventType,
       eventLevel,
-      notes
+      notes,
     } = this.props.details
 
     if (title == '') {
@@ -67,6 +69,7 @@ export class EventDetailsComponent extends Component {
           <div className="col-12">
             <div className="pt-button-group pt-large float-right">
               <Link className="pt-button pt-icon-th" tabIndex="0" to={`/events/${this.props.params.slug}/edit`} role="button">Edit Event</Link>
+              <a className="pt-button pt-icon-th" tabIndex="1" onClick={() => deleteEvent(slug, title)} role="button">Delete Event</a>
             </div>
           </div>
         </div>
