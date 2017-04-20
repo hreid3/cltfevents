@@ -58,7 +58,12 @@ const config = {
     'react-quill',
     'react-document-title',
     'react-date-picker',
-    'react-bootstrap-table'
+    'react-bootstrap-table',
+    'moment',
+    'dataobject-parser',
+    'lodash',
+    'react-html-parser',
+    'styled-components'
   ],
 
   // ----------------------------------

@@ -6,7 +6,7 @@ export default (store) => ({
   getComponent (nextState, cb) {
     /*  Webpack - use 'require.ensure' to create a split point
         and embed an async module loader (jsonp) when bundling   */
-    require.ensure([], (require) => {
+    // require.ensure([], (require) => {
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Event = require('./containers/EventLandingContainer').default
@@ -19,6 +19,6 @@ export default (store) => ({
       cb(null, Event)
 
     /* Webpack named bundle   */
-    }, 'events')
+    // }, 'events')
   },
 })
