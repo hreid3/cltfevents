@@ -55,7 +55,7 @@ const constraints = {
 export const validate = values => {
   const { details } = values
   const errors = validator(details, constraints)
-  const d = new DataObjectParser();
+  const d = new DataObjectParser()
   if (errors) {
     _.forIn(errors, (val, key) => d.set(key, val))
   }
@@ -79,10 +79,6 @@ const mapDispatchToProps = (dispatch) => {
     })),
     validate: validate
   }
-}
-
-const confirmDelete = (slug) => {
-
 }
 
 const mapStateToProps = (state) => {

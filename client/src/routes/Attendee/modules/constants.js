@@ -1,269 +1,289 @@
 /**
- * Created by hreid on 4/14/17.
+ * Created by hreid on 4/21/17.
  */
-import {Document, model, Model, Schema} from "mongoose";
-import Dimension from "./Dimension";
 
-export interface IAddress extends  Document {
-    label: string
-    street: string
-    city: string
-    state: string
-    postal: string
-    country: string
-    getStates: () => Array<Object>
-}
-
-export const AddressSchema = new Schema({
-    label: {type: String, required: false},
-    street: {type: String, required: false},
-    city: {type: String, required: false},
-    postal: {type: String, required: false},
-    country: {type: String},
-    state: {type: Object, required: false},
-})
-AddressSchema.static('getStates', () => addressStates)
-
-
-export const addressStates = [
-    {
+export const initialState = {
+  grid: {
+    results: [],
+    filter: [],
+  },
+  details: {
+    _id: -1,
+    title: '',
+    email: '',
+    firstName: '',
+    middleInitial: '',
+    lastName: '',
+    suffix: '',
+    datOfBirth: new Date(),
+    homeChurch: null,
+    companyName: '',
+    homeAddess: [{
+      id: -1,
+      label: '',
+      street: '',
+      city: '',
+      state: null,
+      postal: '',
+      country: "US"
+    }],
+    contactMobile: '',
+    contactHomePhone: '',
+    disabilities: false,
+    bioImageUri: '',
+    status: {
+      "_id": "58f94bfac9270279aa2147f7",
+      "id": "active",
+      "title": "Active"
+    },
+    role: {
+      "_id": "58f264fdcda9e68fc6e82fcc",
+      "id": "attendee",
+      "title": "Attendee"
+    },
+  },
+  lookupData: {
+    homeChurches: [],
+    statuses: [],
+    roles: [],
+    states: [
+      {
         title: "Alabama",
         id: "AL"
-    },
-    {
+      },
+      {
         title: "Alaska",
         id: "AK"
-    },
-    {
+      },
+      {
         title: "American Samoa",
         id: "AS"
-    },
-    {
+      },
+      {
         title: "Arizona",
         id: "AZ"
-    },
-    {
+      },
+      {
         title: "Arkansas",
         id: "AR"
-    },
-    {
+      },
+      {
         title: "California",
         id: "CA"
-    },
-    {
+      },
+      {
         title: "Colorado",
         id: "CO"
-    },
-    {
+      },
+      {
         title: "Connecticut",
         id: "CT"
-    },
-    {
+      },
+      {
         title: "Delaware",
         id: "DE"
-    },
-    {
+      },
+      {
         title: "District Of Columbia",
         id: "DC"
-    },
-    {
+      },
+      {
         title: "Federated States Of Micronesia",
         id: "FM"
-    },
-    {
+      },
+      {
         title: "Florida",
         id: "FL"
-    },
-    {
+      },
+      {
         title: "Georgia",
         id: "GA"
-    },
-    {
+      },
+      {
         title: "Guam",
         id: "GU"
-    },
-    {
+      },
+      {
         title: "Hawaii",
         id: "HI"
-    },
-    {
+      },
+      {
         title: "Idaho",
         id: "ID"
-    },
-    {
+      },
+      {
         title: "Illinois",
         id: "IL"
-    },
-    {
+      },
+      {
         title: "Indiana",
         id: "IN"
-    },
-    {
+      },
+      {
         title: "Iowa",
         id: "IA"
-    },
-    {
+      },
+      {
         title: "Kansas",
         id: "KS"
-    },
-    {
+      },
+      {
         title: "Kentucky",
         id: "KY"
-    },
-    {
+      },
+      {
         title: "Louisiana",
         id: "LA"
-    },
-    {
+      },
+      {
         title: "Maine",
         id: "ME"
-    },
-    {
+      },
+      {
         title: "Marshall Islands",
         id: "MH"
-    },
-    {
+      },
+      {
         title: "Maryland",
         id: "MD"
-    },
-    {
+      },
+      {
         title: "Massachusetts",
         id: "MA"
-    },
-    {
+      },
+      {
         title: "Michigan",
         id: "MI"
-    },
-    {
+      },
+      {
         title: "Minnesota",
         id: "MN"
-    },
-    {
+      },
+      {
         title: "Mississippi",
         id: "MS"
-    },
-    {
+      },
+      {
         title: "Missouri",
         id: "MO"
-    },
-    {
+      },
+      {
         title: "Montana",
         id: "MT"
-    },
-    {
+      },
+      {
         title: "Nebraska",
         id: "NE"
-    },
-    {
+      },
+      {
         title: "Nevada",
         id: "NV"
-    },
-    {
+      },
+      {
         title: "New Hampshire",
         id: "NH"
-    },
-    {
+      },
+      {
         title: "New Jersey",
         id: "NJ"
-    },
-    {
+      },
+      {
         title: "New Mexico",
         id: "NM"
-    },
-    {
+      },
+      {
         title: "New York",
         id: "NY"
-    },
-    {
+      },
+      {
         title: "North Carolina",
         id: "NC"
-    },
-    {
+      },
+      {
         title: "North Dakota",
         id: "ND"
-    },
-    {
+      },
+      {
         title: "Northern Mariana Islands",
         id: "MP"
-    },
-    {
+      },
+      {
         title: "Ohio",
         id: "OH"
-    },
-    {
+      },
+      {
         title: "Oklahoma",
         id: "OK"
-    },
-    {
+      },
+      {
         title: "Oregon",
         id: "OR"
-    },
-    {
+      },
+      {
         title: "Palau",
         id: "PW"
-    },
-    {
+      },
+      {
         title: "Pennsylvania",
         id: "PA"
-    },
-    {
+      },
+      {
         title: "Puerto Rico",
         id: "PR"
-    },
-    {
+      },
+      {
         title: "Rhode Island",
         id: "RI"
-    },
-    {
+      },
+      {
         title: "South Carolina",
         id: "SC"
-    },
-    {
+      },
+      {
         title: "South Dakota",
         id: "SD"
-    },
-    {
+      },
+      {
         title: "Tennessee",
         id: "TN"
-    },
-    {
+      },
+      {
         title: "Texas",
         id: "TX"
-    },
-    {
+      },
+      {
         title: "Utah",
         id: "UT"
-    },
-    {
+      },
+      {
         title: "Vermont",
         id: "VT"
-    },
-    {
+      },
+      {
         title: "Virgin Islands",
         id: "VI"
-    },
-    {
+      },
+      {
         title: "Virginia",
         id: "VA"
-    },
-    {
+      },
+      {
         title: "Washington",
         id: "WA"
-    },
-    {
+      },
+      {
         title: "West Virginia",
         id: "WV"
-    },
-    {
+      },
+      {
         title: "Wisconsin",
         id: "WI"
-    },
-    {
+      },
+      {
         title: "Wyoming",
         id: "WY"
-    }
-]
+      }
+    ]
+  }
+}
 
-export type Address = Model<IAddress> & IAddress
-export const Address: Address = <Address>model<IAddress>('Address', AddressSchema)
-export default Address

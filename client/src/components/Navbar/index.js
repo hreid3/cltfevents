@@ -10,7 +10,10 @@ const Navbar = (props) => {
     <nav className="text-right">
       <Link to='/events' activeClassName='route--active'>
         Events
-      </Link>
+      </Link> |
+      <Link to='/attendee' activeClassName='route--active'>
+        Attendees
+      </Link> |
       {(!props.user.loggedIn) ? (
           <Link to='/login' activeClassName='route--active'>
             sign-in

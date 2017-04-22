@@ -58,6 +58,17 @@ async function createRoles(cb) {
     ])
 }
 
+async function createPeopleStatus(cb) {
+    async.parallel([
+        function(callback) {
+            createDimension('active', 'Active', 'PersonStatus')
+            createDimension('inactive', 'Inactive', 'PersonStatus')
+            createDimension('barred', 'Barred', 'PersonStatus')
+            createDimension('Opted-out', 'Opted-out', 'PersonStatus')
+        }
+    ])
+}
+
 async function createEventTypes(cb) {
     async.parallel([
         function(callback) {
@@ -98,5 +109,6 @@ async.series([
     createEventLevels,
     createEventStatuses,
     createEventTypes,
+    createPeopleStatus
     // exit
 ])

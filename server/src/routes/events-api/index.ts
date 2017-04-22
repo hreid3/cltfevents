@@ -3,6 +3,7 @@ import { BaseRoute } from "../route";
 import {IResource} from '../IResource'
 import {ChurchResource} from './resource-church'
 import {EventResource} from './resource-event'
+import {AttendeeResource} from './resource-attendee'
 import Address  from "../../models/Address";
 import Event from "../../models/Event";
 import Dimension from "../../models/Dimension";
@@ -30,6 +31,9 @@ export class EventsApiResource extends BaseRoute implements IResource {
 
         const eventResource = new EventResource(this.app)
         this.app.use(this.getResourceBase() + eventResource.getResourceBase(), eventResource.getRoutes())
+
+        const attendeeResource = new AttendeeResource(this.app)
+        this.app.use(this.getResourceBase() + attendeeResource.getResourceBase(), attendeeResource.getRoutes())
 
         router.get("/status", (req: Request, res: Response, next: NextFunction) => {
             this.statusLookup(req, res, next)
