@@ -10,6 +10,7 @@ import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders, request} from '../../../
 
 const ATTENDEE_INITIALIZE = '@cltf/INITIALIZE'
 const ATTENDEE_LOOKUP_DATA = '@cltf/LOOKUP_DATA'
+const ATTENDEE_SEARCH_RESULTS = '@cltf/SEARCH_RESULTS'
 
 export const initialAttendeeForm = () => {
   return (dispatch, getState) => {
@@ -58,6 +59,31 @@ export const doSubmitAttendeeForm = values => {
   }
 }
 
+export const doAttendeeSearch = (searchText, colInfos, multiColumnSearch) => {
+  console.log('searchText', searchText)
+  return(dispatch, getState) => {
+    return Promise.all([doGet('/attendee')])
+      .then((fullData) => {
+      const[results] = fullData
+        dispatch(showAttendeeGrid(results.payload))
+      })
+      .catch(errors => {
+        console.log(errors)
+      })
+  }
+}
+
+export const showAttendeeGrid = (results = []) => {
+  return {
+    type: ATTENDEE_SEARCH_RESULTS,
+    payload: {
+      grid: {
+        results: results,
+        filter: []
+      }
+    }
+  }
+}
 
 // ------------------------------------
 // Reducer
@@ -66,6 +92,7 @@ export const attendeeReducer  = (state = initialState, action) => {
   const payload = action.payload
   switch(action.type) {
     case ATTENDEE_INITIALIZE:
+    case ATTENDEE_SEARCH_RESULTS:
       return Object.assign({}, state, payload);
     case ATTENDEE_LOOKUP_DATA:
       const lookupDataVal = Object.assign({}, state.lookupData)

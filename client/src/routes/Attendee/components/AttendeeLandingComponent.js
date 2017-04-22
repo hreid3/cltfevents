@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import AttendeeFormContainer from '../containers/AttendeeFormContainer'
-import AttendeeSearchComponent from './AttendeeSearchComponent'
+import AttendeeSearchComponent from '../containers/AttendeeSearchContainer'
 
 const AttendeeLandingComponent = (props) => {
 
