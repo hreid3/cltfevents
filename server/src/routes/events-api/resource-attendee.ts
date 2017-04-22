@@ -63,29 +63,33 @@ export class AttendeeResource extends BaseRoute implements IResource {
 
     protected async search(req: Request, res: Response, next: NextFunction) {
         const q = req.query.q
-        console.log("q", q)
-        try {
-            Attendee.search(
-                {query_string: {query: q}},
-                {hydrate: true},
-                (err, results) => {
-                    let newResults = results.hits.hits.map(async (val) => {
-                        val.role = await Dimension.findOne({_id: val.role})
-                        val.status = await Dimension.findOne({_id: val.status})
-                        if(val.homeChurch) {
-                            val.homeChurch = await Church.findOne({_id: val.homeChurch})
-                        }
-                        return val
-                    })
-                    
-                    Promise.all(newResults)
-                        .then(fullData => this.json(req, res, fullData))
-                        .catch(err => this.jsonError(req,res,500, err))
-                }
-            )
-        } catch(err) {
-            console.error(err)
-            this.jsonError(req, res, 500, err)
+        if (!q) {
+            this.index(req, res, next)
+        } else {
+            console.log("q", q)
+            try {
+                Attendee.search(
+                    {query_string: {query:"*" + q + "*"}},
+                    {hydrate: true},
+                    (err, results) => {
+                        let newResults = results.hits.hits.map(async (val) => {
+                            val.role = await Dimension.findOne({_id: val.role})
+                            val.status = await Dimension.findOne({_id: val.status})
+                            if (val.homeChurch) {
+                                val.homeChurch = await Church.findOne({_id: val.homeChurch})
+                            }
+                            return val
+                        })
+
+                        Promise.all(newResults)
+                            .then(fullData => this.json(req, res, fullData))
+                            .catch(err => this.jsonError(req, res, 500, err))
+                    }
+                )
+            } catch (err) {
+                console.error(err)
+                this.jsonError(req, res, 500, err)
+            }
         }
     }
 

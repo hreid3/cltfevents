@@ -12,7 +12,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (searchText, colInfos, multiColumnSearch) => dispatch(doAttendeeSearch(searchText, colInfos, multiColumnSearch))
+    onSearchChange: (searchText, colInfos, multiColumnSearch) =>
+      dispatch(doAttendeeSearch(searchText, colInfos, multiColumnSearch))
   }
 }
 

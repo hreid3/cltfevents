@@ -46,30 +46,28 @@ export const doSubmitAttendeeForm = values => {
     }
     return request('/attendee', options)
       .then(data => {
-        console.log('success1')
         dispatch(reset('attendeeForm'))
-        console.log('success2')
         browserHistory.push('/attendee')
-        console.log('success3')
       })
       .catch(errors => {
-        console.log(errors)
+        console.error(errors)
         throw new SubmissionError(errors)
       })
   }
 }
 
 export const doAttendeeSearch = (searchText, colInfos, multiColumnSearch) => {
-  console.log('searchText', searchText)
-  return(dispatch, getState) => {
-    return Promise.all([doGet('/attendee')])
-      .then((fullData) => {
-      const[results] = fullData
-        dispatch(showAttendeeGrid(results.payload))
-      })
-      .catch(errors => {
-        console.log(errors)
-      })
+  return (dispatch, getState) => {
+    if (searchText.length == 0 || searchText.length >= 3) {
+      return Promise.all([doGet('/attendee/search?q=' + encodeURI(searchText))])
+        .then((fullData) => {
+          const [results] = fullData
+          dispatch(showAttendeeGrid(results.payload))
+        })
+        .catch(errors => {
+          console.error(errors)
+        })
+    }
   }
 }
 
