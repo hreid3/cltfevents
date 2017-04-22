@@ -10,6 +10,18 @@ services:
       - "27017:27017"
     restart: always
 
+  elasticsearch:
+    container_name: cltfevents_elasticsearch
+    image: cltfevents_elasticsearch
+    build: elasticsearch
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    restart: always
+
+
 #  backup:
 #    container_name: vcpuicms_backup
 #    image: vcpuicms_backup
@@ -26,6 +38,7 @@ services:
 
 volumes:
   mongodb:
+  elasticsearch:
 #  backup:
 
 networks: {}

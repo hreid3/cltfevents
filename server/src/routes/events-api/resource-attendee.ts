@@ -6,6 +6,7 @@ import * as express from "express";
 import Attendee from '../../models/Person'
 import {ObjectID} from "mongodb";
 import {Dimension} from "../../models/Dimension";
+import {Church} from '../../models/Church'
 
 /**
  * / route
@@ -23,6 +24,10 @@ export class AttendeeResource extends BaseRoute implements IResource {
         const router = Router()
         router.get("/", (req: Request, res: Response, next: NextFunction) => {
             this.index(req, res, next)
+        })
+
+        router.get("/search", (req: Request, res: Response, next: NextFunction) => {
+            this.search(req, res, next)
         })
 
         router.get("/roles", (req: Request, res: Response, next: NextFunction) => {
@@ -56,6 +61,34 @@ export class AttendeeResource extends BaseRoute implements IResource {
         return '/attendee'
     }
 
+    protected async search(req: Request, res: Response, next: NextFunction) {
+        const q = req.query.q
+        console.log("q", q)
+        try {
+            Attendee.search(
+                {query_string: {query: q}},
+                {hydrate: true},
+                (err, results) => {
+                    let newResults = results.hits.hits.map(async (val) => {
+                        val.role = await Dimension.findOne({_id: val.role})
+                        val.status = await Dimension.findOne({_id: val.status})
+                        if(val.homeChurch) {
+                            val.homeChurch = await Church.findOne({_id: val.homeChurch})
+                        }
+                        return val
+                    })
+                    
+                    Promise.all(newResults)
+                        .then(fullData => this.json(req, res, fullData))
+                        .catch(err => this.jsonError(req,res,500, err))
+                }
+            )
+        } catch(err) {
+            console.error(err)
+            this.jsonError(req, res, 500, err)
+        }
+    }
+
     protected async delete(req: Request, res: Response, next: NextFunction){
         try {
             const result = await Attendee.findOneAndRemove({_id: req.params.id})
@@ -83,11 +116,11 @@ export class AttendeeResource extends BaseRoute implements IResource {
      * @next {NextFunction} Execute the next method.
      */
     protected async index(req: Request, res: Response, next: NextFunction) {
-        const events = await Attendee.find()
+        const attendees = await Attendee.find()
             .populate(
                 this.populateFields
             )
-        this.json(req, res, events)
+        this.json(req, res, attendees)
     }
 
     protected async createOrUpdate(req: Request, res: Response, next: NextFunction) {

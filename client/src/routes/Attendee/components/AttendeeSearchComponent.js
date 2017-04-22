@@ -24,6 +24,8 @@ class AttendeeSearchComponent extends Component {
     const props = this.props
     return (
       <div>
+        <Link className="pt-button pt-icon-th" tabIndex="0" to="/attendee/tool/create-new" role="button">Add
+          Attendee</Link>
         <BootstrapTable
           data={props.grid.results}
           remote={true }
@@ -38,9 +40,6 @@ class AttendeeSearchComponent extends Component {
           <TableHeaderColumn dataField="email">Email</TableHeaderColumn>
           <TableHeaderColumn dataFormat={this.actionCell}></TableHeaderColumn>
         </BootstrapTable>
-
-        <Link className="pt-button pt-icon-th" tabIndex="0" to="/attendee/tool/create-new" role="button">Add
-          Attendee</Link>
 
       </div>
     )
