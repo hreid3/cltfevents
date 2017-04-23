@@ -6,6 +6,7 @@ import React, {Component} from 'react'
 import DocumentTitle from 'react-document-title'
 import ReactHtmlParser from 'react-html-parser'
 import {Link} from 'react-router'
+import AddressRenderer from '../../../components/Shared/AddressRenderer'
 
 export class EventDetailsComponent extends Component {
 
@@ -32,6 +33,7 @@ export class EventDetailsComponent extends Component {
       eventType,
       eventLevel,
       notes,
+      location,
     } = this.props.details
 
     if (title == '') {
@@ -40,17 +42,17 @@ export class EventDetailsComponent extends Component {
       )
     }
 
-    if (Array.isArray(hostingChurch.location)) {
-      hostingChurch.location = hostingChurch.location[0]
-    } else {
-      hostingChurch.location = {state: {}}
-    }
-
-    const hostingChurchLabel = hostingChurch.title ? hostingChurch.title : ''
-    const hostingChurchStreet = hostingChurch.location.street ? hostingChurch.location.street : ''
-    const hostingChurchState = hostingChurch.location.state.title ? hostingChurch.location.state.title : ''
-    const hostingChurchCity = hostingChurch.location.city ? hostingChurch.location.city : ''
-    const hostingChurchPostal = hostingChurch.location.postal ? hostingChurch.location.postal : ''
+    // if (Array.isArray(hostingChurch.location)) {
+    //   hostingChurch.location = hostingChurch.location[0]
+    // } else {
+    //   hostingChurch.location = {state: {}}
+    // }
+    //
+    // const hostingChurchLabel = hostingChurch.title ? hostingChurch.title : ''
+    // const hostingChurchStreet = hostingChurch.location.street ? hostingChurch.location.street : ''
+    // const hostingChurchState = hostingChurch.location.state.title ? hostingChurch.location.state.title : ''
+    // const hostingChurchCity = hostingChurch.location.city ? hostingChurch.location.city : ''
+    // const hostingChurchPostal = hostingChurch.location.postal ? hostingChurch.location.postal : ''
     return (
       <div>
         <div className="row">
@@ -87,21 +89,10 @@ export class EventDetailsComponent extends Component {
                 <div>{ReactHtmlParser( description )}</div>
               </div>
             </div>
-
-            <div className="row">
-              <div className="col-12">
-                <h4>Hosting Church</h4>
-                <div>{hostingChurchLabel}</div>
-                <div>
-                  {hostingChurchStreet}
-                </div>
-                <div>
-                  {hostingChurchCity}, {hostingChurchState} &nbsp; {hostingChurchPostal}
-                </div>
-              </div>
-            </div>
+            <AddressRenderer location={hostingChurch.location} title={hostingChurch.title} label="Hosting Church"/>
           </div>
           <div className="col-md-4">
+            <AddressRenderer location={location} title={location.title} label="Event Location" />
             <div className="row">
               <div className="col-12">
                 <h4>Start Time</h4>
@@ -160,3 +151,4 @@ export class EventDetailsComponent extends Component {
     )
   }
 }
+

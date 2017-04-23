@@ -4,6 +4,7 @@
 import React from 'react'
 import AttendeeFormContainer from '../containers/AttendeeFormContainer'
 import AttendeeSearchComponent from '../containers/AttendeeSearchContainer'
+import AttendeeDetailsCompoent from './AttendeeDetailsCompoent'
 
 const AttendeeLandingComponent = (props) => {
 
@@ -12,8 +13,7 @@ const AttendeeLandingComponent = (props) => {
 
   if (!action) {
     if (props.params.slug) {
-      console.log(props.params.slug)
-      defaultComponent = <div></div> // Details
+      defaultComponent = <AttendeeDetailsCompoent {...props} _id={props.params.slug} /> // Details
     } else {
       defaultComponent = <AttendeeSearchComponent {...props} />// Search View
     }

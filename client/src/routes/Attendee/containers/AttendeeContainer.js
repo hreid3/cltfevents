@@ -6,27 +6,13 @@ import DataObjectParser from 'dataobject-parser'
 import _ from 'lodash'
 import moment from 'moment'
 import { showModal, MODAL_TYPE_CONFIRMATION } from '../../../store/modal'
-import { initialize } from '../modules/attendee'
+import { initialize, loadAttendeeDetailData } from '../modules/attendee'
 const validator = require('validate.js')
-
-const constraints = {
-
-}
-
-export const validate = values => {
-  const { details } = values
-  const errors = validator(details, constraints)
-  const d = new DataObjectParser()
-
-  if (errors) {
-    _.forIn(errors, (val, key) => d.set(key, val))
-  }
-  return { details: d.data() }
-}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initialize: () => dispatch(initialize())
+    initialize: () => dispatch(initialize()),
+    loadAttendeeDetailData: _id => dispatch(loadAttendeeDetailData(_id))
   }
 }
 

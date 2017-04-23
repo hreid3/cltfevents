@@ -11,7 +11,9 @@ import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders, request} from '../../../
 const ATTENDEE_INITIALIZE = '@cltf/INITIALIZE'
 const ATTENDEE_LOOKUP_DATA = '@cltf/LOOKUP_DATA'
 const ATTENDEE_SEARCH_RESULTS = '@cltf/SEARCH_RESULTS'
+const ATTENDEE_SET_DETAILS_FORM = '@cltf/ATTENDEE_SET_DETAILS_FORM'
 const ATTENDEE_SET_DETAILS = '@cltf/ATTENDEE_SET_DETAILS'
+
 
 export const initialAttendeeForm = _id => {
   return (dispatch, getState) => {
@@ -34,6 +36,18 @@ export const initialAttendeeForm = _id => {
       }
       dispatch(reduxFormInitialize('attendeeForm', getState().attendeeData))
     })
+  }
+}
+
+export const loadAttendeeDetailData = _id => {
+  return (dispatch, getState) => {
+    doGet('/attendee/' + _id)
+      .then(data => {
+        dispatch(setAttendeeDetails(data.payload))
+      })
+      .catch((err) => {
+        console.error(err) // TODO: 404 or 500
+      })
   }
 }
 
@@ -96,7 +110,15 @@ export const showAttendeeGrid = (results = []) => {
 }
 
 export const setAttendeeForm = details => {
-  console.log('setAttendeeForm', details)
+  return {
+    type: ATTENDEE_SET_DETAILS_FORM,
+    payload: {
+      details: details
+    }
+  }
+}
+
+export const setAttendeeDetails = details => {
   return {
     type: ATTENDEE_SET_DETAILS,
     payload: {
@@ -113,6 +135,7 @@ export const attendeeReducer  = (state = initialState, action) => {
   switch(action.type) {
     case ATTENDEE_INITIALIZE:
     case ATTENDEE_SEARCH_RESULTS:
+    case ATTENDEE_SET_DETAILS_FORM:
     case ATTENDEE_SET_DETAILS:
       return Object.assign({}, state, payload);
     case ATTENDEE_LOOKUP_DATA:
