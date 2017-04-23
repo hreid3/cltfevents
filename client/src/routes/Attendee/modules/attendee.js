@@ -11,17 +11,29 @@ import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders, request} from '../../../
 const ATTENDEE_INITIALIZE = '@cltf/INITIALIZE'
 const ATTENDEE_LOOKUP_DATA = '@cltf/LOOKUP_DATA'
 const ATTENDEE_SEARCH_RESULTS = '@cltf/SEARCH_RESULTS'
+const ATTENDEE_SET_DETAILS = '@cltf/ATTENDEE_SET_DETAILS'
 
-export const initialAttendeeForm = () => {
+export const initialAttendeeForm = _id => {
   return (dispatch, getState) => {
-    return Promise.all([doGet('/church'), doGet('/attendee/roles'), doGet('/attendee/status')])
-      .then((fullData) => {
-        const[churches, roles, statuses] = fullData
-        dispatch(setData('homeChurches', churches))
-        dispatch(setData('statuses', statuses))
-        dispatch(setData('roles', roles))
-        dispatch(reduxFormInitialize('attendeeForm', getState().attendeeData))
-      })
+    const promisesAll = [doGet('/church'), doGet('/attendee/roles'), doGet('/attendee/status')]
+    if (_id) {
+      promisesAll.push(doGet('/attendee/' + _id))
+    }
+    const promises = Promise.all(promisesAll)
+    return promises.then((fullData) => {
+      console.log(fullData)
+      const[churches, roles, statuses, details] = fullData
+      dispatch(setData('homeChurches', churches))
+      dispatch(setData('statuses', statuses))
+      dispatch(setData('roles', roles))
+      if (_id && details) {
+        dispatch(setAttendeeForm(details.payload))
+      } else {
+        // Clear form
+        dispatch(setAttendeeForm(initialState.details))
+      }
+      dispatch(reduxFormInitialize('attendeeForm', getState().attendeeData))
+    })
   }
 }
 
@@ -83,6 +95,16 @@ export const showAttendeeGrid = (results = []) => {
   }
 }
 
+export const setAttendeeForm = details => {
+  console.log('setAttendeeForm', details)
+  return {
+    type: ATTENDEE_SET_DETAILS,
+    payload: {
+      details: details
+    }
+  }
+}
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -91,6 +113,7 @@ export const attendeeReducer  = (state = initialState, action) => {
   switch(action.type) {
     case ATTENDEE_INITIALIZE:
     case ATTENDEE_SEARCH_RESULTS:
+    case ATTENDEE_SET_DETAILS:
       return Object.assign({}, state, payload);
     case ATTENDEE_LOOKUP_DATA:
       const lookupDataVal = Object.assign({}, state.lookupData)
@@ -98,7 +121,6 @@ export const attendeeReducer  = (state = initialState, action) => {
       return {
         ...state,  lookupData: lookupDataVal // property copy
       }
-
     default:
       return state
   }

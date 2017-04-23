@@ -6,8 +6,7 @@ import {
   datetimePickerField
 } from '../../../components/ReduxFormRenderedFields'
 import DocumentTitle from 'react-document-title'
-// import './event-form.scss'
-import {Link} from 'react-router'
+import { Link } from 'react-router'
 
 export default class AttendeeFormComponent extends Component {
 
@@ -17,7 +16,8 @@ export default class AttendeeFormComponent extends Component {
   }
 
   componentDidMount() {
-    this.props.initialAttendeeForm()
+    console.log('consoledMounted', this.props)
+    this.props.initialAttendeeForm(this.props._id || null)
   }
 
   render() {
@@ -34,7 +34,7 @@ export default class AttendeeFormComponent extends Component {
         <ol className="breadcrumb">
           <li className="breadcrumb-item"><Link to="/">Home</Link></li>
           <li className="breadcrumb-item"><Link to="/attendee">Attendee</Link></li>
-          <li className="breadcrumb-item"><Link to={"/attendee/" + this.props.params.slug}>{details.title}</Link></li>
+          <li className="breadcrumb-item"><Link to={"/attendee/" + this.props._id}>{details.firstName + ' ' + details.lastName}</Link></li>
           <li className="breadcrumb-item active">Edit</li>
         </ol>
       )

@@ -37,8 +37,8 @@ export class AttendeeResource extends BaseRoute implements IResource {
         router.get("/status", (req: Request, res: Response, next: NextFunction) => {
             this.statusLookup(req, res, next)
         });
-
-        router.get("/:id([0-9]+)", (req: Request, res: Response, next: NextFunction) => {
+//58faa6084d004eaf425ef31c
+        router.get("/:id([a-f0-9]{24})", (req: Request, res: Response, next: NextFunction) => {
             this.showAttendee(req, res, next)
         })
 
@@ -104,8 +104,8 @@ export class AttendeeResource extends BaseRoute implements IResource {
 
     protected async showAttendee(req: Request, res: Response, next: NextFunction) {
         try {
-            const anEvent = await Attendee.findOne({_id: req.params.id}).populate(this.populateFields)
-            this.json(req, res, anEvent)
+            const anAttendee = await Attendee.findOne({_id: req.params.id}).populate(this.populateFields)
+            this.json(req, res, anAttendee)
         } catch (e) {
           this.jsonError(req, res, 500, e)
         }

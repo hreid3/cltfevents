@@ -36,7 +36,6 @@ const constraints = {
 
 export const validate = values => {
   const { details } = values
-  console.log('validate', values)
   const errors = validator(details, constraints)
   const d = new DataObjectParser()
 
@@ -48,7 +47,7 @@ export const validate = values => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initialAttendeeForm: () => dispatch(initialAttendeeForm()),
+    initialAttendeeForm: (_id) => dispatch(initialAttendeeForm(_id)),
     onSubmit: (values) => dispatch(doSubmitAttendeeForm(values)),
     validate: validate
   }

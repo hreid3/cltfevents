@@ -12,6 +12,7 @@ const AttendeeLandingComponent = (props) => {
 
   if (!action) {
     if (props.params.slug) {
+      console.log(props.params.slug)
       defaultComponent = <div></div> // Details
     } else {
       defaultComponent = <AttendeeSearchComponent {...props} />// Search View
@@ -24,7 +25,8 @@ const AttendeeLandingComponent = (props) => {
         }
         break
       case 'edit':
-        defaultComponent = <div></div> // Attendee Form
+        defaultComponent = <AttendeeFormContainer action={action} _id={slug} /> // Attendee Form
+        break
     }
   }
   // props.initialize()
