@@ -1,12 +1,21 @@
+import React from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData, editEvent, deleteEvent as actionDeleteEvent} from '../modules/event'
+import {
+  addEvent,
+  doSubmitEventForm,
+  loadEventData,
+  loadEventDetailData,
+  editEvent,
+  deleteEvent as actionDeleteEvent,
+  addEventAttendee} from '../modules/event'
+
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
 import _ from 'lodash'
 import moment from 'moment'
-import { showModal, MODAL_TYPE_CONFIRMATION } from '../../../store/modal'
+import { showModal, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_WRAPPED_COMPONENT } from '../../../store/modal'
 const validator = require('validate.js')
 
 validator.extend(validator.validators.datetime, {
@@ -77,13 +86,20 @@ const mapDispatchToProps = (dispatch) => {
         }
       }
     })),
+    // addAttendee: (eventId) => dispatch(addEventAttendee(eventId)),
+    openBookingForm: (wrappedComponent) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
+    // openBookingForm: () => dispatch(addEventAttendee(wrappedComponent)),
+    // addAttendee: (slug) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
+      title: 'Add Attendee',
+      wrappedComponent: wrappedComponent
+    })),
     validate: validate
   }
 }
 
 const mapStateToProps = (state) => {
   // console.log('mappingStateToProps', state)
-  return {...state.eventData}
+  return state.eventData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'eventForm'})(EventLanding))

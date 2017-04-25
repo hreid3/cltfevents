@@ -84,6 +84,30 @@ export const selectTagField = ({input, label, options, meta: { touched, error, w
   )
 }
 
+
+
+export const asyncSelectField = ({input, label, loadOptions, meta: { touched, error, warning }, placeholder}) => {
+  input.onBlur = null
+  return (
+    <div className="pt-form-group">
+      <label className="pt-label">
+        {label}&nbsp;
+        <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
+      </label>
+      <div className="pt-form-content">
+        <Select.Async
+          {...input}
+          multi={true}
+          loadOptions={loadOptions}
+          placeholder={placeholder}
+          onBlurResetsInput={false}
+        />
+      </div>
+    </div>
+  )
+}
+
+
 export const datetimePickerField = ({input, label, defaultValue, meta: { touched, error, warning }, placeholder}) => {
   // input.onBlur = null
   return (

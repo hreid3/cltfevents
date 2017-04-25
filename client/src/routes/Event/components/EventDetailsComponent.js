@@ -7,6 +7,8 @@ import DocumentTitle from 'react-document-title'
 import ReactHtmlParser from 'react-html-parser'
 import {Link} from 'react-router'
 import AddressRenderer from '../../../components/Shared/AddressRenderer'
+import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
+import EventAttendeesComponent from './EventAttendeesComponent'
 
 export class EventDetailsComponent extends Component {
 
@@ -34,25 +36,13 @@ export class EventDetailsComponent extends Component {
       eventLevel,
       notes,
       location,
+      attendees
     } = this.props.details
-
     if (title == '') {
       return (
         <div></div>
       )
     }
-
-    // if (Array.isArray(hostingChurch.location)) {
-    //   hostingChurch.location = hostingChurch.location[0]
-    // } else {
-    //   hostingChurch.location = {state: {}}
-    // }
-    //
-    // const hostingChurchLabel = hostingChurch.title ? hostingChurch.title : ''
-    // const hostingChurchStreet = hostingChurch.location.street ? hostingChurch.location.street : ''
-    // const hostingChurchState = hostingChurch.location.state.title ? hostingChurch.location.state.title : ''
-    // const hostingChurchCity = hostingChurch.location.city ? hostingChurch.location.city : ''
-    // const hostingChurchPostal = hostingChurch.location.postal ? hostingChurch.location.postal : ''
     return (
       <div>
         <div className="row">
@@ -146,7 +136,8 @@ export class EventDetailsComponent extends Component {
 
           </div>
         </div>
-
+      <hr/>
+      <EventAttendeesComponent {...this.props}  />
       </div>
     )
   }

@@ -6,6 +6,8 @@ import React, {Component, PropTypes} from 'react'
 
 const AddressRenderer = (props) => {
 
+  if (!props.location) return null
+
   let location = props.location
   if (Array.isArray(location)) {
     location = props.location[0]
@@ -37,11 +39,8 @@ const AddressRenderer = (props) => {
 
 AddressRenderer.defaultProps = {
   label: "Address",
-}
+  title: ''
 
-AddressRenderer.propTypes = {
-  location: React.PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
 }
 
 export default AddressRenderer
