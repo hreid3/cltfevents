@@ -87,6 +87,6 @@ export class BaseRoute {
         if (statusCode < 100) {
             statusCode = 500
         }
-        res.json(statusCode, {reason: reason}) // Goes into log file
+        res.json(statusCode, {reason: JSON.stringify(reason)}) // Goes into log file
     }
 }

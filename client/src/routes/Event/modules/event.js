@@ -12,7 +12,7 @@ import {
   EVENT_SET_LOOKUP_DATA,
   EVENT_SHOW_LANDING_PAGE,
   EVENT_DETAIL_SHOW,
-  EVENT_ADD_ATTENDEE,
+  EVENT_SHOW_EVENT_ATTENDEES,
   attendeeBooking
 } from './constants'
 
@@ -29,7 +29,7 @@ export const addEvent = () => {
       dispatch(reduxFormInitialize('eventForm', getState().eventData))
     })
   }
-};
+}
 
 export const editEvent = (slug) => {
   return (dispatch, getState) => {
@@ -84,6 +84,7 @@ export const loadEventDetailData = (slug) => { // TODO: Need Filter
     doGet('/event/' + slug)
       .then((fullData) => {
         dispatch(showEventDetails(fullData.payload))
+        dispatch(getEventAttendees())
       })
       .catch((e) => {
         console.log('show 404', e)
@@ -151,7 +152,7 @@ export const doSubmitEventForm = (values) => {
       mode: 'cors',
       cache: 'default',
       body: JSON.stringify(values.details)
-    };
+    }
 
     return request('/event', options)
       .then(data => {
@@ -165,29 +166,36 @@ export const doSubmitEventForm = (values) => {
   }
 }
 
-export const addEventAttendee = eventId => {
-  const anAttendeeBooking = {...attendeeBooking};
-  anAttendeeBooking.eventId = eventId;
-  return {
-    type: EVENT_ADD_ATTENDEE,
-    payload: anAttendeeBooking
+export const doSubmitAttendeeForm = values => (dispatch, getState) => {
+  values.attendeeId = values.attendeeId.value
+  values.status = values.status.id
+  const options = {
+    method: 'POST',
+    headers: defaultHeaders,
+    mode: 'cors',
+    cache: 'default',
+    body: JSON.stringify(values)
   }
+  return request('/event/' + getState().eventData.details.slug + '/attendees', options)
+    .then(data => dispatch(getEventAttendees()))
+    .catch(errors => {
+      throw new SubmissionError(errors)
+    })
 }
 
-export const getAvailableAttendees = (slug) => {
-  return async (searchText) => {
-    // export const getAvailableAttendees = async (searchText, slug) => {
-    if (searchText.length >= 3) {
-      try {
-        const results = await
-        doGet('/events/' + slug + '/attendee?q=' + encodeURI(searchText))
-        return results
-      } catch (err) {
-        console.error(err)
-      }
-    }
-  }
-}
+export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' + getState().eventData.details.slug + "/attendees")
+    .then(data => dispatch(setEventAttendees(data.payload)))
+    .catch(err => console.error(err))
+
+export const setEventAttendees = values => ({type: EVENT_SHOW_EVENT_ATTENDEES, payload: values})
+
+export const getAvailableAttendees = (slug) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
+      .then(data => data.payload.map(val => ({
+        value: val._id,
+        label: val.firstName + " " + val.lastName + "-" + val.email
+      }))).then(data => cb(null, {options: data}))
+      .catch((err) =>  console.error(err))
+
 
 // ------------------------------------
 // Reducer
@@ -206,11 +214,10 @@ export const eventReducer  = (state = initialState, action) => {
     case EVENT_SHOW_LANDING_PAGE:
     case EVENT_DETAIL_SHOW:
       return Object.assign({}, state, payload); // Object copy
-    case EVENT_ADD_ATTENDEE:
+    case EVENT_SHOW_EVENT_ATTENDEES:
       const details = state.details;
-      details.attendees.push(payload);
+      details.attendees = payload;
       const payload2 = details;
-      console.log('payload2', payload2);
       return Object.assign({}, state, payload2); // Object copy
     default:
       return state

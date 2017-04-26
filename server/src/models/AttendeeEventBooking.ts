@@ -30,7 +30,7 @@ export const AttendeeEventBookingSchema = new Schema({
     event: {type: Schema.Types.ObjectId, ref: 'Event', required: true},
     bookingDate: {type: Date, default: Date.now(), required: true},
     numberSeatsReserved: {type: Number},
-    status: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
+    status: {type: String, required: true},
     payments: [EventPaymentSchema]
 
 })

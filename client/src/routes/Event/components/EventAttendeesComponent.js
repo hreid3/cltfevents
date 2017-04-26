@@ -8,16 +8,19 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import AttendeeBookingComponent from './AttendeeBookingComponent'
 import { attendeeBooking } from '../modules/constants'
 
-const attendInfoField = (cell, row) => <div>Attendee Info</div>
-
-const attendeeBookingComponent = initialValues => (
-  <AttendeeBookingComponent
-    onSubmit={values => console.log("Hello World", values)}
-    initialValues={{...initialValues}} />
-)
-const createTicketPurchasedEditor = (onUpdate, props) => (<TicketPurchasedEditor onUpdate={ onUpdate } {...props}/>);
 const EventAttendeesComponent = props => {
+  const createTicketPurchasedEditor = (onUpdate, props) => (<TicketPurchasedEditor onUpdate={ onUpdate } {...props}/>);
+
+  const attendInfoField = (cell, row) => <div>Attendee Info</div>
+
+  const attendeeBookingComponent = initialValues => (
+    <AttendeeBookingComponent
+      onSubmit={values => props.doSubmitAttendeeForm(values)}
+      initialValues={{...initialValues}} />
+  )
+
   const slug = props.details.slug
+
   return (
     <div>
       <div className="pt-button-group pt-large float-right">

@@ -5,6 +5,10 @@ import { IResource } from '../IResource'
 import * as express from "express";
 import Event from "../../models/Event";
 import {ObjectID} from "mongodb";
+import Attendee from "../../models/Person";
+import {Dimension} from "../../models/Dimension";
+import {Church} from "../../models/Church";
+import {AttendeeEventBooking} from "../../models/AttendeeEventBooking";
 
 const slug = require('slug')
 /**
@@ -25,8 +29,20 @@ export class EventResource extends BaseRoute implements IResource {
             this.index(req, res, next)
         })
 
+        router.get("/:slug([a-z-0-9_-]+)/available-attendees", (req: Request, res: Response, next: NextFunction) => {
+            this.showAvailableAttendees(req, res, next)
+        })
+
         router.get("/:slug([a-z-0-9_-]+)", (req: Request, res: Response, next: NextFunction) => {
             this.showEvent(req, res, next)
+        })
+
+        router.post("/:slug([a-z-0-9_-]+)/attendees", (req: Request, res: Response, next: NextFunction) => {
+            this.createOrUpdateAttendee(req, res, next)
+        })
+
+        router.get("/:slug([a-z-0-9_-]+)/attendees", (req: Request, res: Response, next: NextFunction) => {
+            this.getAttendeesForEvent(req, res, next)
         })
 
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
@@ -64,6 +80,52 @@ export class EventResource extends BaseRoute implements IResource {
           this.jsonError(req, res, 500, e)
         }
     }
+
+    protected async showAvailableAttendees(req: Request, res: Response, next: NextFunction) {
+        try {
+            const q = req.query.q
+            let query = "*" + q + "*"
+            if(!q) {
+                query = "*"
+            }
+            const slug = req.params.slug
+
+            const anEvent = await Event.findOne({slug: req.params.slug})
+            if (!anEvent) {
+                this.jsonError(req, res, 404)
+            }
+            Attendee.search(
+                {query_string: {query: query}},
+                {hydrate: true},
+                (err, results) => {
+                    let newResults = results.hits.hits.map(async (val) => {
+                        val.role = await Dimension.findOne({_id: val.role})
+                        val.status = await Dimension.findOne({_id: val.status})
+                        if (val.homeChurch) {
+                            val.homeChurch = await Church.findOne({_id: val.homeChurch})
+                        }
+                        return val
+                    })
+
+                    Promise.all(newResults)
+                        .then(fullData => fullData.filter(async (val) => {
+                            return true // TODO:  Need to add filter here for already registered users
+                        }))
+                        .then(fullData => this.json(req, res, fullData))
+                        .catch(err => this.jsonError(req, res, 500, err))
+                }
+            )
+
+            const availableAttendees = await Attendee.find()
+                .populate(
+                    this.populateFields
+                )
+
+        } catch(err) {
+            this.jsonError(req, res, 500, err)
+        }
+    }
+
     /**
      * The root page route.
      *
@@ -79,6 +141,71 @@ export class EventResource extends BaseRoute implements IResource {
                 this.populateFields
             )
         this.json(req, res, events)
+    }
+
+    protected async createOrUpdateAttendee(req: Request, res: Response, next: NextFunction) {
+        try {
+            // attendee: {type: Schema.Types.ObjectId, ref: 'Person', required: true},
+            // event: {type: Schema.Types.ObjectId, ref: 'Event', required: true},
+            // bookingDate: {type: Date, default: Date.now(), required: true},
+            // numberSeatsReserved: {type: Number},
+            // status: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
+            // payments: [EventPaymentSchema]
+            const attendeeId = req.body.attendeeId
+            const ticketPurchased = req.body.ticketPurchased || 0
+            const bookingDate = req.body.bookingDate
+            const status = req.body.status
+            const eventBookingId = req.body.eventBookingId
+            let isNew = false
+            if (!eventBookingId) {
+                isNew = true
+            }
+            const eventId = await Event.findOne({slug: req.params.slug}).select('_id')
+            const data = {
+                attendee: attendeeId,
+                event: eventId,
+                bookingDate: bookingDate,
+                numberSeatsReserved: ticketPurchased,
+                status: status
+            }
+            console.log(data)
+            let result = null;
+            if (isNew) {
+                result = await AttendeeEventBooking.create(data)
+            } else {
+                const anAttendeeBookingEvent = AttendeeEventBooking.findOne({_id: eventBookingId});
+                if (anAttendeeBookingEvent) {
+                    result = await anAttendeeBookingEvent.update(data)
+                } else {
+                    throw Error("no event exists")
+                }
+            }
+            this.json(req, res, result)
+        } catch (err) {
+            let status = 500
+            if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
+                status = 400
+            }
+            this.jsonError(req, res, status, err)
+        }
+    }
+
+    protected async getAttendeesForEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            const slug = req.params.slug
+            const eventId = await Event.findOne({slug: slug}).select('_id')
+            console.log(eventId._id )
+            const results = await AttendeeEventBooking.find({event: eventId._id}).populate(this.populateAttendeeBookEventFields)
+
+            // TODO:  We have to go through and derive data
+            this.json(req, res, results)
+        } catch(err) {
+            let status = 500
+            if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
+                status = 400
+            }
+            this.jsonError(req, res, status, err)
+        }
     }
 
     protected async createOrUpdate(req: Request, res: Response, next: NextFunction) {
@@ -123,5 +250,11 @@ export class EventResource extends BaseRoute implements IResource {
         {path: 'eventType'},
         {path: 'eventLevel'},
         {path: 'hostingChurch'},
+    ]
+
+    private populateAttendeeBookEventFields = [
+        {path: "attendee"},
+        {path: "event"},
+        {path: "payments"},
     ]
 }

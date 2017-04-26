@@ -5,11 +5,17 @@ import React from 'react'
 import {
   textField,
   asyncSelectField,
+  selectField
 } from '../../../components/ReduxFormRenderedFields'
 import { reduxForm, Field } from 'redux-form'
 import { getAvailableAttendees } from '../modules/event'
 import DataObjectParser from 'dataobject-parser'
 const validator = require('validate.js')
+
+const statusOptions = [
+  {'id': 'Active', 'title': 'Active'},
+  {'id': 'Cancelled', 'title': 'Cancelled'},
+]
 
 const AttendeeBookingComponent = props => {
   const attendeeId = ''
@@ -25,6 +31,13 @@ const AttendeeBookingComponent = props => {
     <div>
       <form onSubmit={handleSubmit} className="attendee-booking-form">
         <div className="row">
+          <div className="col-12">
+            <Field name="attendeeId" type="text" component={asyncSelectField} placeholder="Attendee"
+                   label="Select an attendee" loadOptions={getAvailableAttendees(props.initialValues.eventId)}/>
+          </div>
+        </div>
+
+        <div className="row">
           <div className="col-12 ">
             <Field name="ticketPurchased" type="number" component={textField} label="Ticket Purchased"
                    placeholder="1" id="ticketPurchased" autoFocus={true} size="5" />
@@ -32,8 +45,8 @@ const AttendeeBookingComponent = props => {
         </div>
         <div className="row">
           <div className="col-12">
-            <Field name="attendeeId" type="text" component={asyncSelectField} placeholder="Attendee"
-                   label="Select an attendee" loadOptions={getAvailableAttendees(props.initialValues.eventId)}/>
+            <Field name="status" type="text" component={selectField} placeholder="Status"
+                   label="Status" options={statusOptions}/>
           </div>
         </div>
         <div className="row">
@@ -51,9 +64,10 @@ const AttendeeBookingComponent = props => {
 }
 
 const constraints = {
-  ticketPurchased: {
-    presence: true
-  }
+  "status": {presence: {message: "was not selected"}},
+  "attendeeId": {presence: {message: "was not selected"}},
+  "ticketPurchased": {numericality: {onlyInteger: true, greaterThanOrEqualTo: true}},
+
 }
 
 export const validate = values => {

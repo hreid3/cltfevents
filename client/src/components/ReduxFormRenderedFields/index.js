@@ -97,7 +97,7 @@ export const asyncSelectField = ({input, label, loadOptions, meta: { touched, er
       <div className="pt-form-content">
         <Select.Async
           {...input}
-          multi={true}
+          multi={false}
           loadOptions={loadOptions}
           placeholder={placeholder}
           onBlurResetsInput={false}

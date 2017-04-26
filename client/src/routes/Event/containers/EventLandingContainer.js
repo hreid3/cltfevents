@@ -8,7 +8,10 @@ import {
   loadEventDetailData,
   editEvent,
   deleteEvent as actionDeleteEvent,
-  addEventAttendee} from '../modules/event'
+  addEventAttendee,
+  doSubmitAttendeeForm,
+  getEventAttendees
+} from '../modules/event'
 
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
@@ -86,10 +89,9 @@ const mapDispatchToProps = (dispatch) => {
         }
       }
     })),
-    // addAttendee: (eventId) => dispatch(addEventAttendee(eventId)),
+    doSubmitAttendeeForm: (values) => dispatch(doSubmitAttendeeForm(values)),
+    getEventAttendees: () => dispatch(getEventAttendees()),
     openBookingForm: (wrappedComponent) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
-    // openBookingForm: () => dispatch(addEventAttendee(wrappedComponent)),
-    // addAttendee: (slug) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
       title: 'Add Attendee',
       wrappedComponent: wrappedComponent
     })),
