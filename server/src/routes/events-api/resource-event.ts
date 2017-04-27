@@ -41,6 +41,11 @@ export class EventResource extends BaseRoute implements IResource {
             this.createOrUpdateAttendee(req, res, next)
         })
 
+        // /attendee-payment/58faa6084d004eaf425ef31c
+        router.post("/:slug([a-z-0-9_-]+)/event-booking/:eventBookingId([a-f0-9]{24})", (req: Request, res: Response, next: NextFunction) => {
+            this.addAttendeePayment(req, res, next)
+        })
+
         router.get("/:slug([a-z-0-9_-]+)/attendees", (req: Request, res: Response, next: NextFunction) => {
             this.getAttendeesForEvent(req, res, next)
         })
@@ -198,6 +203,32 @@ export class EventResource extends BaseRoute implements IResource {
             let results: any = await AttendeeEventBooking.find({event: eventId._id}).populate(this.populateAttendeeBookEventFields)
             this.json(req, res, results)
         } catch(err) {
+            let status = 500
+            if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
+                status = 400
+            }
+            this.jsonError(req, res, status, err)
+        }
+    }
+
+    protected async addAttendeePayment(req: Request, res: Response, next: NextFunction) {
+        try {
+            const slug = req.params.slug
+            const eventBookingId =  req.params.eventBookingId
+            const eventId = await Event.findOne({slug: slug}).select('_id')
+            const anAttendeeBookingEvent: any = await AttendeeEventBooking.findOne({_id: eventBookingId}).populate(this.populateAttendeeBookEventFields)
+            if (!anAttendeeBookingEvent) {
+                this.jsonError(req, res, 404, "No Attendee Booking Record found")
+            }
+            console.log(anAttendeeBookingEvent.payments)
+            anAttendeeBookingEvent.payments.push({
+                txDate: new Date(),
+                ...req.body
+            })
+            const result = await anAttendeeBookingEvent.update(anAttendeeBookingEvent)
+            this.json(req, res, result)
+        } catch(err) {
+            console.log(err)
             let status = 500
             if (err.name === 'ValidationError') { // Fragile, but could not determine type with instanceof
                 status = 400

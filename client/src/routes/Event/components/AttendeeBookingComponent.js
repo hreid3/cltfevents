@@ -40,7 +40,7 @@ const AttendeeBookingComponent = props => {
         <div className="row">
           <div className="col-12 ">
             <Field name="numberSeatsReserved" type="number" component={textField} label="Ticket Purchased"
-                   placeholder="1" id="numberSeatsReserved" autoFocus={true} size="5" />
+                   placeholder="1" id="numberSeatsReserved" autoFocus={true}  min="0" max="99"  size="2" />
           </div>
         </div>
         <div className="row">

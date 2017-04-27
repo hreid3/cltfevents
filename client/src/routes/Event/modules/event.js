@@ -181,6 +181,7 @@ export const doSubmitEventForm = (values) => {
 export const doSubmitAttendeeForm = values => (dispatch, getState) => {
   values.attendeeId = _.isObject(values.attendeeId) ? values.attendeeId.value : values.attendeeId
   values.status = _.isObject(values.status) ? values.status.id : values.status
+  values.eventBookingId = row.eventBookingId
   const options = {
     method: 'POST',
     headers: defaultHeaders,
@@ -192,6 +193,26 @@ export const doSubmitAttendeeForm = values => (dispatch, getState) => {
     .then(data => {
       dispatch(getEventAttendees())
       dispatch(hideModal())
+    })
+    .catch(errors => {
+      throw new SubmissionError(errors)
+    })
+}
+
+export const doSubmitPaymentForm = (values, row, props) => (dispatch, getState) => {
+  values.method = _.isObject(values.method) ? values.method.id : values.method
+  const options = {
+    method: 'POST',
+    headers: defaultHeaders,
+    mode: 'cors',
+    cache: 'default',
+    body: JSON.stringify(values)
+  }
+  return request('/event/' + row.eventId + '/event-booking/' + row.eventBookingId, options)
+    .then(data => {
+      props.message = "Payment Added" // Not using store.
+      // dispatch(getEventAttendees())
+      // dispatch(hideModal())
     })
     .catch(errors => {
       throw new SubmissionError(errors)
@@ -223,7 +244,6 @@ export const getAvailableAttendees = (slug) => (searchText, cb) => doGet('/event
         label: val.firstName + " " + val.lastName + "-" + val.email
       }))).then(data => cb(null, {options: data}))
       .catch((err) =>  console.error(err))
-
 
 // ------------------------------------
 // Reducer
