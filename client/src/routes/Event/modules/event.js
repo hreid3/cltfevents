@@ -96,14 +96,13 @@ export const loadEventDetailData = (slug) => { // TODO: Need Filter
   }
 }
 
-const showEventDetails = (details) => {
-  return {
+const showEventDetails = (details) => (
+  {
     type: EVENT_DETAIL_SHOW,
     payload: {
       details: details
-    }
   }
-}
+})
 
 const fetchEvents = (dispatch, filter = []) => {
   return Promise.all([doGet('/event')])
@@ -181,7 +180,6 @@ export const doSubmitEventForm = (values) => {
 export const doSubmitAttendeeForm = values => (dispatch, getState) => {
   values.attendeeId = _.isObject(values.attendeeId) ? values.attendeeId.value : values.attendeeId
   values.status = _.isObject(values.status) ? values.status.id : values.status
-  values.eventBookingId = row.eventBookingId
   const options = {
     method: 'POST',
     headers: defaultHeaders,
@@ -211,7 +209,7 @@ export const doSubmitPaymentForm = (values, row, props) => (dispatch, getState) 
   return request('/event/' + row.eventId + '/event-booking/' + row.eventBookingId, options)
     .then(data => {
       props.message = "Payment Added" // Not using store.
-      // dispatch(getEventAttendees())
+      dispatch(getEventAttendees())
       // dispatch(hideModal())
     })
     .catch(errors => {
@@ -220,16 +218,22 @@ export const doSubmitPaymentForm = (values, row, props) => (dispatch, getState) 
 }
 
 export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' + getState().eventData.details.slug + "/attendees")
-    .then(data => dispatch(setEventAttendees(data.payload.map(val => (
-      {
+    .then(data => dispatch(setEventAttendees(data.payload.map(val => {
+      console.log(val.payments)
+      const total = val.numberSeatsReserved * val.event.ticketPrice
+      const amtPaid = val.payments.reduce((a, b) => ({amount: a.amount + b.amount}), {amount: 0}).amount
+      return {
         ...val,
         attendeeId: val.attendee._id,
         slug: val.event.slug,
-        totalCosts: val.numberSeatsReserved * val.event.ticketPrice,
+        totalCosts:total,
         eventId: val.event.slug,
+        amountPaid: amtPaid,
+        amountOwed: total - amtPaid,
         eventBookingId: val._id
       }
-      )))))
+    }
+    ))))
     .catch(err => console.error(err))
 
 export const setEventAttendees = values => (

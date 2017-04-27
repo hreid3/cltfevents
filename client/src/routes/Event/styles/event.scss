@@ -1,0 +1,17 @@
+
+.attendee-payment-form {
+  max-width: 50%;
+  margin: 0 20px;
+  .Select-menu-outer {
+    z-index: 999999 !important;
+    position: relative;
+  }
+
+  .Select.is-open {
+    position: relative; z-index: 999999;
+  }
+
+  .pt-button {
+    margin-top: 25px;
+  }
+}

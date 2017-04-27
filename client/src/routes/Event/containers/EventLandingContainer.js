@@ -20,6 +20,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { showModal, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_WRAPPED_COMPONENT } from '../../../store/modal'
 const validator = require('validate.js')
+import '../styles/event.scss'
 
 validator.extend(validator.validators.datetime, {
   parse: (value, options) => {

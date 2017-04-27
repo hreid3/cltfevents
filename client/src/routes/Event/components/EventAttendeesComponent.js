@@ -51,7 +51,10 @@ export default class EventAttendeesComponent extends Component {
     return (
       <div>
         <a className="pt-button pt-small"
-           onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent(row))}>Update Attendee</a>
+           onClick={(e) => {
+             e.stopPropagation()
+             this.props.openBookingForm(this.attendeeBookingComponent(row))
+           } }>Update Attendee</a>
         <a className="pt-button pt-small"
            onClick={(e) => this.selectRow = [row.eventBookingId]}>Add Payment</a>
       </div>
@@ -66,7 +69,7 @@ export default class EventAttendeesComponent extends Component {
     const slug = this.props.details.slug
     const tableOptions = {
       expandRowBgColor: 'rgb(242, 255, 163)',
-      onlyOneExpanding: true
+      onlyOneExpanding: true,
     }
     return (
       <div>
@@ -97,7 +100,8 @@ export default class EventAttendeesComponent extends Component {
           <TableHeaderColumn dataField="numberSeatsReserved" width="5%" columnClassName="c-seats-reserved">TicketPurchased</TableHeaderColumn>
           <TableHeaderColumn dataField="totalCosts"
                              dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-currency">TotalCost</TableHeaderColumn>
-          <TableHeaderColumn dataField="amountOwed" width="10%" columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
+          <TableHeaderColumn dataField="amountPaid" dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
+          <TableHeaderColumn dataField="amountOwed" dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
           <TableHeaderColumn hidden={false} dataFormat={this.showActions}  columnClassName="c-actions">Actions</TableHeaderColumn>
         </BootstrapTable>
       </div>
