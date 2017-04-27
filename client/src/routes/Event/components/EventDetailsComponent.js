@@ -8,7 +8,7 @@ import ReactHtmlParser from 'react-html-parser'
 import {Link} from 'react-router'
 import AddressRenderer from '../../../components/Shared/AddressRenderer'
 import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
-import EventAttendeesComponent from './EventAttendeesComponent'
+import EventAttendeesComponent from '../containers/EventAttendeesContainer'
 
 export class EventDetailsComponent extends Component {
 
@@ -137,7 +137,7 @@ export class EventDetailsComponent extends Component {
           </div>
         </div>
       <hr/>
-      <EventAttendeesComponent {...this.props}  />
+      <EventAttendeesComponent  />
       </div>
     )
   }

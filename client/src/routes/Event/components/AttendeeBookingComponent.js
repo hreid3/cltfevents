@@ -39,8 +39,8 @@ const AttendeeBookingComponent = props => {
 
         <div className="row">
           <div className="col-12 ">
-            <Field name="ticketPurchased" type="number" component={textField} label="Ticket Purchased"
-                   placeholder="1" id="ticketPurchased" autoFocus={true} size="5" />
+            <Field name="numberSeatsReserved" type="number" component={textField} label="Ticket Purchased"
+                   placeholder="1" id="numberSeatsReserved" autoFocus={true} size="5" />
           </div>
         </div>
         <div className="row">

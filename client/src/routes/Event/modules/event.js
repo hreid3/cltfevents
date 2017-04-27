@@ -5,6 +5,8 @@
 import {SubmissionError, reset} from 'redux-form'
 import {browserHistory} from 'react-router'
 import moment from 'moment'
+import { hideModal} from '../../../store/modal'
+import _ from 'lodash'
 
 import {
   initialEventState as initialState,
@@ -13,6 +15,7 @@ import {
   EVENT_SHOW_LANDING_PAGE,
   EVENT_DETAIL_SHOW,
   EVENT_SHOW_EVENT_ATTENDEES,
+  EVENT_INITIAL_DETAILS_STATE,
   attendeeBooking
 } from './constants'
 
@@ -59,7 +62,7 @@ export const deleteEvent = (slug) => {
         throw new SubmissionError(errors)
       })
   }
-};
+}
 
 export const fetchEventLookupData = (dispatch) => {
   return Promise.all([doGet('/church'), doGet('/status'), doGet('/type'), doGet('/level')])
@@ -81,6 +84,7 @@ export const loadEventData = (filter = []) => { // TODO: Need Filter
 
 export const loadEventDetailData = (slug) => { // TODO: Need Filter
   return (dispatch, getState) => {
+    dispatch(initialDetailsState())
     doGet('/event/' + slug)
       .then((fullData) => {
         dispatch(showEventDetails(fullData.payload))
@@ -90,17 +94,16 @@ export const loadEventDetailData = (slug) => { // TODO: Need Filter
         console.log('show 404', e)
       })
   }
-};
+}
 
 const showEventDetails = (details) => {
-  details.attendees = [];
   return {
     type: EVENT_DETAIL_SHOW,
     payload: {
       details: details
     }
   }
-};
+}
 
 const fetchEvents = (dispatch, filter = []) => {
   return Promise.all([doGet('/event')])
@@ -110,6 +113,14 @@ const fetchEvents = (dispatch, filter = []) => {
   })
 };
 
+export const initialDetailsState = () => (
+  {
+    type: EVENT_INITIAL_DETAILS_STATE,
+    payload: {
+      details: Object.assign({}, initialState.details)
+    }
+  }
+)
 export const eventFormReady = (details) => {
   return {
     type: EVENT_ACTION_ADD,
@@ -128,7 +139,8 @@ export const showEventsGrid = (results = [], filter = [] ) => {
         grid: {
           results: results,
           filter: filter
-        }
+        },
+        details: Object.assign({}, initialState.details)
       }
     }
 };
@@ -141,7 +153,7 @@ export const setLookupData = (key, values) =>{
       values: values
     }
   }
-};
+}
 
 export const doSubmitEventForm = (values) => {
   return (dispatch, getState) => {
@@ -167,8 +179,8 @@ export const doSubmitEventForm = (values) => {
 }
 
 export const doSubmitAttendeeForm = values => (dispatch, getState) => {
-  values.attendeeId = values.attendeeId.value
-  values.status = values.status.id
+  values.attendeeId = _.isObject(values.attendeeId) ? values.attendeeId.value : values.attendeeId
+  values.status = _.isObject(values.status) ? values.status.id : values.status
   const options = {
     method: 'POST',
     headers: defaultHeaders,
@@ -177,17 +189,33 @@ export const doSubmitAttendeeForm = values => (dispatch, getState) => {
     body: JSON.stringify(values)
   }
   return request('/event/' + getState().eventData.details.slug + '/attendees', options)
-    .then(data => dispatch(getEventAttendees()))
+    .then(data => {
+      dispatch(getEventAttendees())
+      dispatch(hideModal())
+    })
     .catch(errors => {
       throw new SubmissionError(errors)
     })
 }
 
 export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' + getState().eventData.details.slug + "/attendees")
-    .then(data => dispatch(setEventAttendees(data.payload)))
+    .then(data => dispatch(setEventAttendees(data.payload.map(val => (
+      {
+        ...val,
+        attendeeId: val.attendee._id,
+        slug: val.event.slug,
+        totalCosts: val.numberSeatsReserved * val.event.ticketPrice,
+        eventId: val.event.slug,
+        eventBookingId: val._id
+      }
+      )))))
     .catch(err => console.error(err))
 
-export const setEventAttendees = values => ({type: EVENT_SHOW_EVENT_ATTENDEES, payload: values})
+export const setEventAttendees = values => (
+  {
+    type: EVENT_SHOW_EVENT_ATTENDEES,
+    payload: values
+  })
 
 export const getAvailableAttendees = (slug) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
       .then(data => data.payload.map(val => ({
@@ -213,12 +241,13 @@ export const eventReducer  = (state = initialState, action) => {
     case EVENT_ACTION_ADD:
     case EVENT_SHOW_LANDING_PAGE:
     case EVENT_DETAIL_SHOW:
+    case EVENT_INITIAL_DETAILS_STATE:
       return Object.assign({}, state, payload); // Object copy
     case EVENT_SHOW_EVENT_ATTENDEES:
-      const details = state.details;
-      details.attendees = payload;
-      const payload2 = details;
-      return Object.assign({}, state, payload2); // Object copy
+      state.attendees = {data: payload}
+      let temp = {...state}
+      temp.off = Math.random() // TODO:  Immutable.js
+      return temp
     default:
       return state
   }

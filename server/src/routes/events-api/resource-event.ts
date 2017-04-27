@@ -152,7 +152,7 @@ export class EventResource extends BaseRoute implements IResource {
             // status: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
             // payments: [EventPaymentSchema]
             const attendeeId = req.body.attendeeId
-            const ticketPurchased = req.body.ticketPurchased || 0
+            const numberSeatsReserved = req.body.numberSeatsReserved || 0
             const bookingDate = req.body.bookingDate
             const status = req.body.status
             const eventBookingId = req.body.eventBookingId
@@ -165,7 +165,7 @@ export class EventResource extends BaseRoute implements IResource {
                 attendee: attendeeId,
                 event: eventId,
                 bookingDate: bookingDate,
-                numberSeatsReserved: ticketPurchased,
+                numberSeatsReserved: numberSeatsReserved,
                 status: status
             }
             console.log(data)
@@ -195,9 +195,7 @@ export class EventResource extends BaseRoute implements IResource {
             const slug = req.params.slug
             const eventId = await Event.findOne({slug: slug}).select('_id')
             console.log(eventId._id )
-            const results = await AttendeeEventBooking.find({event: eventId._id}).populate(this.populateAttendeeBookEventFields)
-
-            // TODO:  We have to go through and derive data
+            let results: any = await AttendeeEventBooking.find({event: eventId._id}).populate(this.populateAttendeeBookEventFields)
             this.json(req, res, results)
         } catch(err) {
             let status = 500
