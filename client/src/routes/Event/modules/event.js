@@ -16,7 +16,8 @@ import {
   EVENT_DETAIL_SHOW,
   EVENT_SHOW_EVENT_ATTENDEES,
   EVENT_INITIAL_DETAILS_STATE,
-  attendeeBooking
+  attendeeBooking,
+  FRIENDLY_DATE_FORMAT
 } from './constants'
 
 import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders, request} from '../../../utils/rest-client'
@@ -158,7 +159,7 @@ export const setLookupData = (key, values) =>{
 
 export const doSubmitEventForm = (values) => {
   return (dispatch, getState) => {
-    values.details.startDateTime = moment(values.details.startDateTime , "DD/MM/YYYY hh:mm a");//;Date.parse(value)
+    values.details.startDateTime = moment(values.details.startDateTime , FRIENDLY_DATE_FORMAT);//;Date.parse(value)
     const options = {
       method: 'POST',
       headers: defaultHeaders,
@@ -166,7 +167,6 @@ export const doSubmitEventForm = (values) => {
       cache: 'default',
       body: JSON.stringify(values.details)
     }
-
     return request('/event', options)
       .then(data => {
         dispatch(showEventsGrid());

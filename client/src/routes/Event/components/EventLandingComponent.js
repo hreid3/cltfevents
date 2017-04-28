@@ -5,6 +5,7 @@ import DocumentTitle from 'react-document-title'
 import EventForm from './EventFormComponent'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 import {EventDetailsComponent} from './EventDetailsComponent'
+import moment from 'moment'
 
 const EventLanding = (props) => {
   let defaultComponent = (<div></div>)
@@ -69,14 +70,12 @@ class EventsGrid extends Component { // Need lifecycle method
           <div className="col-12">
             <BootstrapTable
               data={props.grid.results}
-              remote={true}
-            >
-              <TableHeaderColumn dataField='_id' isKey={true}>Event ID</TableHeaderColumn>
+              remote={false}>
+              <TableHeaderColumn dataField='_id' isKey={true} hidden={true}>Event ID</TableHeaderColumn>
               <TableHeaderColumn dataField="title" dataFormat={(cell, row) => <Link to={"/events/" + row.slug}>{cell}</Link>}>Event Title</TableHeaderColumn>
               <TableHeaderColumn dataField="hostingChurch" dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
-              <TableHeaderColumn dataField="startDateTime">Start Time</TableHeaderColumn>
+              <TableHeaderColumn dataField="startDateTime" dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')}>Start Time</TableHeaderColumn>
               <TableHeaderColumn dataFormat={this.actionCell}></TableHeaderColumn>
-
             </BootstrapTable>
           </div>
         </div>

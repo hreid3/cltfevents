@@ -6,7 +6,9 @@ import ReactQuill from 'react-quill'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import 'react-date-picker/index.css'
-import { Calendar } from 'react-date-picker'
+import { DateField, DatePicker } from 'react-date-picker'
+import moment from 'moment'
+import { FRIENDLY_DATE_FORMAT } from '../../routes/Event/modules/constants'
 
 export const textField = ({ input, label, type, placeholder, id, autoFocus = false, meta: { touched, error, warning } }) => {
   return (
@@ -23,7 +25,6 @@ export const textField = ({ input, label, type, placeholder, id, autoFocus = fal
   )
 }
 
-
 export const numberTextField = ({ input, label, type = 'number', placeholder, id, min = 0, max = 999, step = 1, autoFocus = false, meta: { touched, error, warning } }) => {
   return (
     <div className="pt-form-group">
@@ -38,6 +39,22 @@ export const numberTextField = ({ input, label, type = 'number', placeholder, id
     </div>
   )
 }
+
+export const textareaField = ({ input, label, placeholder, id, rows = 5, autoFocus = false, meta: { touched, error, warning } }) => {
+  return (
+    <div className="pt-form-group">
+      <label className="pt-label" htmlFor={id}>
+        {label}&nbsp;
+      </label>
+      <div className="pt-form-content">
+        <textarea {...input} placeholder={placeholder} id={id} className="pt-input pt-fill " rows={rows} autoFocus={autoFocus} />
+        <div className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</div>
+        {/*<div className="pt-form-helper-text">Helper text with details / user feedback</div>*/}
+      </div>
+    </div>
+  )
+}
+
 
 export const wysiwygEditorField = ({ input, label, value, meta: { touched, error, warning }}) => {
   return (
@@ -124,9 +141,21 @@ export const asyncSelectField = ({input, label, loadOptions, meta: { touched, er
   )
 }
 
-
 export const datetimePickerField = ({input, label, defaultValue, meta: { touched, error, warning }, placeholder}) => {
-  // input.onBlur = null
+
+  if (!moment(input.value, FRIENDLY_DATE_FORMAT, true).isValid()) {
+    try {
+      const tmp = moment(input.value)
+      if (tmp.isValid()) {
+        input.value = tmp.format(FRIENDLY_DATE_FORMAT)
+      } else {
+        input.value = moment()
+      }
+    } catch(err) {
+      input.value = moment()
+    }
+  }
+  console.log("pickerField", input.value)
   return (
     <div className="pt-form-group">
       <label className="pt-label">
@@ -134,7 +163,22 @@ export const datetimePickerField = ({input, label, defaultValue, meta: { touched
         <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
       </label>
       <div className="pt-form-content">
-        <Calendar dateFormat="DD/MM/YYYY hh:mm a" {...input} />
+        <DateField
+          forceValidDate={true}
+          defaultValue={input.value}
+          dateFormat={FRIENDLY_DATE_FORMAT}
+          {...input}
+        >
+          <DatePicker
+            navigation={true}
+            locale="en"
+            forceValidDate={true}
+            highlightWeekends={true}
+            highlightToday={true}
+            weekNumbers={true}
+            weekStartDay={0}
+          />
+        </DateField>
       </div>
     </div>
   )

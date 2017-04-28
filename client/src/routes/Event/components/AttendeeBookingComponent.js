@@ -6,7 +6,8 @@ import {
   textField,
   numberTextField,
   asyncSelectField,
-  selectField
+  selectField,
+  textareaField
 } from '../../../components/ReduxFormRenderedFields'
 import { reduxForm, Field } from 'redux-form'
 import { getAvailableAttendees } from '../modules/event'
@@ -50,6 +51,12 @@ const AttendeeBookingComponent = props => {
           <div className="col-12">
             <Field name="status" type="text" component={selectField} placeholder="Status"
                    label="Status" options={statusOptions}/>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <Field name="notes" type="text" component={textareaField} placeholder="Status"
+                   label="Notes" options={statusOptions} rows="5"/>
           </div>
         </div>
         <div className="row">
