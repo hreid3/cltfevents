@@ -16,7 +16,8 @@ import {
   EVENT_DETAIL_SHOW,
   EVENT_SHOW_EVENT_ATTENDEES,
   EVENT_INITIAL_DETAILS_STATE,
-  attendeeBooking
+  attendeeBooking,
+  FRIENDLY_DATE_FORMAT
 } from './constants'
 
 import {doGet, EVENT_API_ENDPOINT_BASE, defaultHeaders, request} from '../../../utils/rest-client'
@@ -158,7 +159,7 @@ export const setLookupData = (key, values) =>{
 
 export const doSubmitEventForm = (values) => {
   return (dispatch, getState) => {
-    values.details.startDateTime = moment(values.details.startDateTime , "DD/MM/YYYY hh:mm a");//;Date.parse(value)
+    values.details.startDateTime = moment(values.details.startDateTime , FRIENDLY_DATE_FORMAT);//;Date.parse(value)
     const options = {
       method: 'POST',
       headers: defaultHeaders,
@@ -166,7 +167,6 @@ export const doSubmitEventForm = (values) => {
       cache: 'default',
       body: JSON.stringify(values.details)
     }
-
     return request('/event', options)
       .then(data => {
         dispatch(showEventsGrid());
@@ -219,19 +219,33 @@ export const doSubmitPaymentForm = (values, row, props) => (dispatch, getState) 
     })
 }
 
+// TODO: Cleanup redundant code.
 export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' + getState().eventData.details.slug + "/attendees")
     .then(data => dispatch(setEventAttendees(data.payload.map(val => {
-      const total = val.numberSeatsReserved * val.event.ticketPrice
       const amtPaid = val.payments.reduce((a, b) => ({amount: a.amount + b.amount}), {amount: 0}).amount
-      return {
-        ...val,
-        attendeeId: val.attendee._id,
-        slug: val.event.slug,
-        totalCosts:total,
-        eventId: val.event.slug,
-        amountPaid: amtPaid,
-        amountOwed: total - amtPaid,
-        eventBookingId: val._id
+      if (val.status == 'Active') {
+        const total = val.numberSeatsReserved * val.event.ticketPrice
+        return {
+          ...val,
+          attendeeId: val.attendee._id,
+          slug: val.event.slug,
+          totalCosts: total,
+          eventId: val.event.slug,
+          amountPaid: amtPaid,
+          amountOwed: total - amtPaid,
+          eventBookingId: val._id
+        }
+      } else {
+        return {
+          attendeeId: val.attendee._id,
+          slug: val.event.slug,
+          eventId: val.event.slug,
+          eventBookingId: val._id,
+          amountPaid: amtPaid,
+          amountOwed: 0,
+          totalCosts: 0,
+          ...val
+        }
       }
     }
     ))))
@@ -243,7 +257,7 @@ export const setEventAttendees = values => (
     payload: values
   })
 
-export const getAvailableAttendees = (slug) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
+export const getAvailableAttendees = (slug, filter = false) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
       .then(data => data.payload.filter(val => val != null).map(val => ({
         value: val._id,
         label: val.firstName + " " + val.lastName + "-" + val.email
@@ -275,9 +289,11 @@ export const eventReducer  = (state = initialState, action) => {
       state.details.remainingTickets = state.details.numberOfSeats
       state.details.reservedTickets = 0
       state.attendees.data.forEach(val => {
-        state.details.ticketPurchased += val.amountPaid
-        state.details.remainingTickets -=  val.numberSeatsReserved
-        state.details.reservedTickets += val.numberSeatsReserved
+        if (val.status == 'Active') {
+          state.details.ticketPurchased += val.amountPaid
+          state.details.remainingTickets -= val.numberSeatsReserved
+          state.details.reservedTickets += val.numberSeatsReserved
+        }
       })
       let temp = {...state}
       temp.off = Math.random() // TODO:  Immutable.js

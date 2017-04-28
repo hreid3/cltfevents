@@ -166,6 +166,7 @@ export class EventResource extends BaseRoute implements IResource {
             const bookingDate = req.body.bookingDate
             const status = req.body.status
             const eventBookingId = req.body.eventBookingId
+            const notes = req.body.notes || ''
             let isNew = false
             if (!eventBookingId) {
                 isNew = true
@@ -176,7 +177,8 @@ export class EventResource extends BaseRoute implements IResource {
                 event: eventId,
                 bookingDate: bookingDate,
                 numberSeatsReserved: numberSeatsReserved,
-                status: status
+                status: status,
+                notes: notes
             }
             console.log(data)
             let result = null;

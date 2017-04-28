@@ -20,6 +20,8 @@ export const EVENT_DETAIL_SHOW = '@cltf/EVENT_DETAIL_SHOW'
 export const EVENT_SHOW_EVENT_ATTENDEES = '@cltf/EVENT_SHOW_EVENT_ATTENDEES'
 export const EVENT_INITIAL_DETAILS_STATE = '@cltf/EVENT_INITIAL_DETAILS_STATE'
 
+export const FRIENDLY_DATE_FORMAT = 'MM/DD/YYYY hh:mm a'
+
 export const attendeeBooking = {
   eventId: '',
   attendeeId: '',

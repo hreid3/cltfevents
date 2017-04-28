@@ -64,7 +64,7 @@ export class EventDetailsComponent extends Component {
           </DocumentTitle>
         </div>
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <div className="pt-button-group pt-large float-left">
               <Link className="pt-button pt-icon-th" tabIndex="0" to={`/events/${this.props.params.slug}/edit`} role="button">Edit Event</Link>
               <a className="pt-button pt-icon-th" tabIndex="1" onClick={() => deleteEvent(slug, title)} role="button">Delete Event</a>
@@ -74,13 +74,13 @@ export class EventDetailsComponent extends Component {
         <div className="row">
           <section className="col-md-7 main">
             <div className="row">
-              <div className="col-12">
+              <div className="col-md-12">
                 <h2>{title}</h2>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-12">
+              <div className="col-md-12">
                 {/*<h4>Description</h4>*/}
                 <div>{ReactHtmlParser( description )}</div>
               </div>
@@ -90,63 +90,63 @@ export class EventDetailsComponent extends Component {
           <aside className="col-md-5 right">
             <AddressRenderer location={location} title={location.title} label="Event Location" />
             <div className="row">
-              <div className="col-8">
+              <div className="col-md-8">
                 <h4>Start Time</h4>
                 <div>{moment(startDateTime).format('MMM Do, YYYY h:mm a')}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4># Seats / Tickets</h4>
                 <div>{numberOfSeats}</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Reserved Tickets</h4>
                 <div>{reservedTickets}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Remaining Seats / Tickets</h4>
                 <div>{remainingTickets}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Attendees Registered</h4>
                 <div>{numberOfAttendees}</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Ticket Price</h4>
                 <div>{currencyFormatterUs.format(ticketPrice)}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Event Cost</h4>
                 <div>{currencyFormatterUs.format(ticketPrice * numberOfSeats)}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Funds Collected</h4>
                 <div>{currencyFormatterUs.format(ticketPurchased)}</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-12">
+              <div className="col-md-12">
                 <h4>Guest Speakers</h4>
                 <div>{guestSpeakers ? guestSpeakers.map((val) => val.value) : ""} </div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Status</h4>
                 <div>{eventStatus.title}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Type</h4>
                 <div>{eventType.title}</div>
               </div>
-              <div className="col-4">
+              <div className="col-md-4">
                 <h4>Level</h4>
                 <div>{eventLevel.title}</div>
               </div>

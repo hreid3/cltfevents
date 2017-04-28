@@ -10,7 +10,8 @@ import {
   deleteEvent as actionDeleteEvent,
   addEventAttendee,
   doSubmitAttendeeForm,
-  getEventAttendees
+  getEventAttendees,
+  FRIENDLY_DATE_FORMAT
 } from '../modules/event'
 
 import {utc} from 'moment';
@@ -24,11 +25,26 @@ import '../styles/event.scss'
 
 validator.extend(validator.validators.datetime, {
   parse: (value, options) => {
-    const val = moment(value, "DD/MM/YYYY hh:mm a")//;Date.parse(value)
-    return val
+    let aVal = NaN
+    try {
+      aVal = moment(value, FRIENDLY_DATE_FORMAT, true)
+    } catch(err) {
+      return NaN
+    }
+    if (!aVal.isValid()) {
+      try {
+        aVal = moment(value)
+        if (!aVal.isValid()) {
+          aVal = moment()
+        }
+      } catch(err) {
+        aVal = moment()
+      }
+    }
+    return aVal.unix()
   },
   format: (value, options) => {
-    return utc(value).format('DD/MM/YYYY hh:mm a')
+    return utc(value).format(FRIENDLY_DATE_FORMAT)
   }
 })
 
@@ -54,9 +70,9 @@ const constraints = {
   "location.city": {presence: true},
   "location.state": {presence: true},
   "location.postal": {presence: true},
-  startDateTime: {
-    datetime: {earliest: utc().subtract(1, 'day'), message: "must occur in the future."},
-  },
+  // startDateTime: {
+  //   datetime: {earliest: utc().subtract(1, 'day'), message: "must occur in the future."},
+  // },
   "eventStatus": {presence: {message: "was not selected"}},
   "eventType":   {presence: {message: "was not selected"}},
   "eventLevel":  {presence: {message: "was not selected"}},
@@ -93,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
     doSubmitAttendeeForm: (values) => dispatch(doSubmitAttendeeForm(values)),
     getEventAttendees: () => dispatch(getEventAttendees()),
     openBookingForm: (wrappedComponent) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
-      title: 'Add Attendee',
+      title: 'Booking Attendee',
       wrappedComponent: wrappedComponent
     })),
     validate: validate
