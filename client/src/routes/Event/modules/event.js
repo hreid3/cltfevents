@@ -243,7 +243,7 @@ export const setEventAttendees = values => (
     payload: values
   })
 
-export const getAvailableAttendees = (slug) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
+export const getAvailableAttendees = (slug, filter = false) => (searchText, cb) => doGet('/event/' + slug + '/available-attendees?q=' + encodeURI(searchText))
       .then(data => data.payload.filter(val => val != null).map(val => ({
         value: val._id,
         label: val.firstName + " " + val.lastName + "-" + val.email

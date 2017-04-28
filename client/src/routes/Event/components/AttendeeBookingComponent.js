@@ -22,22 +22,39 @@ const statusOptions = [
 ]
 
 const AttendeeBookingComponent = props => {
-  const attendeeId = ''
+  // const attendeeId = ''
   const {
     handleSubmit,
     pristine,
     reset,
     submitting,
-    ticketPurchased
+    ticketPurchased,
   } = props
+
+  const {
+    attendeeId
+  } = props.initialValues
+
   // The form will be be in new mode if attendeeId is empty
+  let attendeeField = <div></div>
+  if (!attendeeId) {
+    attendeeField = <Field name="attendeeId" type="text" component={asyncSelectField} placeholder="Attendee"
+           label="Select an attendee" loadOptions={getAvailableAttendees(props.initialValues.eventId)}/>
+  } else {
+    attendeeField = (
+      <div className="attendee-booking-form__attendee-read-only text-center">
+        <h3><span>{props.initialValues.attendee.firstName}</span> <span>{props.initialValues.attendee.lastName}</span></h3>
+        <input type="hidden" name="attendeeId" value={attendeeId} />
+      </div>
+    )
+    console.log('attendeeField', props)
+  }
   return (
     <div className="attendee-booking-form container">
       <form onSubmit={handleSubmit} className="attendee-booking-form">
         <div className="row">
           <div className="col-12">
-            <Field name="attendeeId" type="text" component={asyncSelectField} placeholder="Attendee"
-                   label="Select an attendee" loadOptions={getAvailableAttendees(props.initialValues.eventId)}/>
+            {attendeeField}
           </div>
         </div>
 

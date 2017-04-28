@@ -78,7 +78,7 @@ export default class EventAttendeesComponent extends Component {
           <a className="pt-button float-right add-attendee-btn" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
             ...attendeeBooking,
             eventId: slug
-          }))}>Add Attendee</a>
+          }))}>Book Attendee</a>
         </div>
         <BootstrapTable
           data={this.props.attendees.data}

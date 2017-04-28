@@ -109,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
     doSubmitAttendeeForm: (values) => dispatch(doSubmitAttendeeForm(values)),
     getEventAttendees: () => dispatch(getEventAttendees()),
     openBookingForm: (wrappedComponent) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
-      title: 'Add Attendee',
+      title: 'Booking Attendee',
       wrappedComponent: wrappedComponent
     })),
     validate: validate
