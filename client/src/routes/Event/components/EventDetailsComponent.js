@@ -9,6 +9,8 @@ import {Link} from 'react-router'
 import AddressRenderer from '../../../components/Shared/AddressRenderer'
 import { Classes, Tab2 as Tab, Tabs2 as Tabs } from "@blueprintjs/core";
 import EventAttendeesComponent from '../containers/EventAttendeesContainer'
+import moment from 'moment'
+import { currencyFormatterUs } from '../../../utils/common'
 
 export class EventDetailsComponent extends Component {
 
@@ -36,7 +38,11 @@ export class EventDetailsComponent extends Component {
       eventLevel,
       notes,
       location,
-      attendees
+      attendees,
+      remainingTickets,
+      ticketPurchased,
+      numberOfAttendees,
+      reservedTickets,
     } = this.props.details
     if (title == '') {
       return (
@@ -44,7 +50,7 @@ export class EventDetailsComponent extends Component {
       )
     }
     return (
-      <div>
+      <div className="event-details-component">
         <div className="row">
           <DocumentTitle title="Event Details">
             <div className="col-12">
@@ -58,15 +64,15 @@ export class EventDetailsComponent extends Component {
           </DocumentTitle>
         </div>
         <div className="row">
-          <div className="col-12">
-            <div className="pt-button-group pt-large float-right">
+          <div className="col-8">
+            <div className="pt-button-group pt-large float-left">
               <Link className="pt-button pt-icon-th" tabIndex="0" to={`/events/${this.props.params.slug}/edit`} role="button">Edit Event</Link>
               <a className="pt-button pt-icon-th" tabIndex="1" onClick={() => deleteEvent(slug, title)} role="button">Delete Event</a>
             </div>
           </div>
         </div>
         <div className="row">
-          <div className="col-md-8">
+          <section className="col-md-7 main">
             <div className="row">
               <div className="col-12">
                 <h2>{title}</h2>
@@ -80,27 +86,47 @@ export class EventDetailsComponent extends Component {
               </div>
             </div>
             <AddressRenderer location={hostingChurch.location} title={hostingChurch.title} label="Hosting Church"/>
-          </div>
-          <div className="col-md-4">
+          </section>
+          <aside className="col-md-5 right">
             <AddressRenderer location={location} title={location.title} label="Event Location" />
             <div className="row">
-              <div className="col-12">
+              <div className="col-8">
                 <h4>Start Time</h4>
-                <div>{startDateTime}</div>
+                <div>{moment(startDateTime).format('MMM Do, YYYY h:mm a')}</div>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col-12">
-                <h4>Number of Seats / Tickets</h4>
+              <div className="col-4">
+                <h4># Seats / Tickets</h4>
                 <div>{numberOfSeats}</div>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-12">
+              <div className="col-4">
+                <h4>Reserved Tickets</h4>
+                <div>{reservedTickets}</div>
+              </div>
+              <div className="col-4">
+                <h4>Remaining Seats / Tickets</h4>
+                <div>{remainingTickets}</div>
+              </div>
+              <div className="col-4">
+                <h4>Attendees Registered</h4>
+                <div>{numberOfAttendees}</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-4">
                 <h4>Ticket Price</h4>
-                <div>{ticketPrice}</div>
+                <div>{currencyFormatterUs.format(ticketPrice)}</div>
+              </div>
+              <div className="col-4">
+                <h4>Event Cost</h4>
+                <div>{currencyFormatterUs.format(ticketPrice * numberOfSeats)}</div>
+              </div>
+              <div className="col-4">
+                <h4>Funds Collected</h4>
+                <div>{currencyFormatterUs.format(ticketPurchased)}</div>
               </div>
             </div>
 
@@ -112,29 +138,21 @@ export class EventDetailsComponent extends Component {
             </div>
 
             <div className="row">
-              <div className="col-12">
+              <div className="col-4">
                 <h4>Status</h4>
                 <div>{eventStatus.title}</div>
               </div>
-            </div>
-
-
-            <div className="row">
-              <div className="col-12">
+              <div className="col-4">
                 <h4>Type</h4>
                 <div>{eventType.title}</div>
               </div>
-            </div>
-
-
-            <div className="row">
-              <div className="col-12">
+              <div className="col-4">
                 <h4>Level</h4>
                 <div>{eventLevel.title}</div>
               </div>
             </div>
 
-          </div>
+          </aside>
         </div>
       <hr/>
       <EventAttendeesComponent  />

@@ -73,6 +73,7 @@ export const selectField = ({input, label, options, placeholder, meta: { touched
           onBlurResetsInput={false}
           labelKey="title"
           valueKey="id"
+          noResultsText="No Items are available"
         />
       </div>
     </div>

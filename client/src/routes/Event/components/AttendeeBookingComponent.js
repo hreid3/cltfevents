@@ -4,12 +4,15 @@
 import React from 'react'
 import {
   textField,
+  numberTextField,
   asyncSelectField,
   selectField
 } from '../../../components/ReduxFormRenderedFields'
 import { reduxForm, Field } from 'redux-form'
 import { getAvailableAttendees } from '../modules/event'
 import DataObjectParser from 'dataobject-parser'
+import { hideModal } from '../../../store/modal'
+
 const validator = require('validate.js')
 
 const statusOptions = [
@@ -28,7 +31,7 @@ const AttendeeBookingComponent = props => {
   } = props
   // The form will be be in new mode if attendeeId is empty
   return (
-    <div>
+    <div className="attendee-booking-form container">
       <form onSubmit={handleSubmit} className="attendee-booking-form">
         <div className="row">
           <div className="col-12">
@@ -39,8 +42,8 @@ const AttendeeBookingComponent = props => {
 
         <div className="row">
           <div className="col-12 ">
-            <Field name="numberSeatsReserved" type="number" component={textField} label="Ticket Purchased"
-                   placeholder="1" id="numberSeatsReserved" autoFocus={true}  min="0" max="99"  size="2" />
+            <Field name="numberSeatsReserved" type="number" component={numberTextField} label="Ticket Reserved"
+                   placeholder="1" id="numberSeatsReserved" autoFocus={true}  min="0" max="99"  size="5" />
           </div>
         </div>
         <div className="row">
@@ -54,6 +57,8 @@ const AttendeeBookingComponent = props => {
             <hr/>
             <div>
               <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit <span
+                className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
+              <button type="button" className="pt-button pt-intent-primary"  onClick={e => props.dispatch(hideModal())}>Cancel <span
                 className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
             </div>
           </div>

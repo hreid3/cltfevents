@@ -109,11 +109,16 @@ export class EventResource extends BaseRoute implements IResource {
                         if (val.homeChurch) {
                             val.homeChurch = await Church.findOne({_id: val.homeChurch})
                         }
+                        let results: any = await AttendeeEventBooking.findOne({attendee: val._id, event: anEvent._id})
+                        if(results) {
+                            return null
+                        }
                         return val
                     })
 
                     Promise.all(newResults)
                         .then(fullData => fullData.filter(async (val) => {
+
                             return true // TODO:  Need to add filter here for already registered users
                         }))
                         .then(fullData => this.json(req, res, fullData))

@@ -17,9 +17,9 @@ const ComponentModal = ({ title, onConfirm, hideModal, wrappedComponent }) => {
   return (
     <Modal title={title}>
       {wrappedComponent}
-      <button onClick={handleConfirm(false)}>
-        Close
-      </button>
+      {/*<button onClick={handleConfirm(false)}>*/}
+        {/*Close*/}
+      {/*</button>*/}
     </Modal>
   );
 };

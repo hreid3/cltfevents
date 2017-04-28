@@ -10,6 +10,7 @@ import { getAttendeePaymentComponent } from './AttendeePaymentComponent'
 import { attendeeBooking } from '../modules/constants'
 import moment from 'moment'
 import { currencyFormatterUs} from '../../../utils/common'
+import { getAvailableAttendees } from '../modules/event'
 
 export default class EventAttendeesComponent extends Component {
 
@@ -72,23 +73,24 @@ export default class EventAttendeesComponent extends Component {
       onlyOneExpanding: true,
     }
     return (
-      <div>
-        <div className="pt-button-group pt-large float-right">
-          <a className="pt-button pt-small" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
+      <div className="row">
+        <div className="col-12">
+          <a className="pt-button float-right add-attendee-btn" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
             ...attendeeBooking,
             eventId: slug
           }))}>Add Attendee</a>
         </div>
         <BootstrapTable
           data={this.props.attendees.data}
-          remote={true}
-          search={true}
-          multiColumnSearch={true}
+          remote={false}
+          search={false}
+          multiColumnSearch={false}
           options={tableOptions}
           expandComponent={ this.attendeePaymentComponent }
           expandableRow={ row => true}
-          expandColumnOptions={ { expandColumnVisible: true } }
+          expandColumnOptions={ { expandColumnVisible: false } }
           selectRow={this.selectRow}
+          containerClass="atteendees-events-booking-container"
           tableContainerClass="attendees-events-booking-table"
           ref="attendeeEventBookingTable">
           <TableHeaderColumn dataField="eventBookingId" hidden={true}>Booking ID</TableHeaderColumn>

@@ -67,7 +67,7 @@ export class BaseRoute {
         res.render(view, options)
     }
 
-    protected json(req: Request, res: Response, payload: Object, metadata?: Object) {
+    protected async json(req: Request, res: Response, payload: Object, metadata?: Object) {
         if (!metadata) {
             metadata = {};
         }
