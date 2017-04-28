@@ -219,19 +219,33 @@ export const doSubmitPaymentForm = (values, row, props) => (dispatch, getState) 
     })
 }
 
+// TODO: Cleanup redundant code.
 export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' + getState().eventData.details.slug + "/attendees")
     .then(data => dispatch(setEventAttendees(data.payload.map(val => {
-      const total = val.numberSeatsReserved * val.event.ticketPrice
       const amtPaid = val.payments.reduce((a, b) => ({amount: a.amount + b.amount}), {amount: 0}).amount
-      return {
-        ...val,
-        attendeeId: val.attendee._id,
-        slug: val.event.slug,
-        totalCosts:total,
-        eventId: val.event.slug,
-        amountPaid: amtPaid,
-        amountOwed: total - amtPaid,
-        eventBookingId: val._id
+      if (val.status == 'Active') {
+        const total = val.numberSeatsReserved * val.event.ticketPrice
+        return {
+          ...val,
+          attendeeId: val.attendee._id,
+          slug: val.event.slug,
+          totalCosts: total,
+          eventId: val.event.slug,
+          amountPaid: amtPaid,
+          amountOwed: total - amtPaid,
+          eventBookingId: val._id
+        }
+      } else {
+        return {
+          attendeeId: val.attendee._id,
+          slug: val.event.slug,
+          eventId: val.event.slug,
+          eventBookingId: val._id,
+          amountPaid: amtPaid,
+          amountOwed: 0,
+          totalCosts: 0,
+          ...val
+        }
       }
     }
     ))))
@@ -275,9 +289,11 @@ export const eventReducer  = (state = initialState, action) => {
       state.details.remainingTickets = state.details.numberOfSeats
       state.details.reservedTickets = 0
       state.attendees.data.forEach(val => {
-        state.details.ticketPurchased += val.amountPaid
-        state.details.remainingTickets -=  val.numberSeatsReserved
-        state.details.reservedTickets += val.numberSeatsReserved
+        if (val.status == 'Active') {
+          state.details.ticketPurchased += val.amountPaid
+          state.details.remainingTickets -= val.numberSeatsReserved
+          state.details.reservedTickets += val.numberSeatsReserved
+        }
       })
       let temp = {...state}
       temp.off = Math.random() // TODO:  Immutable.js

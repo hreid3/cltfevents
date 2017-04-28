@@ -63,4 +63,11 @@ table {
 
 .attendee-booking-form {
   text-align: left;
+  [name='notes'] {
+    height: 150px;
+  }
+}
+
+.react-bs-table.attendee-payment-table {
+  border: 0;
 }

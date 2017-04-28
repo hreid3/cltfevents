@@ -47,36 +47,35 @@ const AttendeeBookingComponent = props => {
         <input type="hidden" name="attendeeId" value={attendeeId} />
       </div>
     )
-    console.log('attendeeField', props)
   }
   return (
-    <div className="attendee-booking-form container">
+    <div className="attendee-booking-form container-fluid">
       <form onSubmit={handleSubmit} className="attendee-booking-form">
-        <div className="row">
+        <div className="rowWithFullWidth">
           <div className="col-12">
             {attendeeField}
           </div>
         </div>
 
-        <div className="row">
+        <div className="rowWithFullWidth">
           <div className="col-12 ">
             <Field name="numberSeatsReserved" type="number" component={numberTextField} label="Ticket Reserved"
                    placeholder="1" id="numberSeatsReserved" autoFocus={true}  min="0" max="99"  size="5" />
           </div>
         </div>
-        <div className="row">
+        <div className="rowWithFullWidth">
           <div className="col-12">
             <Field name="status" type="text" component={selectField} placeholder="Status"
                    label="Status" options={statusOptions}/>
           </div>
         </div>
-        <div className="row">
+        <div className="rowWithFullWidth">
           <div className="col-12">
-            <Field name="notes" type="text" component={textareaField} placeholder="Status"
+            <Field name="notes" type="text" component={textareaField} placeholder="Optional notes may be entered here..."
                    label="Notes" options={statusOptions} rows="5"/>
           </div>
         </div>
-        <div className="row">
+        <div className="rowWithFullWidth">
           <div className="col-12 text-center">
             <hr/>
             <div>

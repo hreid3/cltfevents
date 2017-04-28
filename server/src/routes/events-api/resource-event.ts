@@ -177,7 +177,7 @@ export class EventResource extends BaseRoute implements IResource {
                 event: eventId,
                 bookingDate: bookingDate,
                 numberSeatsReserved: numberSeatsReserved,
-                status: status
+                status: status,
                 notes: notes
             }
             console.log(data)

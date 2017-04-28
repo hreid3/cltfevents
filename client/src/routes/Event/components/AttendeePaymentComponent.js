@@ -34,18 +34,18 @@ const AttendeePaymentComponent = props => {
   } = props
 
   return (
-    <div>
+    <div className="">
       <form onSubmit={handleSubmit} className="attendee-payment-form">
         <div className="row">
-          <div className="col-3">
+          <div className="col-md-3">
             <Field name="amount" type="number" component={numberTextField} label="Payment Amount"
                    placeholder="1" id="amount" autoFocus={true}  min="0" max="9999" step="0.01" size="5"  />
           </div>
-          <div className="col-6">
+          <div className="col-md-6">
             <Field name="method" type="text" component={selectField} placeholder="Payment Method"
                    label="Payment Method" options={paymentMethods} />
           </div>
-          <div className="col-3">
+          <div className="col-md-3">
             <div>
               <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit<span
                 className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
@@ -60,8 +60,8 @@ const AttendeePaymentComponent = props => {
           tableContainerClass="attendee-payment-table">
           <TableHeaderColumn dataField="_id" hidden={true} isKey={true} >Booking ID</TableHeaderColumn>
           <TableHeaderColumn dataField="method" width="40%" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
-          <TableHeaderColumn dataField="txDate" dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')} width="35%"  columnClassName="c-bookingdate">Transaction Date</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount" dataFormat={cell => currencyFormatterUs.format(cell)} width="" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
+          <TableHeaderColumn dataField="txDate" dataSort dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')} width="35%"  columnClassName="c-bookingdate">Transaction Date</TableHeaderColumn>
+          <TableHeaderColumn dataField="amount" dataSort dataFormat={cell => currencyFormatterUs.format(cell)} width="" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
         </BootstrapTable>
       </div>
     </div>
