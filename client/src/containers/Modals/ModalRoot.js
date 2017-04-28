@@ -8,12 +8,13 @@ import { connect } from 'react-redux';
 
 // import Notification from './modals/Notification';
 import Confirmation from './Confirmation';
-
-import { MODAL_TYPE_CONFIRMATION } from '../../store/modal';
+import ComponentModal from './ComponentModal'
+import { MODAL_TYPE_CONFIRMATION, MODAL_TYPE_WRAPPED_COMPONENT } from '../../store/modal';
 
 const MODAL_COMPONENTS = {
   // [MODAL_TYPE_NOTIFICATION]: Notification,
-  [MODAL_TYPE_CONFIRMATION]: Confirmation
+  [MODAL_TYPE_CONFIRMATION]: Confirmation,
+  [MODAL_TYPE_WRAPPED_COMPONENT]: ComponentModal,
 };
 
 const ModalRoot = ({ type, props }) => {

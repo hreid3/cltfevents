@@ -3,6 +3,7 @@ import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import EventRoute from './Event'
 import LoginRoute from './Login'
+import AttendeeRoute from './Attendee'
 
 export default (store) => {
   const requireLogin = (nextState, replace, cb) => {
@@ -37,6 +38,7 @@ export default (store) => {
         childRoutes: [
           LoginRoute(store),
           EventRoute(store),
+          AttendeeRoute(store)
         ]
       }
     ]

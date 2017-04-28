@@ -15,16 +15,17 @@ export interface IAddress extends  Document {
 }
 
 export const AddressSchema = new Schema({
-    label: {type: String, required: true},
-    street: {type: String, required: true},
-    city: {type: String, required: true},
-    postal: {type: String, required: true},
-    country: {type: String},
-    state: {type: Object, required: true},
+    label: {type: String, required: false,  es_indexed:false},
+    street: {type: String, required: false, es_indexed:false},
+    city: {type: String, required: false, es_indexed:false},
+    postal: {type: String, required: false, es_indexed:false},
+    country: {type: String, es_indexed:false},
+    state: {type: Object, required: false, es_indexed:false},
 })
 AddressSchema.static('getStates', () => addressStates)
 
-const addressStates = [
+
+export const addressStates = [
     {
         title: "Alabama",
         id: "AL"

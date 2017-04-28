@@ -23,6 +23,22 @@ export const textField = ({ input, label, type, placeholder, id, autoFocus = fal
   )
 }
 
+
+export const numberTextField = ({ input, label, type = 'number', placeholder, id, min = 0, max = 999, step = 1, autoFocus = false, meta: { touched, error, warning } }) => {
+  return (
+    <div className="pt-form-group">
+      <label className="pt-label" htmlFor={id}>
+        {label}&nbsp;
+      </label>
+      <div className="pt-form-content">
+        <input {...input} placeholder={placeholder} type={type} id={id} className="pt-input" min={min} max={max} step={step} autoFocus={autoFocus} />
+        <div className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</div>
+        {/*<div className="pt-form-helper-text">Helper text with details / user feedback</div>*/}
+      </div>
+    </div>
+  )
+}
+
 export const wysiwygEditorField = ({ input, label, value, meta: { touched, error, warning }}) => {
   return (
     <div className="pt-form-group">
@@ -57,6 +73,7 @@ export const selectField = ({input, label, options, placeholder, meta: { touched
           onBlurResetsInput={false}
           labelKey="title"
           valueKey="id"
+          noResultsText="No Items are available"
         />
       </div>
     </div>
@@ -83,6 +100,30 @@ export const selectTagField = ({input, label, options, meta: { touched, error, w
     </div>
   )
 }
+
+
+
+export const asyncSelectField = ({input, label, loadOptions, meta: { touched, error, warning }, placeholder}) => {
+  input.onBlur = null
+  return (
+    <div className="pt-form-group">
+      <label className="pt-label">
+        {label}&nbsp;
+        <span className="pt-text-muted">{touched && ((error && <span>({error})</span>) || (warning && <span>({warning})</span>))}</span>
+      </label>
+      <div className="pt-form-content">
+        <Select.Async
+          {...input}
+          multi={false}
+          loadOptions={loadOptions}
+          placeholder={placeholder}
+          onBlurResetsInput={false}
+        />
+      </div>
+    </div>
+  )
+}
+
 
 export const datetimePickerField = ({input, label, defaultValue, meta: { touched, error, warning }, placeholder}) => {
   // input.onBlur = null

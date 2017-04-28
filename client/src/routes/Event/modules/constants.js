@@ -17,6 +17,17 @@ export const EVENT_SET_LOOKUP_DATA = "EVENT_SET_LOOKUP_DATA"
 export const EVENT_VALIDATE_AND_SAVE = "@cltf/event_validate_and_save"
 export const EVENT_SHOW_LANDING_PAGE = '@cltf/LANDING_PAGE';
 export const EVENT_DETAIL_SHOW = '@cltf/EVENT_DETAIL_SHOW'
+export const EVENT_SHOW_EVENT_ATTENDEES = '@cltf/EVENT_SHOW_EVENT_ATTENDEES'
+export const EVENT_INITIAL_DETAILS_STATE = '@cltf/EVENT_INITIAL_DETAILS_STATE'
+
+export const attendeeBooking = {
+  eventId: '',
+  attendeeId: '',
+  ticketPurchased: 0,
+  bookingDate: new Date(),
+  status: {},
+  payments: [],
+}
 
 export const initialEventState = {
   selectedTabId: 'eventsGrid',
@@ -62,8 +73,9 @@ export const initialEventState = {
       "title": "Church"
     },
     images: [],
-    notes: ''
+    notes: '',
   },
+  attendees: {data: []},
   lookupData: {
     hostingChurches: [],
     guestSpeakers: [],

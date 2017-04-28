@@ -9,7 +9,7 @@ import Dimension from "./Dimension";
 const EventPaymentSchema = new Schema({
     amount: {type: Number, required: true, default: 0.0},
     txDate: {type: Date, required: true, default: Date.now()},
-    method: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
+    method: {type: String, required: true},
     receivedBy: {type: Schema.Types.ObjectId, ref: 'Person'},
 })
 
@@ -20,7 +20,8 @@ export interface IAttendeeEventBooking extends Document {
     numberSeatsReserved: Number
     status: String
     payments: Object
-    addPayment: (amount: number, txDate: Date, method: Dimension, receivedBy?: Person) => Boolean
+    notes: String
+    addPayment: (amount: number, txDate: Date, method: String, receivedBy?: Person) => Boolean
     removePayment: (amount: number, txDate) => Boolean
     getTotalPaymentAmount: () => Number
 }
@@ -30,7 +31,8 @@ export const AttendeeEventBookingSchema = new Schema({
     event: {type: Schema.Types.ObjectId, ref: 'Event', required: true},
     bookingDate: {type: Date, default: Date.now(), required: true},
     numberSeatsReserved: {type: Number},
-    status: {type: Schema.Types.ObjectId, ref: 'Dimension', required: true},
+    status: {type: String, required: true},
+    notes:  {type: String},
     payments: [EventPaymentSchema]
 
 })

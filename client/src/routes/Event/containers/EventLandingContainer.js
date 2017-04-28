@@ -1,13 +1,26 @@
+import React from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { addEvent, doSubmitEventForm, loadEventData, loadEventDetailData, editEvent, deleteEvent as actionDeleteEvent} from '../modules/event'
+import {
+  addEvent,
+  doSubmitEventForm,
+  loadEventData,
+  loadEventDetailData,
+  editEvent,
+  deleteEvent as actionDeleteEvent,
+  addEventAttendee,
+  doSubmitAttendeeForm,
+  getEventAttendees
+} from '../modules/event'
+
 import {utc} from 'moment';
 import EventLanding from '../components/EventLandingComponent'
 import DataObjectParser from 'dataobject-parser'
 import _ from 'lodash'
 import moment from 'moment'
-import { showModal, MODAL_TYPE_CONFIRMATION } from '../../../store/modal'
+import { showModal, MODAL_TYPE_CONFIRMATION, MODAL_TYPE_WRAPPED_COMPONENT } from '../../../store/modal'
 const validator = require('validate.js')
+import '../styles/event.scss'
 
 validator.extend(validator.validators.datetime, {
   parse: (value, options) => {
@@ -55,7 +68,7 @@ const constraints = {
 export const validate = values => {
   const { details } = values
   const errors = validator(details, constraints)
-  const d = new DataObjectParser();
+  const d = new DataObjectParser()
   if (errors) {
     _.forIn(errors, (val, key) => d.set(key, val))
   }
@@ -77,17 +90,19 @@ const mapDispatchToProps = (dispatch) => {
         }
       }
     })),
+    doSubmitAttendeeForm: (values) => dispatch(doSubmitAttendeeForm(values)),
+    getEventAttendees: () => dispatch(getEventAttendees()),
+    openBookingForm: (wrappedComponent) => dispatch(showModal(MODAL_TYPE_WRAPPED_COMPONENT, {
+      title: 'Add Attendee',
+      wrappedComponent: wrappedComponent
+    })),
     validate: validate
   }
 }
 
-const confirmDelete = (slug) => {
-
-}
-
 const mapStateToProps = (state) => {
   // console.log('mappingStateToProps', state)
-  return {...state.eventData}
+  return state.eventData
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'eventForm'})(EventLanding))
