@@ -51,13 +51,17 @@ export default class EventAttendeesComponent extends Component {
   showActions = (cell, row) => {
     return (
       <div>
-        <a className="pt-button pt-small"
-           onClick={(e) => {
-             e.stopPropagation()
-             this.props.openBookingForm(this.attendeeBookingComponent(row))
-           } }>Update Attendee</a>
+        <div>
+          <a className="pt-button pt-small"
+             onClick={(e) => {
+               e.stopPropagation()
+               this.props.openBookingForm(this.attendeeBookingComponent(row))
+             } }>Update Attendee</a>
+        </div>
+        <div>
         <a className="pt-button pt-small"
            onClick={(e) => this.selectRow = [row.eventBookingId]}>Add Payment</a>
+        </div>
       </div>
     )
   }
@@ -98,17 +102,61 @@ export default class EventAttendeesComponent extends Component {
           containerClass="atteendees-events-booking-container"
           tableContainerClass="attendees-events-booking-table"
           ref="attendeeEventBookingTable">
-          <TableHeaderColumn dataField="eventBookingId" hidden={true}>Booking ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="attendeeId" isKey={true} hidden={true}>Attendee ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="eventId" hidden={true}>Event ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="attendee" sortFunc={this.sortAttendees } dataSort dataFormat={this.attendInfoField} width="25%"  columnClassName="c-attendee">Attendee</TableHeaderColumn>
-          <TableHeaderColumn dataField="bookingDate" dataSort dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')} width="15%"  columnClassName="c-bookingdate">Booking Date</TableHeaderColumn>
-          <TableHeaderColumn dataField="status" width="5%" dataSort columnClassName="c-status">Status</TableHeaderColumn>
-          <TableHeaderColumn dataField="numberSeatsReserved" dataSort width="5%" columnClassName="c-seats-reserved">TicketPurchased</TableHeaderColumn>
-          <TableHeaderColumn dataField="totalCosts"
-                             dataFormat={cell => currencyFormatterUs.format(cell)} dataSort width="10%" columnClassName="c-currency">TotalCost</TableHeaderColumn>
-          <TableHeaderColumn dataField="amountPaid" dataSort dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
-          <TableHeaderColumn dataField="amountOwed" dataSort dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="eventBookingId"
+            hidden={true}>Booking ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="attendeeId"
+            isKey={true}
+            hidden={true}>Attendee ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="eventId"
+            hidden={true}>Event ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="attendee"
+            sortFunc={this.sortAttendees }
+            dataSort
+            dataFormat={this.attendInfoField}
+            width="25%"
+            columnClassName="c-attendee">Attendee</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="bookingDate"
+            dataSort dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')}
+            width="11%"
+            columnClassName="c-bookingdate">Booking Date</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="status"
+            width="7%"
+            filter={ { type: 'SelectFilter', options: {"Active": "Active", "Cancelled": "Cancelled"}, selectText: 'Choose'} }
+            dataSort
+            columnClassName="c-status">Status</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="numberSeatsReserved"
+            dataSort width="5%"
+            columnClassName="c-seats-reserved">TicketPurchased</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="totalCosts"
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            dataSort width="10%"
+            columnClassName="c-currency">TotalCost</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="amountPaid"
+            dataSort
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            width="8%"
+            columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="amountOwed"
+            dataSort
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            width="8%"
+            columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="paymentStatus"
+            dataSort
+            width="7%"
+            filter={ { type: 'SelectFilter', options: {"Paid-Full": "Paid-Full", "Balance Due": "Balance Due"}, selectText: 'Choose'} }
+            columnClassName="c-amount-owed">*</TableHeaderColumn>
           <TableHeaderColumn hidden={false} dataFormat={this.showActions}  columnClassName="c-actions">Actions</TableHeaderColumn>
         </BootstrapTable>
       </div>

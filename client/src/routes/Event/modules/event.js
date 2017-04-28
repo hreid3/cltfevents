@@ -233,7 +233,8 @@ export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' +
           eventId: val.event.slug,
           amountPaid: amtPaid,
           amountOwed: total - amtPaid,
-          eventBookingId: val._id
+          eventBookingId: val._id,
+          paymentStatus: (total - amtPaid) <= 0 ? "Paid-Full" : "Balance Due"
         }
       } else {
         return {
@@ -244,6 +245,7 @@ export const getEventAttendees = () => (dispatch, getState) => doGet('/event/' +
           amountPaid: amtPaid,
           amountOwed: 0,
           totalCosts: 0,
+          paymentStatus: "N / A",
           ...val
         }
       }
