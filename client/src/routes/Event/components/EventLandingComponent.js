@@ -45,12 +45,24 @@ class EventsGrid extends Component { // Need lifecycle method
     return (<button onClick={() => this.props.deleteEvent(row.slug, row.title)}>Delete</button>)
   }
 
+  eventLocation = (cell, row) => {
+    if (Array.isArray(cell)) {
+      cell = cell[0]
+    }
+    return  (
+      <div className="event-location">
+        <div>{cell.label}</div>
+        <div>{cell.street}</div>
+        <div>{cell.city}, {cell.state.id}  {cell.postal}</div>
+      </div>
+    )
+  }
   render() {
     const props = this.props
     return (
       <div className="eventGridSection">
         <DocumentTitle title="Login">
-          <div className="col-12">
+          <div className="">
           <h1>Events</h1>
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><Link to="/">Home</Link></li>
@@ -58,24 +70,56 @@ class EventsGrid extends Component { // Need lifecycle method
             </ol>
           </div>
         </DocumentTitle>
-        <div className="row">
-          <div className="col-12">
+        <div className="">
+          <div className="">
             <div className="pt-button-group pt-large float-right">
               {/*<button onClick={props.showModal}>Popup</button>*/}
-              <Link className="pt-button pt-icon-th" tabIndex="0" to="/events/tool/create-new" role="button">Add Event</Link>
+              <Link className="btn btn-warning" tabIndex="0" to="/events/tool/create-new" role="button">Add Event</Link>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-12">
+        <div className="">
+          <div className="">
             <BootstrapTable
               data={props.grid.results}
               remote={false}>
-              <TableHeaderColumn dataField='_id' isKey={true} hidden={true}>Event ID</TableHeaderColumn>
-              <TableHeaderColumn dataField="title" dataFormat={(cell, row) => <Link to={"/events/" + row.slug}>{cell}</Link>}>Event Title</TableHeaderColumn>
-              <TableHeaderColumn dataField="hostingChurch" dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
-              <TableHeaderColumn dataField="startDateTime" dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')}>Start Time</TableHeaderColumn>
-              <TableHeaderColumn dataFormat={this.actionCell}></TableHeaderColumn>
+              <TableHeaderColumn
+                dataField='_id'
+                isKey={true}
+                width="20%"
+                hidden={true}>Event ID</TableHeaderColumn>
+              <TableHeaderColumn
+                dataField="title"
+                dataSort
+                dataFormat={(cell, row) => <Link to={"/events/" + row.slug}>{cell}</Link>}>Event Title</TableHeaderColumn>
+              <TableHeaderColumn
+                dataField="hostingChurch"
+                dataSort
+                dataFormat={(cell) => cell.title}>Hosting Church</TableHeaderColumn>
+              <TableHeaderColumn
+                dataField="startDateTime"
+                width="15%"
+                dataSort
+                dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')}>Event Date</TableHeaderColumn>
+              {/*<TableHeaderColumn*/}
+                {/*dataField="registeredUsers"*/}
+                {/*dataSort*/}
+                {/*width="8%"*/}
+              {/*>Booked Attendees</TableHeaderColumn>*/}
+              <TableHeaderColumn
+                dataField="eventStatus"
+                width="8%"
+                dataSort
+                dataFormat={cell => cell.title}
+              >Status</TableHeaderColumn>
+              <TableHeaderColumn
+                dataField="location"
+                width="20%"
+                dataFormat={this.eventLocation}
+              >Location</TableHeaderColumn>
+              <TableHeaderColumn
+                width="8%"
+                dataFormat={this.actionCell}></TableHeaderColumn>
             </BootstrapTable>
           </div>
         </div>

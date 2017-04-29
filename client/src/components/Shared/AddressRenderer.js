@@ -23,14 +23,18 @@ const AddressRenderer = (props) => {
 
   return (
     <div className="row">
-      <div className="col-12">
-        <h4>{props.label}</h4>
-        <div>{props.title}</div>
-        <div>
-          {Street}
-        </div>
-        <div>
-          {City}, {State} &nbsp; {Postal}
+      <div className="col-md-12">
+        <div className=" panel panel-primary">
+          <div className="panel-heading">{props.label}</div>
+          <div className="panel-body">
+            <div>{props.title}</div>
+            <div>
+              {Street}
+            </div>
+            <div>
+              {City}, {State} &nbsp; {Postal}
+            </div>
+          </div>
         </div>
       </div>
     </div>

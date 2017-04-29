@@ -22,6 +22,9 @@
     padding-bottom: 15px;
   }
 
+  .book-attendee-btn {
+    margin-left: 12px;
+  }
   .main {
   }
 
@@ -45,6 +48,12 @@
   }
 }
 
+.react-bs-table .react-bs-container-header>table>thead>tr>th {
+  vertical-align: top;
+  background: #3498db;
+  color: #fff;
+  font-weight: 400;
+}
 
 .atteendees-events-booking-container {
   .react-bs-table-tool-bar {
@@ -71,3 +80,10 @@ table {
 .react-bs-table.attendee-payment-table {
   border: 0;
 }
+
+.eventGridSection {
+  .event-location {
+    white-space: normal;
+  }
+}
+

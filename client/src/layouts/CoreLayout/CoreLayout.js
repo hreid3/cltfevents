@@ -5,23 +5,24 @@ import NavbarContainer from '../../containers/NavbarContainer'
 import DocumentTitle from 'react-document-title'
 
 export const CoreLayout = ({ children }) => (
-  <div className='container'>
-    <div className="top-nav-wrapper">
-      <div className="row">
-        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-          CLT Fellowship Churches INC
+  <div className=''>
+    <nav className="navbar navbar-default top-nav-wrapper">
+      <div className="container">
+        <div className="navbar-header">
+          <a className="navbar-brand" href="#">
+            CLT Fellowship Churches INC
+          </a>
         </div>
-        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-          <NavbarContainer />
-        </div>
-      </div>
-    </div>
-
+        <NavbarContainer />
+     </div>
+    </nav>
     <div className="">
       <div className='core-layout__viewport'>
-        <DocumentTitle title="Home">
-        {children}
-        </DocumentTitle>
+        <div className="container">
+          <DocumentTitle title="Home">
+          {children}
+          </DocumentTitle>
+        </div>
       </div>
     </div>
   </div>

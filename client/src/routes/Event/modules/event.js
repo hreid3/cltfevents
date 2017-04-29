@@ -134,6 +134,7 @@ export const eventFormReady = (details) => {
 };
 
 export const showEventsGrid = (results = [], filter = [] ) => {
+  console.log(results)
   return {
       type: EVENT_SHOW_LANDING_PAGE,
       payload: {

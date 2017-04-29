@@ -52,14 +52,13 @@ export default class EventAttendeesComponent extends Component {
     return (
       <div>
         <div>
-          <a className="pt-button pt-small"
+          <a className="btn btn-success btn-xs"
              onClick={(e) => {
                e.stopPropagation()
                this.props.openBookingForm(this.attendeeBookingComponent(row))
-             } }>Update Attendee</a>
-        </div>
-        <div>
-        <a className="pt-button pt-small"
+             } }>Update</a>
+          &nbsp;
+        <a className="btn btn-success btn-xs"
            onClick={(e) => this.selectRow = [row.eventBookingId]}>Add Payment</a>
         </div>
       </div>
@@ -78,13 +77,13 @@ export default class EventAttendeesComponent extends Component {
   render() {
     const slug = this.props.details.slug
     const tableOptions = {
-      expandRowBgColor: 'rgb(242, 255, 163)',
+      expandRowBgColor: '#ecf0f1',
       onlyOneExpanding: true,
     }
     return (
       <div className="row">
-        <div className="col-12">
-          <a className="pt-button float-right add-attendee-btn" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
+        <div className="book-attendee-btn">
+          <a className="btn btn-warning" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
             ...attendeeBooking,
             eventId: slug
           }))}>Book Attendee</a>
@@ -100,7 +99,7 @@ export default class EventAttendeesComponent extends Component {
           expandColumnOptions={ { expandColumnVisible: false } }
           selectRow={this.selectRow}
           containerClass="atteendees-events-booking-container"
-          tableContainerClass="attendees-events-booking-table"
+          tableContainerClass="attendees-events-booking-table "
           ref="attendeeEventBookingTable">
           <TableHeaderColumn
             dataField="eventBookingId"

@@ -52,37 +52,36 @@ const AttendeeBookingComponent = props => {
     <div className="attendee-booking-form container-fluid">
       <form onSubmit={handleSubmit} className="attendee-booking-form">
         <div className="rowWithFullWidth">
-          <div className="col-12">
+          <div className="col-md-12">
             {attendeeField}
           </div>
         </div>
 
         <div className="rowWithFullWidth">
-          <div className="col-12 ">
+          <div className="col-md-12 ">
             <Field name="numberSeatsReserved" type="number" component={numberTextField} label="Ticket Reserved"
                    placeholder="1" id="numberSeatsReserved" autoFocus={true}  min="0" max="99"  size="5" />
           </div>
         </div>
         <div className="rowWithFullWidth">
-          <div className="col-12">
+          <div className="col-md-12">
             <Field name="status" type="text" component={selectField} placeholder="Status"
                    label="Status" options={statusOptions}/>
           </div>
         </div>
         <div className="rowWithFullWidth">
-          <div className="col-12">
+          <div className="col-md-12">
             <Field name="notes" type="text" component={textareaField} placeholder="Optional notes may be entered here..."
                    label="Notes" options={statusOptions} rows="5"/>
           </div>
         </div>
         <div className="rowWithFullWidth">
-          <div className="col-12 text-center">
+          <div className="col-md-12 text-center">
             <hr/>
             <div>
-              <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit <span
-                className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
-              <button type="button" className="pt-button pt-intent-primary"  onClick={e => props.dispatch(hideModal())}>Cancel <span
-                className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
+              <button type="submit" disabled={submitting} className="btn btn-warning btn-sm">Submit</button>
+              &nbsp;
+              <button type="button" className="btn btn-default btn-sm"  onClick={e => props.dispatch(hideModal())}>Cancel</button>
             </div>
           </div>
         </div>
