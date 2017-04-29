@@ -27,3 +27,16 @@ let render = () => {
 // Go!
 // ========================================================
 render()
+
+// Outside of react
+const resetColspanBug = (e) => {
+  const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  if (w < 970) {
+    document.querySelectorAll("tr.horace-1 td[colspan='9']").forEach((v) => (v.setAttribute('colspan', '4')))
+  } else {
+    document.querySelectorAll("tr.horace-1 td[colspan='4']").forEach((v) => (v.setAttribute('colspan', '9')))
+  }
+}
+
+window.addEventListener("resize", (e) => resetColspanBug(e));
+resetColspanBug();

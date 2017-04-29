@@ -1,6 +1,6 @@
 
 .attendee-payment-form {
-  max-width: 50%;
+  max-width: 90%;
   margin: 0 20px;
   .Select-menu-outer {
     z-index: 999999 !important;
@@ -28,6 +28,11 @@
   .main {
   }
 
+  .attendee-action-link {
+    width: 89px;
+    margin-bottom: 6px;
+  }
+
   aside {
     .row {
       border-bottom: 1px solid #ddd;
@@ -45,6 +50,10 @@
   .add-attendee-btn {
     position: relative;
     top: 0px;
+  }
+
+  .book-attendee-btn {
+    margin: 20px 0 0 0;
   }
 }
 

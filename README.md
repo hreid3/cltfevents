@@ -18,3 +18,9 @@ https://zenoamaro.github.io/react-quill/
 https://github.com/nfl/react-helmet
 
 https://ant.design/components/auto-complete/
+
+https://www.mailgun.com/
+https://nodemailer.com/about/
+https://github.com/typpo/textbelt
+https://blog.flowroute.com/2017/03/22/secure-mass-sms-in-nodejs/
+https://go.twilio.com/sms/?mkwid=sEaety0IR&pdv=c&pcrid=170556540906&pmt=b&pkw=sms&campaign=SMS_Beta_NA&utm_source=google&utm_medium=cpc&utm_term=&utm_campaign=SMS_Beta_NA&utm_content=SMS_General&gclid=CL-J7MPqyNMCFZVMDQodNvkJoQ
