@@ -29,4 +29,22 @@ body {
   margin-right: 0 !important;
 }
 
-.react-bs-table, .react-bs-container-body { height: auto !important; }
+.react-bs-table, .react-bs-container-body {
+  height: auto !important;
+}
+
+.react-bs-table table td {
+  white-space: normal;
+}
+
+.react-bs-container-header.table-header-wrapper {
+  select {
+    height: 20px;
+  }
+}
+
+.react-bs-table {
+  border: 1px solid #3498db;
+  border-radius: 5px;
+  margin: 5px 0px;
+}

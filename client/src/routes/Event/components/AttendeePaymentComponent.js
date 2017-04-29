@@ -47,7 +47,7 @@ const AttendeePaymentComponent = props => {
           </div>
           <div className="col-md-3">
             <div>
-              <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit<span
+              <button type="submit" disabled={submitting} className="btn btn-warning btn-sm book-attendee-btn">Submit<span
                 className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
             </div>
           </div>

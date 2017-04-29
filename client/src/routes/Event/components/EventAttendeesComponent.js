@@ -16,6 +16,7 @@ export default class EventAttendeesComponent extends Component {
 
   selected = []
   attendeePaymentComponents = {}
+
   constructor(props) {
     super(props)
     props.getEventAttendees()
@@ -36,6 +37,9 @@ export default class EventAttendeesComponent extends Component {
 
   attendeePaymentComponent = row => {
     console.log('setting attendeePayment')
+    const tags = document.querySelector("tr.horace-1")//[0].removeAttribute("colspan");
+    console.log(tags)
+
     const AttendeePaymentComponent  = getAttendeePaymentComponent(row.eventBookingId)
     this.attendeePaymentComponents[row.eventBookingId] = { // Dynamic props
       message: "later"
@@ -50,14 +54,18 @@ export default class EventAttendeesComponent extends Component {
 
   showActions = (cell, row) => {
     return (
-      <div>
-        <a className="pt-button pt-small"
-           onClick={(e) => {
-             e.stopPropagation()
-             this.props.openBookingForm(this.attendeeBookingComponent(row))
-           } }>Update Attendee</a>
-        <a className="pt-button pt-small"
-           onClick={(e) => this.selectRow = [row.eventBookingId]}>Add Payment</a>
+      <div className="text-center">
+        <div>
+          <a className="btn btn-success btn-xs attendee-action-link"
+             onClick={(e) => {
+               e.stopPropagation()
+               this.props.openBookingForm(this.attendeeBookingComponent(row))
+             } }>Update</a>
+        </div>
+        <div className="">
+          <a className="btn btn-success btn-xs hidden-xs hidden-sm attendee-action-link"
+             onClick={(e) => this.selectRow = [row.eventBookingId]}>Add Payment</a>
+        </div>
       </div>
     )
   }
@@ -72,15 +80,22 @@ export default class EventAttendeesComponent extends Component {
   }
 
   render() {
+    const tags = document.querySelector("tr.horace-2")//[0].removeAttribute("colspan");
+    console.log(tags)
+
     const slug = this.props.details.slug
     const tableOptions = {
-      expandRowBgColor: 'rgb(242, 255, 163)',
+      expandRowBgColor: '#ecf0f1',
       onlyOneExpanding: true,
+      afterTableComplete : () => {
+      }
     }
+
+
     return (
       <div className="row">
-        <div className="col-12">
-          <a className="pt-button float-right add-attendee-btn" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
+        <div className="book-attendee-btn">
+          <a className="btn btn-warning" onClick={(e) => this.props.openBookingForm(this.attendeeBookingComponent({
             ...attendeeBooking,
             eventId: slug
           }))}>Book Attendee</a>
@@ -96,20 +111,87 @@ export default class EventAttendeesComponent extends Component {
           expandColumnOptions={ { expandColumnVisible: false } }
           selectRow={this.selectRow}
           containerClass="atteendees-events-booking-container"
-          tableContainerClass="attendees-events-booking-table"
+          tableContainerClass="attendees-events-booking-table "
+          trClassName={'horace-1'}
           ref="attendeeEventBookingTable">
-          <TableHeaderColumn dataField="eventBookingId" hidden={true}>Booking ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="attendeeId" isKey={true} hidden={true}>Attendee ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="eventId" hidden={true}>Event ID</TableHeaderColumn>
-          <TableHeaderColumn dataField="attendee" sortFunc={this.sortAttendees } dataSort dataFormat={this.attendInfoField} width="25%"  columnClassName="c-attendee">Attendee</TableHeaderColumn>
-          <TableHeaderColumn dataField="bookingDate" dataSort dataFormat={cell => moment(cell).format('MMM Do, YYYY h:mm a')} width="15%"  columnClassName="c-bookingdate">Booking Date</TableHeaderColumn>
-          <TableHeaderColumn dataField="status" width="5%" dataSort columnClassName="c-status">Status</TableHeaderColumn>
-          <TableHeaderColumn dataField="numberSeatsReserved" dataSort width="5%" columnClassName="c-seats-reserved">TicketPurchased</TableHeaderColumn>
-          <TableHeaderColumn dataField="totalCosts"
-                             dataFormat={cell => currencyFormatterUs.format(cell)} dataSort width="10%" columnClassName="c-currency">TotalCost</TableHeaderColumn>
-          <TableHeaderColumn dataField="amountPaid" dataSort dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-paid">Amount Paid</TableHeaderColumn>
-          <TableHeaderColumn dataField="amountOwed" dataSort dataFormat={cell => currencyFormatterUs.format(cell)} width="10%" columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
-          <TableHeaderColumn hidden={false} dataFormat={this.showActions}  columnClassName="c-actions">Actions</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="eventBookingId"
+            hidden={true}>Booking ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="attendeeId"
+            isKey={true}
+            hidden={true}>Attendee ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="eventId"
+            hidden={true}>Event ID</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="attendee"
+            sortFunc={this.sortAttendees }
+            dataSort
+            dataFormat={this.attendInfoField}
+            width="25%"
+            columnClassName="c-attendee">Attendee</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="bookingDate"
+            dataSort dataFormat={cell => moment(cell).format('MMM Do, YYYY<br/>h:mm a')}
+            width="11%"
+            className="hidden-sm hidden-xs"
+            dataAlign='center'
+            columnClassName="c-bookingdate hidden-xs hidden-sm">Booking Date</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="status"
+            width="7%"
+            filter={ { type: 'SelectFilter', options: {"Active": "Active", "Cancelled": "Cancelled"}, selectText: 'Choose'} }
+            className="hidden-sm hidden-xs"
+            dataAlign='center'
+            dataSort
+            columnClassName="hidden-sm hidden-xs c-status">Status</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="numberSeatsReserved"
+            dataSort width="5%"
+            dataAlign='right'
+            headerAlign='center'
+            columnClassName="c-seats-reserved">TicketPurchased</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="totalCosts"
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            className="hidden-sm hidden-xs"
+            dataSort width="10%"
+            dataAlign='right'
+            headerAlign='center'
+            columnClassName=" hidden-xs hidden-sm c-currency">TotalCost</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="amountPaid"
+            dataAlign='right'
+            headerAlign='center'
+            dataSort
+            className="hidden-sm hidden-xs"
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            width="8%"
+            columnClassName=" hidden-xs hidden-sm c-amount-paid">Amount Paid</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="amountOwed"
+            dataAlign='right'
+            headerAlign='center'
+            dataSort
+            dataFormat={cell => currencyFormatterUs.format(cell)}
+            width="8%"
+            columnClassName="c-amount-owed">Amount Owed</TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="paymentStatus"
+            className="hidden-sm hidden-xs"
+            dataAlign='center'
+            dataSort
+            width="7%"
+            filter={ { type: 'SelectFilter', options: {"Paid-Full": "Paid-Full", "Balance Due": "Balance Due"}, selectText: 'Choose'} }
+            columnClassName="c-amount-owed hidden-xs hidden-sm">*</TableHeaderColumn>
+          <TableHeaderColumn
+            hidden={false}
+            dataAlign='center'
+            className="actions-bar"
+            dataFormat={this.showActions}
+            width="10%"
+            columnClassName="c-actions">Actions</TableHeaderColumn>
         </BootstrapTable>
       </div>
     )

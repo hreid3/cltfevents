@@ -17,14 +17,14 @@ class AttendeeSearchComponent extends Component {
 
   actionCell = (cell, row) => {
     // return <div>Button</div>
-    return (<button onClick={() => props.deleteAttendee(row._id, row.firstName + ' ' + row.lastName)}>Delete</button>)
+    return (<button className="btn btn-success btn-sm" onClick={() => this.props.deleteAttendee(row._id, row.firstName + ' ' + row.lastName)}>Delete</button>)
   }
 
   render() {
     const props = this.props
     return (
       <div>
-        <Link className="pt-button pt-icon-th" tabIndex="0" to="/attendee/tool/create-new" role="button">Add
+        <Link className="btn btn-warning" tabIndex="0" to="/attendee/tool/create-new" role="button">Add
           Attendee</Link>
         <BootstrapTable
           data={props.grid.results}

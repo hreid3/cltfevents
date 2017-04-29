@@ -43,7 +43,7 @@ export default class AttendeeFormComponent extends Component {
       <div>
         <DocumentTitle title="New Attendee">
           <div className="row">
-            <div className="col-12">
+            <div className="col-md-12">
               <h1>Attendee Entry Form</h1>
               {breadcrumb}
             </div>
@@ -96,7 +96,7 @@ export default class AttendeeFormComponent extends Component {
             <div className="col text-center">
               <hr/>
               <div>
-                <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit <span
+                <button type="submit" disabled={submitting} className="btn btn-warning">Submit <span
                   className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
               </div>
             </div>

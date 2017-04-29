@@ -5,7 +5,8 @@ import {
   wysiwygEditorField,
   selectField,
   selectTagField,
-  datetimePickerField
+  datetimePickerField,
+  numberTextField
 } from '../../../components/ReduxFormRenderedFields'
 import DocumentTitle from 'react-document-title'
 import './event-form.scss'
@@ -57,7 +58,7 @@ export default class EventForm extends Component  {
       <div>
         <DocumentTitle title="New Event">
           <div className="row">
-            <div className="col-12">
+            <div className="col-md-12">
               <h1>Events Form</h1>
               {breadcrumb}
             </div>
@@ -75,29 +76,27 @@ export default class EventForm extends Component  {
                      value={details.description}/>
               <hr/>
               <div className="row">
-                <div className="col">
+                <div className="col-md-12">
                   <Field name="details.location.label" type="text" component={textField}
                          placeholder="Please enter Location Label" label="Event Location" id="location.label"/>
                 </div>
               </div>
               <div className="row">
-                <div className="col">
+                <div className="col-md-12">
                   <Field name="details.location.street" type="text" component={textField}
                          placeholder="E.g. 14 Tammy Drive" label="Street Address" id="location.street"/>
                 </div>
               </div>
               <div className="row">
-                <div className="col">
+                <div className="col-md-6">
                   <Field name="details.location.city" type="text" component={textField} placeholder="E.g. Middletown"
                          label="City" id="location.city"/>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col">
+                <div className="col-md-3">
                   <Field name="details.location.state" type="text" component={selectField} placeholder="Select a state"
                          label="State" options={lookupData.states}/>
                 </div>
-                <div className="col">
+                <div className="col-md-3">
                   <Field name="details.location.postal" type="text" component={textField} placeholder="12345"
                          label="Zipcode" id="location.postal"/>
                 </div>
@@ -106,31 +105,31 @@ export default class EventForm extends Component  {
             </div>
             <div className="col-md-4">
               <div className="row">
-                <div className="col">
-                  <Field name="details.numberOfSeats" type="text" component={textField} label="Number of Seats"
-                         placeholder="0" id="numberOfSeats"/>
+                <div className="col-md-12">
+                  <Field name="details.numberOfSeats" component={numberTextField} label="Number of Seats"
+                         placeholder="0" id="numberOfSeats" min="0" max="999999" step="1" />
                 </div>
               </div>
               <div className="row">
-                <div className="col">
-                  <Field name="details.ticketPrice" type="text" component={textField} label="Ticket Price"
-                         placeholder="0.00" id="ticketPrice"/>
+                <div className="col-md-12">
+                  <Field name="details.ticketPrice" component={numberTextField} label="Ticket Price"
+                         placeholder="0.00" id="ticketPrice" min="0" max="999" step=".01" />
                 </div>
               </div>
               <div className="row">
-                <div className="col">
+                <div className="col-md-12">
                   <Field name="details.guestSpeakers" type="text" component={selectTagField} label="Guest Speakers"
                          placeholder="Please enter a guest speaker name" options={lookupData.guestSpeakers}/>
                 </div>
               </div>
               <div className="row">
-                <div className="col">
+                <div className="col-md-12">
                   <Field name="details.startDateTime" type="text" component={datetimePickerField}
                          label="Event Start Date" placeholder=""/>
                 </div>
               </div>
               <div className="row">
-                <div className="col-12">
+                <div className="col-md-12">
                   <Field name="details.eventStatus" type="text" component={selectField} placeholder="Status"
                          label="Status" options={lookupData.statuses}/>
                 </div>
@@ -149,7 +148,7 @@ export default class EventForm extends Component  {
             <div className="col text-center">
               <hr/>
               <div>
-                <button type="submit" disabled={submitting} className="pt-button pt-intent-primary">Submit <span
+                <button type="submit" disabled={submitting} className="btn btn-warning">Submit <span
                   className="pt-icon-standard pt-icon-arrow-right pt-align-right"></span></button>
               </div>
             </div>

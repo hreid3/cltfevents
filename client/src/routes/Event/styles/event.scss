@@ -1,6 +1,6 @@
 
 .attendee-payment-form {
-  max-width: 50%;
+  max-width: 90%;
   margin: 0 20px;
   .Select-menu-outer {
     z-index: 999999 !important;
@@ -22,7 +22,15 @@
     padding-bottom: 15px;
   }
 
+  .book-attendee-btn {
+    margin-left: 12px;
+  }
   .main {
+  }
+
+  .attendee-action-link {
+    width: 89px;
+    margin-bottom: 6px;
   }
 
   aside {
@@ -43,8 +51,18 @@
     position: relative;
     top: 0px;
   }
+
+  .book-attendee-btn {
+    margin: 20px 0 0 0;
+  }
 }
 
+.react-bs-table .react-bs-container-header>table>thead>tr>th {
+  vertical-align: top;
+  background: #3498db;
+  color: #fff;
+  font-weight: 400;
+}
 
 .atteendees-events-booking-container {
   .react-bs-table-tool-bar {
@@ -71,3 +89,10 @@ table {
 .react-bs-table.attendee-payment-table {
   border: 0;
 }
+
+.eventGridSection {
+  .event-location {
+    white-space: normal;
+  }
+}
+
