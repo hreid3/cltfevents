@@ -20,7 +20,17 @@ services:
       - "9200:9200"
       - "9300:9300"
     restart: always
-
+#  nginx:
+#    container_name: cltfevents_nginx
+#    image: cltfevents_nginx
+#    build: nginx
+#    ports:
+#      - "80:80"
+#    restart: always
+#    environment:
+##      - HTPASSWD=$'foo:$apr1$odHl5EJN$KbxMfo86Qdve2FH4owePn.\ntest:$apr1$LKkW8P4Y$P1X/r2YyaexhVL1LzZAQm.'
+#      - FORWARD_PORT=8080
+#      - FORWARD_HOST=192.168.1.208
 
 #  backup:
 #    container_name: vcpuicms_backup
