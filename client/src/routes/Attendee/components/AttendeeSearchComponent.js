@@ -17,7 +17,7 @@ class AttendeeSearchComponent extends Component {
 
   actionCell = (cell, row) => {
     // return <div>Button</div>
-    return (<button onClick={() => props.deleteAttendee(row._id, row.firstName + ' ' + row.lastName)}>Delete</button>)
+    return (<button className="btn btn-success btn-sm" onClick={() => this.props.deleteAttendee(row._id, row.firstName + ' ' + row.lastName)}>Delete</button>)
   }
 
   render() {
