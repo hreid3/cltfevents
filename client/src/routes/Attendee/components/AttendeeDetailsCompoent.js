@@ -65,19 +65,24 @@ class AttendeeDetailsCompoent extends Component {
             <div className="row">
               <div className="col-md-12">
                 <div className="pt-button-group pt-large float-right">
-                  <Link className="pt-button pt-icon-th" tabIndex="0" to={`/attendee/${_id}/edit`} role="button">Edit Attendee</Link>
-                  <a className="pt-button pt-icon-th" tabIndex="1" onClick={() => deleteAttendee(_id, firstName + " " + lastName)} role="button">Delete Event</a>
+                  <Link className="btn btn-warning" tabIndex="0" to={`/attendee/${_id}/edit`} role="button">Edit Attendee</Link>&nbsp;
+                  {/*<a className="btn btn-warning" tabIndex="1" onClick={() => deleteAttendee(_id, firstName + " " + lastName)} role="button">Delete Event</a>*/}
+                </div>
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col-md-12">
+                <div className=" panel panel-primary">
+                  <div className="panel-heading">Full Name</div>
+                  <div className="panel-body">
+                    <div>{title} {firstName} {middleInitial} {lastName} {suffix}</div>
+                    <div><span>Email:</span>&nbsp;&nbsp;<span>{email}</span></div>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                {title} {firstName} {middleInitial} {lastName} {suffix}
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
-                <span>Email:</span>&nbsp;&nbsp;<span>{email}</span>
               </div>
             </div>
             {homeAddressComponent}
@@ -86,26 +91,34 @@ class AttendeeDetailsCompoent extends Component {
           <div className="col-md-4">
             <div className="row">
               <div className="col-md-12">
-                <h4>Status</h4>
-                <div>{status.title}</div>
+                <div className=" panel panel-primary">
+                <div className="panel-heading" >Status</div>
+                <div className="panel-body">{status.title}</div>
+                </div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                <h4>Role</h4>
-                <div>{role.title}</div>
+                <div className=" panel panel-primary">
+                <div className="panel-heading" >Role</div>
+                <div className="panel-body">{role.title}</div>
+                </div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                <h4>Contact Mobile</h4>
-                <div>{contactMobile}</div>
+                <div className=" panel panel-primary">
+                <div className="panel-heading" >Contact Mobile</div>
+                <div className="panel-body">{contactMobile}</div>
+                </div>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
-                <h4>Contact Home</h4>
-                <div>{contactHomePhone}</div>
+                <div className=" panel panel-primary">
+                <div className="panel-heading" >Contact Home</div>
+                <div className="panel-body">{contactHomePhone}</div>
+                </div>
               </div>
             </div>
           </div>
