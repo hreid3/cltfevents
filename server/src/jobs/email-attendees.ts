@@ -2,7 +2,6 @@
  * Created by hreid on 4/29/17.
  */
 
-
 import {Event} from "../models/Event";
 import {ObjectID} from "mongodb";
 import Attendee from "../models/Person";
@@ -11,7 +10,7 @@ import {Church} from "../models/Church";
 import {AttendeeEventBooking} from "../models/AttendeeEventBooking";
 import {createTransport} from 'nodemailer'
 import * as moment from 'moment'
-import {eventStartReminderTemplate} from './email-templates'
+import {eventStartReminderTemplate, reminderTemplate} from './email-templates'
 
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
@@ -23,6 +22,12 @@ const db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+const currencyFormatterUs = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+})
 
 // Find all attendees that are active and have a balance due for any event that has not passed.
 const findAttendeesWithBalanceForUpcomingEvents = async () => {
@@ -116,20 +121,13 @@ const transporter = createTransport({
     ignoreTLS: true
 })
 
-var message = {
-    from: 'sender@tekshop.com',
-    to: 'horace.reid@tekshop.com',
-    subject: 'Message title',
-    text: 'Plaintext version of the message',
-    html: '<p>HTML version of the message</p>'
+const emailheader = {
+    from: 'sender@christianfellowshipchurches.org',
+    to: '',
+    subject: '',
+    text: '',
+    // html: '<p>HTML version of the message</p>'
 };
-
-transporter.sendMail(message, (err, info) => {
-    if (err) {
-        return console.log(err)
-    }
-    console.log('Message %s send: %s', info.messageId, info.response)
-})
 
 /**
  * Send out reminder that event is taking place to emails
@@ -143,14 +141,52 @@ export const remindAttendeesToAttendEvent = async () => {
                 title: val.attendee.title || '',
                 firstName: val.attendee.firstName,
                 lastName: val.attendee.lastName,
-                eventStartTime: moment(val.startDateTime).format('MMM Do, YYYY h:mm a')
+                eventStartTime: moment(val.event.startDateTime).format('MMM Do, YYYY h:mm a'),
+                eventTitle: val.event.title
             }
             const template = eventStartReminderTemplate(anAttendee)
-            console.log('template', template)
+            transporter.sendMail({...emailheader, to: val.attendee.email, subject: 'CLT Fellowship Churches Reminder', text: template}, (err, info) => {
+                if (err) {
+                    return console.log(err)
+                }
+                console.log('Message %s send: %s', info.messageId, info.response)
+            })
+
+            // console.log('template', template)
         })
     } catch(err) {
         console.log(err)
     }
 }
 
-remindAttendeesToAttendEvent()
+export const remindAttendeesToMakePayment = async () => {
+    try {
+        const attendees = await findAttendeesWithBalanceForUpcomingEvents()
+        attendees.forEach((val: any) => {
+            const amtPaid = val.payments.reduce((a, b) => ({amount: a.amount + b.amount}), {amount: 0}).amount
+            const total = val.numberSeatsReserved * val.event.ticketPrice
+            const amountOwed = currencyFormatterUs.format(total - amtPaid)
+            const anAttendee = {
+                title: val.attendee.title || '',
+                firstName: val.attendee.firstName,
+                lastName: val.attendee.lastName,
+                eventStartTime: moment(val.event.startDateTime).format('MMM Do, YYYY h:mm a'),
+                eventTitle: val.event.title,
+                amountOwed: amountOwed
+            }
+            const template = reminderTemplate(anAttendee)
+            transporter.sendMail({...emailheader, to: val.attendee.email, subject: 'CLT Fellowship Churches Payment Reminder', text: template}, (err, info) => {
+                if (err) {
+                    return console.log(err)
+                }
+                console.log('Message %s send: %s', info.messageId, info.response)
+            })
+        })
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+// remindAttendeesToMakePayment()
+// export const remindAttend
+// remindAttendeesToAttendEvent()
