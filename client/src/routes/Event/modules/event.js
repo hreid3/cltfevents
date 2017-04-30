@@ -160,7 +160,7 @@ export const setLookupData = (key, values) =>{
 
 export const doSubmitEventForm = (values) => {
   return (dispatch, getState) => {
-    values.details.startDateTime = moment(values.details.startDateTime , FRIENDLY_DATE_FORMAT);//;Date.parse(value)
+    values.details.startDateTime = moment(values.details.startDateTime , FRIENDLY_DATE_FORMAT)//;Date.parse(value)
     const options = {
       method: 'POST',
       headers: defaultHeaders,
