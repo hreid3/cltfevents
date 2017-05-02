@@ -21,6 +21,14 @@ services:
       - "9300:9300"
     restart: always
 
+  nodejs:
+    container_name: cltfevents_nodejs
+    image: cltfevents_nodejs
+    build: server
+    ports:
+      - "8080:8080"
+    restart: always
+
 
 #  backup:
 #    container_name: vcpuicms_backup
@@ -39,6 +47,7 @@ services:
 volumes:
   mongodb:
   elasticsearch:
+#  nodejs:
 #  backup:
 
 networks: {}
