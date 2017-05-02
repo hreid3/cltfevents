@@ -11,6 +11,7 @@ import {AttendeeEventBooking} from "../models/AttendeeEventBooking";
 import {createTransport} from 'nodemailer'
 import * as moment from 'moment'
 import {eventStartReminderTemplate, reminderTemplate} from './email-templates'
+import {scheduleJob} from 'node-schedule'
 
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
@@ -186,6 +187,17 @@ export const remindAttendeesToMakePayment = async () => {
         console.log(err)
     }
 }
+
+const reminderSchedulerForAttendEvents = scheduleJob('0 15 * * *', () => {
+    console.log('Send Reminder Event is about to start.');
+    remindAttendeesToAttendEvent()
+});
+
+const reminderSchedulerToMakePayments = scheduleJob('00 5 * * 0', () => {
+    console.log('Remind users to make payments');
+    remindAttendeesToMakePayment()
+});
+
 
 // remindAttendeesToMakePayment()
 // export const remindAttend
