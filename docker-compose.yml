@@ -29,6 +29,14 @@ services:
       - "8080:8080"
     restart: always
 
+  maildev:
+    container_name: cltfevents_maildev
+    image: djfarrelly/maildev
+    ports:
+      - "1025:25"
+      - "1080:80"
+    restart: always
+
 
 #  backup:
 #    container_name: vcpuicms_backup

@@ -89,7 +89,7 @@ export class Server {
         }));
 
         //use cookie parker middleware middlware
-        this.app.use(cookieParser("SECRET_GOES_HERE"));
+        this.app.use(cookieParser(`${process.env.ELASTIC_SEARCH_HOST}`));
 
         //use override middlware
         this.app.use(methodOverride());
@@ -125,7 +125,7 @@ export class Server {
     setupMongooseConnection(): void {
         const mongoose = require('mongoose')
         mongoose.Promise = global.Promise;
-        const mongoDB = 'mongodb://localhost/cltfevents';
+        const mongoDB = `mongodb://${process.env.MONGO_DB_HOST}/cltfevents`;
         mongoose.connect(mongoDB);
 
 //Get the default connection

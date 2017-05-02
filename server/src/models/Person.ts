@@ -49,7 +49,7 @@ export const PersonSchema = new Schema({
 
 PersonSchema.plugin(Mongoosastic, {
     hosts: [
-        'localhost:9200'
+        `${process.env.ELASTIC_SEARCH_HOST}:9200`
     ],
     populate: [
         {path: 'status'},
