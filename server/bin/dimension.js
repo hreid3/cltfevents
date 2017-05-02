@@ -4,9 +4,9 @@
 
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
-var mongoDB = 'mongodb://localhost/cltfevents';
+var mongoDB = `mongodb://${process.env.MONGO_DB_HOST}/cltfevents`;
 var Dimension = require('../dist/models/Dimension').default
-var ChurchModel = require('../dist/models/Church')
+var ChurchModel = require('../dist/models/Church').default
 var async = require('async')
 
 mongoose.connect(mongoDB);
