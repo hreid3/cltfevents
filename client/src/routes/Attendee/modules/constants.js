@@ -32,12 +32,12 @@ export const initialState = {
     disabilities: false,
     bioImageUri: '',
     status: {
-      "_id": "58f94bfac9270279aa2147f7",
+      "_id": "590902224cb0e3002a73d296",
       "id": "active",
       "title": "Active"
     },
     role: {
-      "_id": "58f264fdcda9e68fc6e82fcc",
+      "_id": "590902224cb0e3002a73d289",
       "id": "attendee",
       "title": "Attendee"
     },

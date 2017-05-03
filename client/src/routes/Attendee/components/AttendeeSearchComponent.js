@@ -28,7 +28,7 @@ class AttendeeSearchComponent extends Component {
           Attendee</Link>
         <BootstrapTable
           data={props.grid.results}
-          remote={true }
+          remote={false }
           search={ true }
           multiColumnSearch={ true }
           options={ {onSearchChange: props.onSearchChange, clearSearch: true, searchDelayTime: 750} }

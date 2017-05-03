@@ -60,17 +60,17 @@ export const initialEventState = {
     suppliers: [],
     contacts: [],
     eventStatus: {
-      "_id": "58f3ca21eec769c87745d162",
+      "_id": "590902224cb0e3002a73d293",
       "id": "draft",
       "title": "Draft"
     },
     eventType: {
-      "_id": "58f264fdcda9e68fc6e82fd4",
+      "_id": "590902224cb0e3002a73d297",
       "id": "public",
       "title": "Public"
     },
     eventLevel: {
-      "_id": "58f264fdcda9e68fc6e82fd2",
+      "_id": "590902224cb0e3002a73d28e",
       "id": "Church",
       "title": "Church"
     },
