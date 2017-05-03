@@ -113,6 +113,7 @@ export default class EventAttendeesComponent extends Component {
           containerClass="atteendees-events-booking-container"
           tableContainerClass="attendees-events-booking-table "
           trClassName={'horace-1'}
+          pagination={true}
           ref="attendeeEventBookingTable">
           <TableHeaderColumn
             dataField="eventBookingId"

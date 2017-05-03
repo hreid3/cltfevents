@@ -1,0 +1,28 @@
+user nginx;
+worker_processes ##WORKER_PROCESSES##;
+
+error_log /dev/stdout info;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  access_log /dev/stdout;
+
+  server {
+    listen ##PORT##;
+    server_name ##SERVER_NAME##;
+
+    location / {
+      proxy_pass ##PROXY_PASS##;
+#      auth_basic "Restricted";
+#      auth_basic_user_file /etc/nginx/.htpasswd;
+
+      proxy_set_header X-Forwarded-Host $host;
+      # Do not pass Authorization header to destination
+#      proxy_set_header Authorization "";
+    }
+  }
+}

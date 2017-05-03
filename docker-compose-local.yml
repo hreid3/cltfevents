@@ -6,6 +6,8 @@ services:
     build: mongodb
     volumes:
       - mongodb:/data/db
+    ports:
+      - "27017:27017"
     restart: always
 
   elasticsearch:
@@ -14,18 +16,26 @@ services:
     build: elasticsearch
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     restart: always
 
   nodejs:
     container_name: cltfevents_nodejs
     image: cltfevents_nodejs
     build: server
+    volumes:
+      - .:/home/cltfevents
+    ports:
+      - "8080:8080"
     restart: always
 
   maildev:
     container_name: cltfevents_maildev
     image: djfarrelly/maildev
     ports:
+      - "1025:25"
       - "1080:80"
     restart: always
 
@@ -40,6 +50,8 @@ services:
       - BASIC_AUTH_PASSWORD=wgu
       - PROXY_PASS=http://nodejs:8080/
     restart: always
+
+
 
 #  backup:
 #    container_name: vcpuicms_backup
@@ -58,7 +70,7 @@ services:
 volumes:
   mongodb:
   elasticsearch:
-#  nodejs:
+  nodejs:
 #  backup:
 
 networks: {}

@@ -31,7 +31,8 @@ class AttendeeSearchComponent extends Component {
           remote={true }
           search={ true }
           multiColumnSearch={ true }
-          options={ {onSearchChange: props.onSearchChange, clearSearch: true, searchDelayTime: 750} }>
+          options={ {onSearchChange: props.onSearchChange, clearSearch: true, searchDelayTime: 750} }
+          pagination={true}>
           <TableHeaderColumn hidden={true} dataField='_id' isKey={true}>Attribute ID</TableHeaderColumn>
           <TableHeaderColumn dataField="firstName"
                              dataFormat={(cell, row) => <Link to={"/attendee/" + row._id + "/edit"}>{cell}</Link>}>First

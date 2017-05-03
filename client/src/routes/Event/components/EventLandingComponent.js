@@ -82,7 +82,8 @@ class EventsGrid extends Component { // Need lifecycle method
           <div className="">
             <BootstrapTable
               data={props.grid.results}
-              remote={false}>
+              remote={false}
+              pagination={true}>
               <TableHeaderColumn
                 dataField='_id'
                 isKey={true}
